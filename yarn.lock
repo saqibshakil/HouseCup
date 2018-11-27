@@ -669,7 +669,16 @@
     react-native-safe-area-view "^0.11.0"
     react-native-screens "^1.0.0 || ^1.0.0-alpha"
 
-"@types/fbemitter@^2.0.32":
+"@types/expo@^31.0.0":
+  version "31.0.0"
+  resolved "https://registry.yarnpkg.com/@types/expo/-/expo-31.0.0.tgz#42883ad84bac86a6724c70c90d1eea87522d7a00"
+  integrity sha512-Vh0knEueN595AKi6Grk73A2RATjslz2EpazY0FslQTzwmWNEY2PTqdgbWU/SXvdu7zXPmqD9DKjWGRhruwU39Q==
+  dependencies:
+    "@types/fbemitter" "*"
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/fbemitter@*", "@types/fbemitter@^2.0.32":
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@types/fbemitter/-/fbemitter-2.0.32.tgz#8ed204da0f54e9c8eaec31b1eec91e25132d082c"
   integrity sha1-jtIE2g9U6cjq7DGx7skeJRMtCCw=
