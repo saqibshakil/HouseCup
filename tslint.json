@@ -102,7 +102,7 @@
         "avoid-escape"
       ],
       "semicolon": [
-        true,
+        false,
         "always",
         "ignore-interfaces"
       ],

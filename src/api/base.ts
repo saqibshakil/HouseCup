@@ -1,0 +1,1 @@
+export const apiUrl = 'http://readers.com.pk/api.php/'
