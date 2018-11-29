@@ -19,16 +19,23 @@ export const createSchool = (school: ISchool) => {
         fetch(apiUrl + '/school', {
             method: 'POST',
             body: JSON.stringify(school)
-        }).then(p => {
-            if (p) {
-                resolve({
-                    ...school,
-                    id: p
-                })
-            } else {
-                reject()
-            }
         })
+            .then(p => p.text())
+            .then(p => {
+                debugger
+                if (p) {
+                    resolve({
+                        ...school,
+                        id: parseInt(p)
+                    })
+                } else {
+
+                    reject()
+                }
+            })
+            .catch(p => {
+                debugger
+            })
     });
 }
 
@@ -45,30 +52,35 @@ export const createAdmin = (school: ISchool, teacher: ITeacher) => {
     return new Promise(function (resolve, reject) {
         fetch(apiUrl + '/teacher', {
             method: 'POST',
-            body: JSON.stringify({ ...teacher, schoolId: school.id })
-        }).then(teacherId => {
-            if (teacherId) {
-                fetch(apiUrl + '/user', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: teacher.email,
-                        teacherId: teacherId,
-                        keyCode: guid()
-                    })
-                }).then(userId => {
-                    if (userId)
-                        resolve(teacher.id)
-                    else {
-                        fetch(apiUrl + '/teacher/' + teacherId, {
-                            method: 'DELETE'
+            body: JSON.stringify({ ...teacher, schoolId: school.id, isAdmin: 1 })
+        }).then(p => p.text())
+            .then(teacherId => {
+                if (teacherId) {
+                    fetch(apiUrl + '/user', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            email: teacher.email,
+                            teacherId: parseInt(teacherId),
+                            keyCode: guid()
                         })
-                        reject()
-                    }
-                })
+                    }).then(res => res.text())
+                        .then(userId => {
+                            if (userId)
+                                resolve(teacher.id)
+                            else {
+                                fetch(apiUrl + '/teacher/' + teacherId, {
+                                    method: 'DELETE'
+                                })
+                                reject()
+                            }
+                        })
 
-            } else {
-                reject()
-            }
-        })
-    });
+                } else {
+                    reject()
+                }
+            })
+    })
+        .catch(p => {
+            debugger
+        });
 }

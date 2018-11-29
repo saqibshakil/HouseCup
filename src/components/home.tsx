@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
-import { createSwitchNavigator, createNavigationContainer } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer, createNavigationContainer } from 'react-navigation'
 import Admin from '../screens/admin'
 import PreLogin from '../screens/preLogin'
 import Teacher from '../screens/teacher'
 import Student from '../screens/student'
 import Loading from '../screens/loading'
+import { View } from 'react-native';
+import border from '../utils/addBorder'
 
 const Nav = createSwitchNavigator({
     Loading: {
@@ -15,7 +17,8 @@ const Nav = createSwitchNavigator({
         screen: Admin
     },
     PreLogin: {
-        screen: PreLogin
+        screen: PreLogin,
+
     },
     Teacher: {
         screen: Teacher
@@ -24,14 +27,17 @@ const Nav = createSwitchNavigator({
         screen: Student
     }
 }, {
-        initialRouteName: 'Loading'
+        initialRouteName: 'Loading',
+
     })
 
-const Container = createNavigationContainer(Nav);
+const Container = createAppContainer(Nav);
 export default class App extends Component {
     render() {
         return (
-            <Container />
+            <View style={{ flex: 1, alignSelf: 'stretch' }}>
+                <Container />
+            </View>
         );
     }
 }

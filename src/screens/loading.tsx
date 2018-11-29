@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import { AppLoading, Font } from 'expo'
 import { checkLogin } from '../actions/base'
 
 interface IDispatchProps {
@@ -17,24 +17,27 @@ class App extends Component<IStateProps & IDispatchProps> {
     render() {
         return (
             <View style={styles.container}>
+                <AppLoading />
                 <Text>Loading</Text>
             </View>
         );
     }
-
+    componentWillMount() {
+        this.loadFonts();
+      }
+      async loadFonts() {
+        await Font.loadAsync({
+          Roboto: require("native-base/Fonts/Roboto.ttf"),
+          Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+          Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+        });
+        this.props.checkLogin()
+      }
     componentWillReceiveProps(newProps: IStateProps) {
         const prop = this.props as any
         prop.navigation.navigate(newProps.navigateTo)
     }
 
-    componentDidMount(){
-            }
-
-    componentWillMount(){
-        console.log('Loading mounted')
-        this.props.checkLogin()
-
-    }
 }
 
 const styles = StyleSheet.create({

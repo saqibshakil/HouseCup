@@ -1,24 +1,58 @@
-import { Dispatch } from 'react';
-import { Action } from 'redux';
+import { createSchool as postSchool, createAdmin as postAdmin } from '../api/school'
+import { SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER, SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, SCHOOL_POST_STARTED, SCHOOL_POSTED, SCHOOL_POST_FAILED } from '../contants/schoolSignUp';
 
-export const SCHOOL_CREATE = 'CREATE_SCHOOL'
-export const SCHOOL_CHANGE = 'SCHOOL_CHANGE'
-export const SCHOOL_ADD_TEACHER = 'SCHOOL_ADD_TEACHER'
-export const SCHOOL_ADD_HOUSE = 'SCHOOL_ADD_HOUSE'
+export const createSchool = (school: any) =>
+    ({
+        type: SCHOOL_CREATE,
+        school
+    })
 
-export const createSchool = () =>
-    (dispatch: Dispatch<Action>, getState: () => any): void => {
-        const a = 0
-    }
+export const createAdmin = (admin: any) =>
+    ({
+        type: SCHOOL_ADD_ADMIN,
+        admin
+    })
 
-export const onChange = (val: any, prop: string) => ({
-    type: SCHOOL_CHANGE,
-    action: {
-        val,
-        prop
-    }
+export const addTeacher = (email: string) => ({
+    type: SCHOOL_ADD_TEACHER,
+    email
 })
 
-export const addTeacher = () => ({
-    type: SCHOOL_ADD_TEACHER
+export const removeTeacher = (email: string) => ({
+    type: SCHOOL_REMOVE_TEACHER,
+    email
 })
+
+export const addHouse = (house: any) => ({
+    type: SCHOOL_ADD_HOUSE,
+    house
+})
+
+
+export const removeHouse = (name: any) => ({
+    type: SCHOOL_REMOVE_HOUSE,
+    name
+})
+
+export const submit =
+    () => (dispatch: any, getState: any) => {
+        dispatch({
+            type: SCHOOL_POST_STARTED
+        })
+
+        postSchool(getState().schoolSignUp.school)
+            .then((p: any) => {
+                postAdmin(p, getState().schoolSignUp.admin).then(p => {
+                    dispatch({
+                        type: SCHOOL_POSTED
+                    })
+                })
+                    .catch(() => {
+                        dispatch({
+                            type: SCHOOL_POST_FAILED
+                        })
+                    })
+            }).catch(() => dispatch({
+                type: SCHOOL_POST_FAILED
+            }))
+    }
