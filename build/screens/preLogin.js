@@ -1,17 +1,35 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-export default class App extends Component {
-    render() {
-        return (React.createElement(View, { style: styles.container },
-            React.createElement(Text, null, "Login")));
-    }
-}
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+import Home from '../components/login/home';
+import Login from '../components/login/login';
+import SchoolSignUp from '../components/login/schoolSignUp';
+import AdminSignUp from '../components/login/adminSignup';
+import TeacherSignUp from '../components/login/teacherSignUp';
+import { createStackNavigator } from 'react-navigation';
+import React from 'react';
+import { Text } from 'native-base';
+const Nav = createStackNavigator({
+    PreLoginHome: {
+        screen: Home
     },
+    Login: {
+        screen: Login
+    },
+    SchoolSignUp: {
+        screen: SchoolSignUp
+    },
+    AdminSignUp: {
+        screen: AdminSignUp
+    },
+    TeacherSignUp: {
+        screen: TeacherSignUp
+    }
+}, {
+    initialRouteName: 'PreLoginHome'
 });
+Nav.navigationOptions = (props) => {
+    return {
+        // headerBackImage: params.headerBackImage,
+        headerTitle: React.createElement(Text, { style: { color: 'black' } }, "Welcome"),
+    };
+};
+export default Nav;
 //# sourceMappingURL=preLogin.js.map

@@ -5,21 +5,20 @@ export const invalidEmail = "Invalid email";
 export const mandatory = "Mandatory"
 
 export default yup.object().shape({
-  email: yup
+  slogan: yup
     .string()
     .min(3, notLongEnough)
     .max(200)
-    .email(invalidEmail)
     .required(),
     name: yup
     .string()
     .min(3, notLongEnough)
-    .max(200)
+    .max(20)
     .required(),
-    empId: yup
+    color: yup
     .string()
     .min(2)
-    .max(30)
+    .max(7)
     .required(),
     
   });

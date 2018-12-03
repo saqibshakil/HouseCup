@@ -48,19 +48,19 @@ export default (state: any = dataState, action: any) => {
                 ]
             }
 
-            case SCHOOL_POST_STARTED:
+        case SCHOOL_POST_STARTED:
             return {
                 ...state,
                 saving: true,
                 error: null
             }
-            case SCHOOL_POST_FAILED:
+        case SCHOOL_POST_FAILED:
             return {
                 ...state,
                 saving: false,
-                error: 'Unable to sign you up please try again later'
+                error: action.error == 409 ? 'Email Already used' : 'Unable to sign you up please try again later'
             }
-            case SCHOOL_POSTED:
+        case SCHOOL_POSTED:
             return {
                 message: 'Your school has been signed up.You will recieve an email from our admin soon'
             }

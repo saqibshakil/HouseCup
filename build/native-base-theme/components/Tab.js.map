@@ -1,0 +1,1 @@
+{"version":3,"file":"Tab.js","sourceRoot":"","sources":["../../../src/native-base-theme/components/Tab.js"],"names":[],"mappings":"AAAA,QAAQ;AAER,OAAO,QAAQ,MAAM,yBAAyB,CAAC;AAE/C,eAAe,CAAC,SAAS,CAAC,QAAQ,GAAG,QAAQ,EAAE,EAAE;IAC/C,MAAM,QAAQ,GAAG;QACf,IAAI,EAAE,CAAC;QACP,eAAe,EAAE,MAAM;KACxB,CAAC;IAEF,OAAO,QAAQ,CAAC;AAClB,CAAC,CAAC"}

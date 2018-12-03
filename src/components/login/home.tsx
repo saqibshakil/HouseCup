@@ -3,17 +3,19 @@ import { Toast, Title, Body, Container, Header, Content, Footer, Text, View, But
 
 import { Image, Platform } from 'react-native'
 import Login from "./login";
-import { createStackNavigator, NavigationNavigatorProps, createNavigationContainer, createAppContainer } from "react-navigation";
+import { createNavigationContainer, createAppContainer, NavigationContainerProps } from "react-navigation";
+import { connect } from "react-redux";
+import getBorder from "../../utils/addBorder";
 
 export interface Props {
-	navigation: any;
 	valid: boolean;
+	message: string;
 }
 export interface State {
 	inputText: string
 }
 
-class Home extends React.Component<NavigationNavigatorProps & Props, State> {
+class Home extends React.Component<NavigationContainerProps & Props, State> {
 	textInput: any;
 	state = {
 		inputText: ''
@@ -34,6 +36,13 @@ class Home extends React.Component<NavigationNavigatorProps & Props, State> {
 		navigate({ routeName: 'SchoolSignUp' })
 	}
 
+	gotoTeacherSignup = () => {
+		const { navigation: { navigate } } = this.props
+		navigate({
+			routeName: 'TeacherSignUp'
+		})
+	}
+
 	render() {
 		return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
 			<Header style={{ height: 250 }}>
@@ -48,20 +57,20 @@ class Home extends React.Component<NavigationNavigatorProps & Props, State> {
 					</View>
 				</Body>
 			</Header>
-			<Content style={{ paddingHorizontal: 10, paddingTop: 10 }}>
+			<Content style={{ paddingHorizontal: 10, paddingTop: 10 }}  >
 				<Button primary block onPress={this.gotoLogin}>
 					<Text>Sign In</Text>
 				</Button>
 				<View style={{ flexDirection: 'row' }}>
-					<Button block style={{flex: 1, marginVertical:10, marginRight: 5}} light onPress={this.gotoLogin}>
+					<Button block style={{ flex: 1, marginVertical: 10, marginRight: 5 }} light onPress={this.gotoTeacherSignup}>
 						<Text>Teacher Signup</Text>
 					</Button>
-					<Button block style={{flex: 1, marginVertical:10, marginLeft: 5}} light onPress={this.gotoSchoolSignup}>
+					<Button block style={{ flex: 1, marginVertical: 10, marginLeft: 5 }} light onPress={this.gotoSchoolSignup}>
 						<Text>School Signup</Text>
 					</Button>
 
 				</View>
-
+				{this.props.message && <View><Text>{this.props.message}</Text></View>}
 			</Content>
 			<Footer style={{ backgroundColor: "#F8F8F8" }}>
 				<View style={{ alignItems: "center", opacity: 0.5, flexDirection: "row" }}>
@@ -78,7 +87,11 @@ class Home extends React.Component<NavigationNavigatorProps & Props, State> {
 	}
 }
 
+function mapStateToProps(state: any) {
+	return {
+		message: state.schoolSignUp.message
+	}
+}
 
 
-export default Home;
-
+export default connect(mapStateToProps)(Home)

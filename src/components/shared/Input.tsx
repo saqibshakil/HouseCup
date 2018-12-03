@@ -2,7 +2,7 @@ import * as React from "react";
 import { FieldProps } from "formik";
 import { Input, Item, Label, Text } from "native-base";
 
-export class InputField extends React.Component<FieldProps<any> & { placeholder: string }> {
+export class InputField extends React.Component<FieldProps<any> & { placeholder: string, addRef: (p: any) => void }> {
   onChangeText = (text: string) => {
     const {
       form: { setFieldValue },
@@ -19,21 +19,32 @@ export class InputField extends React.Component<FieldProps<any> & { placeholder:
     setFieldTouched(name, true);
   };
 
+
   render() {
     const {
       field, // { name, value, onChange, onBlur }
       form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
       ...props
     } = this.props;
+    const inputProps: any = {
+      ...props,
+      addRef: undefined,
+      ref: (p: any) => {
+         
+        if (props.addRef && p && p._root && p._root.focus)
+          props.addRef(p._root)
+      }
+    }
+     
     const errorMsg = touched[field.name] && errors[field.name];
     return (
       <Item error={!!errorMsg}>
-                <Label><Text></Text></Label>
-                <Input {...props} onChangeText={this.onChangeText}
-        onBlur={this.onBlur}
-         />
-                {errorMsg ? <Text>{errorMsg}</Text> : null}
-            </Item>
+        <Label><Text></Text></Label>
+        <Input {...inputProps} defaultValue={field.value} onChangeText={this.onChangeText}
+          onBlur={this.onBlur}
+        />
+        {errorMsg ? <Text style={{ color: "red" }}>{errorMsg}</Text> : null}
+      </Item>
     );
   }
 }

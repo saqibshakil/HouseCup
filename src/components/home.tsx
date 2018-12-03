@@ -8,6 +8,7 @@ import Student from '../screens/student'
 import Loading from '../screens/loading'
 import { View } from 'react-native';
 import border from '../utils/addBorder'
+import commonColor from '../native-base-theme/variables/commonColor';
 
 const Nav = createSwitchNavigator({
     Loading: {
@@ -28,8 +29,17 @@ const Nav = createSwitchNavigator({
     }
 }, {
         initialRouteName: 'Loading',
-
-    })
+        defaultNavigationOptions: {
+            headerStyle: {
+              backgroundColor: commonColor.btnPrimaryBg,
+              color: commonColor.btnPrimaryColor
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          },
+    } as any)
 
 const Container = createAppContainer(Nav);
 export default class App extends Component {

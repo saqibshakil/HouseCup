@@ -1,0 +1,1 @@
+{"version":3,"file":"Icon.js","sourceRoot":"","sources":["../../../src/native-base-theme/components/Icon.js"],"names":[],"mappings":"AAAA,QAAQ;AAER,OAAO,QAAQ,MAAM,yBAAyB,CAAC;AAE/C,eAAe,CAAC,SAAS,CAAC,QAAQ,GAAG,QAAQ,EAAE,EAAE;IAC/C,MAAM,SAAS,GAAG;QAChB,QAAQ,EAAE,SAAS,CAAC,YAAY;QAChC,KAAK,EAAE,MAAM;KACd,CAAC;IAEF,OAAO,SAAS,CAAC;AACnB,CAAC,CAAC"}

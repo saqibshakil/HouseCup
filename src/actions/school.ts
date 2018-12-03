@@ -47,12 +47,12 @@ export const submit =
                         type: SCHOOL_POSTED
                     })
                 })
-                    .catch(() => {
+                    .catch((error) => {
                         dispatch({
-                            type: SCHOOL_POST_FAILED
+                            type: SCHOOL_POST_FAILED, error
                         })
                     })
-            }).catch(() => dispatch({
-                type: SCHOOL_POST_FAILED
+            }).catch((error) => dispatch({
+                type: SCHOOL_POST_FAILED, error
             }))
     }

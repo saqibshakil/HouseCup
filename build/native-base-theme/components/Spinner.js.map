@@ -1,0 +1,1 @@
+{"version":3,"file":"Spinner.js","sourceRoot":"","sources":["../../../src/native-base-theme/components/Spinner.js"],"names":[],"mappings":"AAAA,QAAQ;AAER,OAAO,QAAQ,MAAM,yBAAyB,CAAC;AAE/C,eAAe,CAAC,SAAS,CAAC,QAAQ,GAAG,QAAQ,EAAE,EAAE;IAC/C,MAAM,YAAY,GAAG;QACnB,MAAM,EAAE,EAAE;KACX,CAAC;IAEF,OAAO,YAAY,CAAC;AACtB,CAAC,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"Body.js","sourceRoot":"","sources":["../../../src/native-base-theme/components/Body.js"],"names":[],"mappings":"AAAA,QAAQ;AAER,OAAO,QAAQ,MAAM,yBAAyB,CAAC;AAE/C,eAAe,CAAC,SAAS,CAAC,QAAQ,GAAG,QAAQ,EAAE,EAAE;IAC/C,MAAM,SAAS,GAAG;QAChB,IAAI,EAAE,CAAC;QACP,UAAU,EAAE,QAAQ;QACpB,SAAS,EAAE,QAAQ;KACpB,CAAC;IAEF,OAAO,SAAS,CAAC;AACnB,CAAC,CAAC"}

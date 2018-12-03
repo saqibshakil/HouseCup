@@ -56,7 +56,7 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
                     <Title>Admin Signup</Title>
                 </Body>
             </Header>
-            <Content style={getBorder()}>
+            <Content>
                 <AdminSignUpForm  submit={this.submit as any} saving={this.props.saving} />
             </Content>
         </Container>;

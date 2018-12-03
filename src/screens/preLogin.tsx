@@ -2,6 +2,8 @@ import Home from '../components/login/home';
 import Login from '../components/login/login'
 import SchoolSignUp from '../components/login/schoolSignUp'
 import AdminSignUp from '../components/login/adminSignup'
+import TeacherSignUp from '../components/login/teacherSignUp'
+
 import { createStackNavigator, Header } from 'react-navigation';
 import React from 'react';
 import { Text } from 'native-base'
@@ -19,18 +21,21 @@ const Nav = createStackNavigator(
 		},
 		AdminSignUp: {
 			screen: AdminSignUp
+		},
+		TeacherSignUp: {
+			screen: TeacherSignUp
 		}
 	}, {
 		initialRouteName: 'PreLoginHome'
-  })
-  
-  Nav.navigationOptions = (props: NavigationContainerProps) => {
-    return {
-      // headerBackImage: params.headerBackImage,
-      headerTitle: <Text style={{color: 'black'}}>Welcome</Text>,
-      // Render a button on the right side of the header.
-      // When pressed switches the screen to edit mode.
-    };
-  };
+	})
+
+Nav.navigationOptions = (props: NavigationContainerProps) => {
+	return {
+		// headerBackImage: params.headerBackImage,
+		headerTitle: <Text style={{ color: 'black' }}>Welcome</Text>,
+		// Render a button on the right side of the header.
+		// When pressed switches the screen to edit mode.
+	};
+};
 
 export default Nav
