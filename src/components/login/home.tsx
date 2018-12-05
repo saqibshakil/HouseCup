@@ -14,7 +14,6 @@ export interface State {
 
 class Home extends React.Component<NavigationContainerProps & Props, State> {
 	static navigationOptions = {
-		title: 'House Cup',
 	}
 
 	textInput: any;

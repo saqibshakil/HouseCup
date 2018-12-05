@@ -1,4 +1,4 @@
-import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_CLEAR } from '../contants/teacherSignUp'
+import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_CLEAR, TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS } from '../contants/teacherSignUp'
 import loading from '../screens/loading';
 
 export default (state: any = {}, action: any) => {
@@ -34,6 +34,23 @@ export default (state: any = {}, action: any) => {
                 teacher: null
             }
 
+        case TEACHER_SAVE:
+            return {
+                ...state,
+                saving: true
+            }
+        case TEACHER_SAVE_SUCCESS:
+            return {
+                ...state,
+                saving: false,
+                teacher: null
+            }
+        case TEACHER_SAVE_FAILED:
+            return {
+                ...state,
+                saving: false,
+                teacher: null
+            }
         default:
             return state;
 
