@@ -1,19 +1,20 @@
-import * as React from "react";
-import { Toast, Title, Body, Container, Header, Content, Footer, Text, View, Left, Spinner } from "native-base";
-import { Image, KeyboardAvoidingView } from 'react-native'
+import * as React from 'react';
+import { Spinner } from 'native-base';
 import TeacherSignUpForm from './teacherSignUpForm'
-import getBorder from "../../utils/addBorder";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import getBorder from '../../utils/addBorder';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import colors from '../../native-base-theme/variables/commonColor'
-import { NavigationContainerProps, NavigationScreenConfig } from "react-navigation";
-import { loadTeacherByKeyCode, clearTeacher } from "../../actions/teacher";
-import KeyCodePromptForm from "./keyCodePromptForm";
+import { NavigationContainerProps } from 'react-navigation';
+import { loadTeacherByKeyCode, clearTeacher } from '../../actions/teacher';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import KeyCodePromptForm from './keyCodePromptForm'
 
 export interface IStateProps {
+
     errorOccured: boolean,
+    loading: boolean,
     teacher: any,
-    loading: boolean
 }
 
 export interface IDispatchProps {
@@ -26,10 +27,6 @@ export interface State {
 }
 
 class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
-    textInput: any;
-    state = {
-        inputText: ''
-    }
     static navigationOptions = {
         title: 'Signup',
         headerStyle: { backgroundColor: colors.brandPrimary },
@@ -37,8 +34,13 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
         headerBackTitleStyle: { color: colors.btnPrimaryColor }
     }
 
-    submit = (values: any) => {
+    textInput: any;
+    state = {
+        inputText: ''
+    }
 
+    // tslint:disable-next-line:no-empty
+    submit = () => {
     }
 
     loadTeacher = (values: any) => {
@@ -47,7 +49,7 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     componentDidMount() {
-        const keyCode = this.props.navigation.getParam("keyCode")
+        const keyCode = this.props.navigation.getParam('keyCode')
         if (keyCode)
             this.props.loadTeacherByKeyCode(keyCode)
 
@@ -58,10 +60,9 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     render() {
-        return <KeyboardAvoidingView enabled
-            style={{ flexDirection: "column", flex: 1, ...getBorder() }}>
+        return <KeyboardAwareScrollView             style={{ flexDirection: 'column', flex: 1, ...getBorder() }}>
             {this.showDetail()}
-        </KeyboardAvoidingView>;
+        </KeyboardAwareScrollView>;
     }
 
     showDetail() {
@@ -82,7 +83,6 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
 
 }
 
-
 function mapStateToProps(state: any): IStateProps {
     return {
         errorOccured: state.teacherSignUp.errorOccured,
@@ -99,4 +99,3 @@ function mapDispatchToProps(dispatch: any): IDispatchProps {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
-

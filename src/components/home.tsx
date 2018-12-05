@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import colors from '../native-base-theme/variables/commonColor'
 
 import { createSwitchNavigator, createAppContainer, createNavigationContainer } from 'react-navigation'
 import Admin from '../screens/admin'
@@ -18,8 +19,7 @@ const Nav = createSwitchNavigator({
         screen: Admin
     },
     PreLogin: {
-        screen: PreLogin,
-
+        screen: PreLogin
     },
     Teacher: {
         screen: Teacher
@@ -29,16 +29,6 @@ const Nav = createSwitchNavigator({
     }
 }, {
         initialRouteName: 'Loading',
-        defaultNavigationOptions: {
-            headerStyle: {
-              backgroundColor: commonColor.btnPrimaryBg,
-              color: commonColor.btnPrimaryColor
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          },
     } as any)
 
 const Container = createAppContainer(Nav);

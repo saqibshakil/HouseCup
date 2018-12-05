@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withFormik, FormikErrors, FormikProps, Field } from "formik";
-import { validUserSchema } from "../../schema/user";
-import { View, Button } from "react-native";
-import { InputField } from "../shared/Input";
+import * as React from 'react';
+import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
+import { validUserSchema } from '../../schema/user';
+import { View, Button } from 'react-native';
+import { InputField } from '../shared/Input';
 
 interface FormValues {
   email: string;
@@ -18,15 +18,14 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
     const { handleSubmit } = this.props;
     return (
       <View>
-        <Field name="email" placeholder="Email" component={InputField} />
+        <Field name='email' placeholder='Email' component={InputField} />
         <Field
-          name="password"
+          name='password'
           secureTextEntry={true}
-          placeholder="Password"
+          placeholder='Password'
           component={InputField}
-          
         />
-        <Button title="Submit" onPress={handleSubmit as any} />
+        <Button title='Submit' onPress={handleSubmit as any} />
       </View>
     );
   }
@@ -34,7 +33,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
 
 export const RegisterView = withFormik<Props, FormValues>({
   validationSchema: validUserSchema,
-  mapPropsToValues: () => ({ email: "", password: "" }),
+  mapPropsToValues: () => ({ email: '', password: '' }),
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);
     if (errors) {

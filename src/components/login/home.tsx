@@ -1,11 +1,8 @@
-import * as React from "react";
-import { Toast, Title, Body, Container, Header, Content, Footer, Text, View, Button } from "native-base";
-
+import * as React from 'react';
+import { Body, Container, Header, Content, Footer, Text, View, Button } from 'native-base';
 import { Image, Platform } from 'react-native'
-import Login from "./login";
-import { createNavigationContainer, createAppContainer, NavigationContainerProps } from "react-navigation";
-import { connect } from "react-redux";
-import getBorder from "../../utils/addBorder";
+import { NavigationContainerProps } from 'react-navigation';
+import { connect } from 'react-redux';
 
 export interface Props {
 	valid: boolean;
@@ -16,6 +13,10 @@ export interface State {
 }
 
 class Home extends React.Component<NavigationContainerProps & Props, State> {
+	static navigationOptions = {
+		title: 'House Cup',
+	}
+
 	textInput: any;
 	state = {
 		inputText: ''
@@ -24,7 +25,6 @@ class Home extends React.Component<NavigationContainerProps & Props, State> {
 	submit = (values: any) => {
 		console.log(values)
 	}
-
 
 	gotoLogin = () => {
 		const { navigation: { navigate } } = this.props
@@ -46,14 +46,13 @@ class Home extends React.Component<NavigationContainerProps & Props, State> {
 	render() {
 		return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
 			<Header style={{ height: 250 }}>
-				<Body style={{ alignItems: "center" }}>
+				<Body style={{ alignItems: 'center' }}>
 					<View padder>
-						<Text style={{ color: Platform.OS === "ios" ? "#000" : "#FFF" }} />
+						<Text style={{ color: Platform.OS === 'ios' ? '#000' : '#FFF' }} />
 					</View>
 					<Image style={{ width: 200, height: 150 }} resizeMode='contain' source={require('./../../../assets/cup.png')} />
-					<Title>House Cup</Title>
 					<View padder>
-						<Text style={{ color: Platform.OS === "ios" ? "#000" : "#FFF" }} />
+						<Text style={{ color: Platform.OS === 'ios' ? '#000' : '#FFF' }} />
 					</View>
 				</Body>
 			</Header>
@@ -72,13 +71,13 @@ class Home extends React.Component<NavigationContainerProps & Props, State> {
 				</View>
 				{this.props.message && <View><Text>{this.props.message}</Text></View>}
 			</Content>
-			<Footer style={{ backgroundColor: "#F8F8F8" }}>
-				<View style={{ alignItems: "center", opacity: 0.5, flexDirection: "row" }}>
+			<Footer style={{ backgroundColor: '#F8F8F8' }}>
+				<View style={{ alignItems: 'center', opacity: 0.5, flexDirection: 'row' }}>
 					<View padder>
-						<Text style={{ color: "#000" }}>Made with love at </Text>
+						<Text style={{ color: '#000' }}>Made with love at </Text>
 					</View>
 					<Image
-						source={{ uri: "https://geekyants.com/images/logo-dark.png" }}
+						source={{ uri: 'https://geekyants.com/images/logo-dark.png' }}
 						style={{ width: 422 / 4, height: 86 / 4 }}
 					/>
 				</View>
@@ -92,6 +91,5 @@ function mapStateToProps(state: any) {
 		message: state.schoolSignUp.message
 	}
 }
-
 
 export default connect(mapStateToProps)(Home)

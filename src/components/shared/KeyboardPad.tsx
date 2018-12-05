@@ -9,12 +9,10 @@ export default class Example extends Component<{}, { keyboardVisible: boolean, k
         keyboardHeight: 0
     }
     _keyboardDidShow = (e: any) => {
-        console.log("didShow", e)
         this.setState({ keyboardVisible: true, keyboardHeight: e.endCoordinates.height })
     }
 
     _keyboardDidHide = () => {
-        
         this.setState({ keyboardVisible: false })
     }
     componentDidMount() {
@@ -29,8 +27,8 @@ export default class Example extends Component<{}, { keyboardVisible: boolean, k
 
     render() {
         const { keyboardHeight, keyboardVisible } = this.state
-        console.log(keyboardHeight, keyboardVisible)
         return (
+            // tslint:disable-next-line:no-null-keyword
             keyboardVisible ? <View style={{ height: keyboardHeight }} /> : null
         );
     }

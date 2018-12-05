@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withFormik, FormikErrors, FormikProps, Field } from "formik";
-import {keyCodeSchema} from "../../schema/teacher";
-import { View, Button, Text, Spinner } from "native-base";
-import { InputField } from "../shared/Input";
+import * as React from 'react';
+import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
+import { keyCodeSchema } from '../../schema/teacher';
+import { View, Button, Text, Spinner } from 'native-base';
+import { InputField } from '../shared/Input';
 
 interface FormValues {
   keyCode: string,
@@ -16,7 +16,7 @@ interface Props {
 class C extends React.Component<FormikProps<FormValues> & Props> {
   inputs: any[] = []
 
-  onSubmitEditing = () => { }
+  onSubmitEditing: () => void = undefined // () => {}
   addRef = (p: any) => {
     this.inputs.push(p)
   }
@@ -25,11 +25,11 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
     const { handleSubmit, saving } = this.props;
     return (
       <View>
-        <Field name="keyCode" placeholder="Key Code" component={InputField}
-          returnKeyType="done" onSubmitEditing={handleSubmit} />
+        <Field name='keyCode' placeholder='Key Code' component={InputField}
+          returnKeyType='done' onSubmitEditing={handleSubmit} />
         <Button block disabled={saving} onPress={handleSubmit as any}>
           <Text>Continue</Text>
-          {saving && <Spinner color="white" />}
+          {saving && <Spinner color='white' />}
         </Button>
       </View>
     );
@@ -39,7 +39,7 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
 export default withFormik<Props, FormValues>({
   validationSchema: keyCodeSchema,
   mapPropsToValues: () => {
-    return ({ keyCode: "" })
+    return ({ keyCode: '' })
   },
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);

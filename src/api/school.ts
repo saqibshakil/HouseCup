@@ -1,4 +1,4 @@
-import { apiUrl, emailUrl, throwError } from './base';
+import { apiUrl, emailUrl, throwError, guid } from './base';
 import { Linking } from 'expo';
 
 interface ISchool {
@@ -27,26 +27,15 @@ export const createSchool = (school: ISchool) => {
                 if (p) {
                     resolve({
                         ...school,
-                        id: parseInt(p)
+                        id: parseInt(p, 10)
                     })
                 } else {
 
                     reject()
                 }
             })
-            .catch(p => {
-
-            })
+            // .catch(p => null)
     });
-}
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4();
 }
 
 export const createAdmin = (school: ISchool, teacher: ITeacher) => {
@@ -64,7 +53,7 @@ export const createAdmin = (school: ISchool, teacher: ITeacher) => {
                         method: 'POST',
                         body: JSON.stringify({
                             email: teacher.email,
-                            teacherId: parseInt(teacherId),
+                            teacherId: parseInt(teacherId, 10),
                             keyCode: keyCode
                         })
                     }).then(throwError)
@@ -73,8 +62,7 @@ export const createAdmin = (school: ISchool, teacher: ITeacher) => {
                             if (userId) {
                                 sendEmail(teacher.email, 'https://app.readers.com.pk/PreLogin/TeacherSignUp?keyCode=' + keyCode)
                                 resolve(teacher.id)
-                            }
-                            else {
+                            } else {
                                 fetch(apiUrl + '/teacher/' + teacherId, {
                                     method: 'DELETE'
                                 }).then(throwError)

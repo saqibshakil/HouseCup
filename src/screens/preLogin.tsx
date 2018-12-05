@@ -3,6 +3,7 @@ import Login from '../components/login/login'
 import SchoolSignUp from '../components/login/schoolSignUp'
 import AdminSignUp from '../components/login/adminSignup'
 import TeacherSignUp from '../components/login/teacherSignUp'
+import colors from '../native-base-theme/variables/commonColor'
 
 import { createStackNavigator, Header } from 'react-navigation';
 import React from 'react';
@@ -26,7 +27,13 @@ const Nav = createStackNavigator(
 			screen: TeacherSignUp
 		}
 	}, {
-		initialRouteName: 'PreLoginHome'
+		initialRouteName: 'PreLoginHome',
+		defaultNavigationOptions: {
+			headerStyle: { backgroundColor: colors.brandPrimary },
+			headerTitleStyle: { color: colors.btnPrimaryColor },
+			headerBackTitleStyle: { color: colors.btnPrimaryColor },
+			headerTintColor: '#fff'
+		}
 	})
 
 Nav.navigationOptions = (props: NavigationContainerProps) => {
