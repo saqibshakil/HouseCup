@@ -4,58 +4,60 @@ import { Image } from 'react-native'
 import { RegisterView } from "./LoginView";
 import getBorder from "../../utils/addBorder";
 import { NavigationContainerProps } from "react-navigation";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { login } from "../../actions/login";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import loading from "../../screens/loading";
 
-export interface Props {
-    navigation: any;
-    valid: boolean;
+export interface IStateProps {
+    loading: boolean;
+    errorOccured: boolean;
 }
+
+export interface IDispatchProps {
+    login: (email: string, password: string) => void
+}
+
 export interface State {
-    inputText: string
 }
-class Login extends React.Component<Props, State> {
+
+class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
     navigationOptions = (props: NavigationContainerProps) => {
         return {
-          // headerBackImage: params.headerBackImage,
-          headerTitle: <Text style={{color: 'black'}}>Welcome</Text>,
-          // Render a button on the right side of the header.
-          // When pressed switches the screen to edit mode.
+            headerTitle: 'House Cup Login'
         };
-      };
+    };
     textInput: any;
-    state = {
-        inputText: ''
-    }
 
     submit = (values: any) => {
-        console.log(values)
+        this.props.login(values.email, values.password)
+    }
+
+    componentWillReceiveProps(newProps: IStateProps) {
+        if (newProps.errorOccured === false && newProps.loading === false && newProps.loading !== this.props.loading)
+            this.props.navigation.navigate({ routeName: 'Teacher' })
     }
 
     render() {
-        return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
-            <Header style={{ flex:0  }}>
-                <Left>
-                    <Image style={{ width: 36, height: 36  }} resizeMode='contain' source={require('./../../../assets/cup.png')} />
-                </Left>
-                <Body>
-                    <Title>House Cup Login</Title>
-                </Body>
-            </Header>
-            <Content>
-                <RegisterView  submit={this.submit as any} />
-            </Content>
-            <Footer style={{ backgroundColor: "#F8F8F8" }}>
-                <View style={{ alignItems: "center", opacity: 0.5, flexDirection: "row" }}>
-                    <View padder>
-                        <Text style={{ color: "#000" }}>Made with love at </Text>
-                    </View>
-                    <Image
-                        source={{ uri: "https://geekyants.com/images/logo-dark.png" }}
-                        style={{ width: 422 / 4, height: 86 / 4 }}
-                    />
-                </View>
-            </Footer>
-        </Container>;
+        return <KeyboardAwareScrollView>
+            <RegisterView submit={this.submit as any} />
+        </KeyboardAwareScrollView>;
     }
 }
 
-export default Login;
+
+function mapStateToProps(state: any): IStateProps {
+    return {
+        loading: state.login.loading,
+        errorOccured: state.login.errorOccurred
+    }
+}
+
+function mapDispatchToProps(dispatch: any): IDispatchProps {
+    return bindActionCreators({
+        login
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

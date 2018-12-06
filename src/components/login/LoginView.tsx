@@ -3,7 +3,7 @@ import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
 import { validUserSchema } from '../../schema/user';
 import { View, Button } from 'react-native';
 import { InputField } from '../shared/Input';
-
+import KeyboardPad from '../shared/KeyboardPad'
 interface FormValues {
   email: string;
   password: string;
@@ -26,6 +26,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
           component={InputField}
         />
         <Button title='Submit' onPress={handleSubmit as any} />
+        <KeyboardPad />
       </View>
     );
   }

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import colors from '../../native-base-theme/variables/commonColor'
 import { NavigationContainerProps } from 'react-navigation';
-import { loadTeacherByKeyCode, clearTeacher } from '../../actions/teacher';
+import { loadTeacherByKeyCode, clearTeacher, updatePasswordAndLogin } from '../../actions/teacher';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import KeyCodePromptForm from './keyCodePromptForm'
 
@@ -20,6 +20,7 @@ export interface IStateProps {
 export interface IDispatchProps {
     loadTeacherByKeyCode: (keyCode: any) => void;
     clearTeacher: () => void
+    updatePasswordAndLogin: (user: any) => void
 }
 
 export interface State {
@@ -40,7 +41,8 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     // tslint:disable-next-line:no-empty
-    submit = () => {
+    submit = (user: any) => {
+        this.props.updatePasswordAndLogin(user)
     }
 
     loadTeacher = (values: any) => {
@@ -55,12 +57,17 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
 
     }
 
+    componentWillReceiveProps(newProps: IStateProps) {
+        if(newProps.errorOccured && this.props.errorOccured !== newProps.errorOccured)
+            this.props.navigation.navigate("PreLoginHome")
+    }
+
     componentWillUnmount() {
         this.props.clearTeacher()
     }
 
     render() {
-        return <KeyboardAwareScrollView             style={{ flexDirection: 'column', flex: 1, ...getBorder() }}>
+        return <KeyboardAwareScrollView style={{ flexDirection: 'column', flex: 1, ...getBorder() }}>
             {this.showDetail()}
         </KeyboardAwareScrollView>;
     }
@@ -94,7 +101,8 @@ function mapStateToProps(state: any): IStateProps {
 function mapDispatchToProps(dispatch: any): IDispatchProps {
     return bindActionCreators({
         loadTeacherByKeyCode,
-        clearTeacher
+        clearTeacher,
+        updatePasswordAndLogin
     }, dispatch)
 }
 

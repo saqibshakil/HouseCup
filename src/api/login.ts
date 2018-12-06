@@ -1,9 +1,8 @@
 import { apiUrl, longGuid } from './base';
 import { Constants } from 'expo'
-
-export const loadTeacherByKeyCode = (keycode: string) => {
+export const login = (email: string, password: string) => {
     return new Promise(function (resolve, reject) {
-        fetch(apiUrl + `/user?filter=keyCode,eq,${keycode}&join=teacher`, {
+        fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher`, {
             method: 'GET'
         }).then(p => {
             if (p.status === 200)
@@ -15,13 +14,14 @@ export const loadTeacherByKeyCode = (keycode: string) => {
             .then(user => {
                 user = user.records[0]
                 if (user) {
-                    resolve({
-                        ...user.teacherId,
-                        ...user,
-                        teacherId: user.teacherId.id
-                    })
+                    if (user.deviceKey !== Constants.deviceId)
+                        reject('The specified user is not assigned to this device,' +
+                            'If you have changed devices or reinstalled please ask your admin to reset you password')
+                    else
+                        updateLoginHash(user.id, longGuid())
+                            .then(p => resolve(p))
+                            .catch(() => reject())
                 } else {
-
                     reject()
                 }
             })
@@ -31,12 +31,13 @@ export const loadTeacherByKeyCode = (keycode: string) => {
     });
 }
 
-export const updateTeacher = (user: any) => {
+
+export const updateLoginHash = (id: string, loginHash: string) => {
     return new Promise(function (resolve, reject) {
         const loginHash = longGuid()
-        fetch(apiUrl + `/user/${user.id}`, {
+        fetch(apiUrl + `/user/${id}`, {
             method: 'PUT',
-            body: JSON.stringify({ password: user.password, deviceKey: Constants.deviceId, loginHash, keyCode: null })
+            body: JSON.stringify({ loginHash })
         }).then(p => {
             if (p.status === 200)
                 return p
@@ -47,10 +48,8 @@ export const updateTeacher = (user: any) => {
             .then(recordsUpdated => {
                 if (parseInt(recordsUpdated, 10) > 0) {
                     resolve({
-                        user: {
-                            ...user,
-                            loginHash
-                        }
+                        id,
+                        loginHash
                     })
                 } else {
 
