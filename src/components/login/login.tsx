@@ -1,14 +1,10 @@
-import * as React from "react";
-import { Toast, Title, Body, Container, Header, Content, Footer, Text, View, Left } from "native-base";
-import { Image } from 'react-native'
-import { RegisterView } from "./LoginView";
-import getBorder from "../../utils/addBorder";
-import { NavigationContainerProps } from "react-navigation";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { login } from "../../actions/login";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import loading from "../../screens/loading";
+import * as React from 'react';
+import LoginView from './LoginView';
+import { NavigationContainerProps } from 'react-navigation';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { login } from '../../actions/login';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export interface IStateProps {
     loading: boolean;
@@ -28,7 +24,6 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
             headerTitle: 'House Cup Login'
         };
     };
-    textInput: any;
 
     submit = (values: any) => {
         this.props.login(values.email, values.password)
@@ -41,16 +36,15 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
 
     render() {
         return <KeyboardAwareScrollView>
-            <RegisterView submit={this.submit as any} />
+            <LoginView submit={this.submit as any} saving={this.props.loading} />
         </KeyboardAwareScrollView>;
     }
 }
 
-
 function mapStateToProps(state: any): IStateProps {
     return {
         loading: state.login.loading,
-        errorOccured: state.login.errorOccurred
+        errorOccured: state.login.errorOccured
     }
 }
 

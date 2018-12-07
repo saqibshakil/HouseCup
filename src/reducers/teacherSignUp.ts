@@ -1,5 +1,7 @@
-import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_CLEAR, TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS } from '../contants/teacherSignUp'
-import loading from '../screens/loading';
+import {
+    TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED,
+    TEACHER_CLEAR, TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS
+} from '../contants/teacherSignUp'
 
 export default (state: any = {}, action: any) => {
     switch (action.type) {
@@ -23,8 +25,7 @@ export default (state: any = {}, action: any) => {
             return {
                 ...state,
                 teacher,
-                loading: false,
-
+                loading: false
             }
         }
 

@@ -1,6 +1,9 @@
 import { TEACHER_LOGIN, TEACHER_LOGGEDIN, TEACHER_LOGIN_FAILED } from '../contants/login';
-
-export default (state: any = {}, action: any) => {
+const defaultState = {
+    loading: false,
+    errorOccured: false
+}
+export default (state: any = defaultState, action: any) => {
     switch (action.type) {
 
         case TEACHER_LOGIN:
@@ -14,7 +17,8 @@ export default (state: any = {}, action: any) => {
             return {
                 ...state,
                 loading: false,
-                userId: action.id,
+                schoolId: action.schoolId,
+                teacherId: action.teacherId,
                 loginHash: action.loginHash
             }
 

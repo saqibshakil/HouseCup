@@ -9,16 +9,10 @@ export interface Props {
 	message: string;
 }
 export interface State {
-	inputText: string
 }
 
 class Home extends React.Component<NavigationContainerProps & Props, State> {
 	static navigationOptions = {
-	}
-
-	textInput: any;
-	state = {
-		inputText: ''
 	}
 
 	submit = (values: any) => {

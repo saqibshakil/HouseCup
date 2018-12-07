@@ -25,4 +25,3 @@ export default (state = dataState, action: any) => {
             return state;
     }
 };
-

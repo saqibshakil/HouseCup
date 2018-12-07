@@ -58,8 +58,8 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     componentWillReceiveProps(newProps: IStateProps) {
-        if(newProps.errorOccured && this.props.errorOccured !== newProps.errorOccured)
-            this.props.navigation.navigate("PreLoginHome")
+        if (newProps.errorOccured && this.props.errorOccured !== newProps.errorOccured)
+            this.props.navigation.navigate('PreLoginHome')
     }
 
     componentWillUnmount() {

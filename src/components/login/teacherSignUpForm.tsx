@@ -4,7 +4,6 @@ import TeacherSchemaFull from '../../schema/teacherFull';
 import { View, Button, Text, Spinner } from 'native-base';
 import { InputField } from '../shared/Input';
 import KeyboardPad from '../shared/KeyboardPad'
-import getBorder from '../../utils/addBorder';
 
 interface FormValues {
   email: string;

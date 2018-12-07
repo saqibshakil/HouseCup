@@ -1,5 +1,4 @@
 import { apiUrl, emailUrl, throwError, guid } from './base';
-import { Linking } from 'expo';
 
 interface ISchool {
     id?: number,

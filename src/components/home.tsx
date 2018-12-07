@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createSwitchNavigator, createAppContainer, createNavigationContainer } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import Admin from '../screens/admin'
 import PreLogin from '../screens/preLogin'
 import Teacher from '../screens/teacher'
@@ -23,7 +23,7 @@ const Nav = createSwitchNavigator({
         screen: Student
     }
 }, {
-        initialRouteName: 'Loading',
+        initialRouteName: 'Loading'
     } as any)
 
 const Container = createAppContainer(Nav);

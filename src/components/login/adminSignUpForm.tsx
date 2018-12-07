@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withFormik, FormikErrors, FormikProps, Field } from "formik";
-import TeacherSchema from "../../schema/teacher";
-import { View, Button, Text, Spinner } from "native-base";
-import { InputField } from "../shared/Input";
+import * as React from 'react';
+import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
+import TeacherSchema from '../../schema/teacher';
+import { View, Button, Text, Spinner } from 'native-base';
+import { InputField } from '../shared/Input';
 
 interface FormValues {
   email: string;
@@ -20,12 +20,12 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
     const { handleSubmit, saving } = this.props;
     return (
       <View>
-        <Field name="empId" placeholder="Employee ID" component={InputField} />
-        <Field name="name" placeholder="Name" component={InputField} />
-        <Field name="email" placeholder="Email Address" component={InputField} />
+        <Field name='empId' placeholder='Employee ID' component={InputField} />
+        <Field name='name' placeholder='Name' component={InputField} />
+        <Field name='email' placeholder='Email Address' component={InputField} />
         <Button block disabled={saving} onPress={handleSubmit as any}>
           <Text>Submit</Text>
-          {saving && <Spinner color="white" />}
+          {saving && <Spinner color='white' />}
         </Button>
       </View>
     );
@@ -34,7 +34,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
 
 export default withFormik<Props, FormValues>({
   validationSchema: TeacherSchema,
-  mapPropsToValues: () => ({ email: "", name: "", empId: '' }),
+  mapPropsToValues: () => ({ email: '', name: '', empId: '' }),
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);
     if (errors) {

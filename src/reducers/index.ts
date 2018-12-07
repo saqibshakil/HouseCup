@@ -14,5 +14,5 @@ const rootReducer = combineReducers({
     login
     // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
- 
+
 export default rootReducer;

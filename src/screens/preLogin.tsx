@@ -5,10 +5,11 @@ import AdminSignUp from '../components/login/adminSignup'
 import TeacherSignUp from '../components/login/teacherSignUp'
 import colors from '../native-base-theme/variables/commonColor'
 
-import { createStackNavigator, Header } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import React from 'react';
 import { Text } from 'native-base'
 import { NavigationContainerProps } from 'react-navigation';
+
 const Nav = createStackNavigator(
 	{
 		PreLoginHome: {
@@ -34,7 +35,7 @@ const Nav = createStackNavigator(
 			headerBackTitleStyle: { color: colors.btnPrimaryColor },
 			headerTintColor: '#fff'
 		}
-	})
+	} as any)
 
 Nav.navigationOptions = (props: NavigationContainerProps) => {
 	return {

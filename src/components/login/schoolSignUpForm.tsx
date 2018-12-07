@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withFormik, FormikErrors, FormikProps, Field } from "formik";
-import schoolSchema from "../../schema/school";
-import { View, Button, Text } from "native-base";
-import { InputField } from "../shared/Input";
+import * as React from 'react';
+import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
+import schoolSchema from '../../schema/school';
+import { View, Button, Text } from 'native-base';
+import { InputField } from '../shared/Input';
 
 interface FormValues {
     name: string;
@@ -17,7 +17,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
         const { handleSubmit } = this.props;
         return (
             <View>
-                <Field name="name" placeholder="School Name" component={InputField} />
+                <Field name='name' placeholder='School Name' component={InputField} />
 
                 <Button block onPress={handleSubmit as any}>
                     <Text>Next</Text>
