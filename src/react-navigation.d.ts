@@ -1305,3 +1305,5 @@ declare module 'react-navigation' {
 
   export const SafeAreaView: React.ComponentClass<SafeAreaViewProps>;
 }
+
+declare module 'react-native-color-picker'

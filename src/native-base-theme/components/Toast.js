@@ -20,6 +20,7 @@ export default (variables /*: * */ = variable) => {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingTop: 50,
     padding: 10,
     minHeight: 50,
     "NativeBase.Text": {

@@ -30,8 +30,8 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     componentWillReceiveProps(newProps: IStateProps) {
-        if (newProps.errorOccured === false && newProps.loading === false && newProps.loading !== this.props.loading)
-            this.props.navigation.navigate({ routeName: 'Teacher' })
+        // if (newProps.errorOccured === false && newProps.loading === false && newProps.loading !== this.props.loading)
+        //    this.props.navigation.navigate({ routeName: 'Teacher' })
     }
 
     render() {

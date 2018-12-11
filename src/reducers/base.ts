@@ -1,4 +1,5 @@
 import { CHECK_LOGIN_KEY, GOTO_LOGIN } from '../actions/base'
+import { RENAVIGATE } from '../contants/login';
 
 let dataState = {
     loading: true,
@@ -20,7 +21,12 @@ export default (state = dataState, action: any) => {
                 loading: false,
                 navigateTo: 'PreLogin'
             }
-
+        case RENAVIGATE:
+            return {
+                ...state,
+                navigateTo: action.to,
+                params: action.params
+            }
         default:
             return state;
     }

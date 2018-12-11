@@ -1,6 +1,6 @@
 import { apiUrl, longGuid } from './base';
 import { Constants } from 'expo'
-import { resolve } from 'dns';
+import school from '../schema/school';
 export const login = (email: string, password: string) => {
     return new Promise(function (resolve, reject) {
         fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher`, {
@@ -65,8 +65,38 @@ export const updateLoginHash = (id: string, loginHash: string) => {
     });
 }
 
-export const verifyLogin = (p: { teacherId: string, loginHash: string, schoolId: string }) => {
-    fetch(`${apiUrl}/user?filter=loginHash,eq,${p.loginHash}&filter=teacherId,eq,${p.teacherId}`)
+export const verifyLoginAndCache = (p: { teacherId: string, loginHash: string, schoolId: string }) => {
+    return new Promise(function (resolve, reject) {
+        fetch(`${apiUrl}/user?filter=loginHash,eq,${p.loginHash}&filter=teacherId,eq,${p.teacherId}`)
+            .then(p => {
+                if (p.status === 200)
+                    return p
+                else
+                    throw 'Error'
+            })
+            .then(p => p.json())
+            .then(user => {
+                user = user.records[0]
+                if (user) {
+                    resolve()
+                } else {
+                    reject()
+                }
+            })
+    })
+}
+
+export const cacheSchoolInfo = (schoolId: string) => {
+    return new Promise(function (resolve, reject) {
+        Promise.all([getHouses(schoolId), getReason(schoolId), getTeacher(schoolId)])
+            .then(([houses, reasons, teachers]) => {
+                resolve({ houses, reasons, teachers })
+            }).catch(() => reject())
+    })
+}
+
+export const getHouses = (schoolId: string) =>
+    fetch(`${apiUrl}/house?filter=schoolId,eq,${schoolId}`)
         .then(p => {
             if (p.status === 200)
                 return p
@@ -74,12 +104,26 @@ export const verifyLogin = (p: { teacherId: string, loginHash: string, schoolId:
                 throw 'Error'
         })
         .then(p => p.json())
-        .then(user => {
-            user = user.records[0]
-            if (user) {
-                resolve()
-            } else {
-                reject
-            }
+        .then(houses => houses.records)
+
+export const getReason = (schoolId: string) =>
+    fetch(`${apiUrl}/reason?filter=schoolId,eq,${schoolId}`)
+        .then(p => {
+            if (p.status === 200)
+                return p
+            else
+                throw 'Error'
         })
-}
+        .then(p => p.json())
+        .then(houses => houses.records)
+
+export const getTeacher = (schoolId: string) =>
+    fetch(`${apiUrl}/teacher?filter=schoolId,eq,${schoolId}`)
+        .then(p => {
+            if (p.status === 200)
+                return p
+            else
+                throw 'Error'
+        })
+        .then(p => p.json())
+        .then(houses => houses.records)

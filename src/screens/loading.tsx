@@ -33,11 +33,6 @@ class App extends Component<IStateProps & IDispatchProps> {
         });
         this.props.checkLogin()
     }
-    componentWillReceiveProps(newProps: IStateProps) {
-        const prop = this.props as any
-        prop.navigation.navigate(newProps.navigateTo)
-    }
-
 }
 
 const styles = StyleSheet.create({

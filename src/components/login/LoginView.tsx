@@ -36,7 +36,7 @@ class LoginViewForm extends React.PureComponent<FormikProps<FormValues> & Props>
           addRef={this.addRef}
           returnKeyType={'done'} onSubmitEditing={handleSubmit}
         />
-        <Button primary onPress={handleSubmit as any} block>
+        <Button primary onPress={handleSubmit as any} block disabled={this.props.saving}>
           <Text>Login</Text>
           {this.props.saving && <Spinner color='white' />}
         </Button>
