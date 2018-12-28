@@ -19,7 +19,8 @@ export default (state: any = defaultState, action: any) => {
                 loading: false,
                 schoolId: action.schoolId,
                 teacherId: action.teacherId,
-                loginHash: action.loginHash
+                loginHash: action.loginHash,
+                maxTeachers: action.maxTeachers
             }
 
         case TEACHER_LOGIN_FAILED:

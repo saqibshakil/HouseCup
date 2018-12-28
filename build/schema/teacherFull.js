@@ -1,14 +1,14 @@
-import * as yup from "yup";
-export const notLongEnough = "Too short";
-export const invalidEmail = "Invalid email";
-export const mandatory = "Mandatory";
+import * as yup from 'yup';
+export const notLongEnough = 'Too short';
+export const invalidEmail = 'Invalid email';
+export const mandatory = 'Mandatory';
 export default yup.object().shape({
     email: yup
         .string()
         .min(3, notLongEnough)
         .max(200)
         .email(invalidEmail)
-        .required(),
+        .required(mandatory),
     name: yup
         .string()
         .min(3, notLongEnough)
@@ -28,7 +28,7 @@ export default yup.object().shape({
         .string()
         .min(8)
         .max(16)
-        .oneOf([yup.ref('password'), null])
+        .oneOf([yup.ref('password')], 'Password dont match')
         .required(),
     keyCode: yup
         .string()

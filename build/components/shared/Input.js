@@ -7,8 +7,9 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import * as React from "react";
-import { Input, Item, Label, Text } from "native-base";
+import * as React from 'react';
+import { Input, Item, Label, Text } from 'native-base';
+import getBorder from '../../utils/addBorder';
 export class InputField extends React.Component {
     constructor() {
         super(...arguments);
@@ -25,16 +26,16 @@ export class InputField extends React.Component {
         const _a = this.props, { field, // { name, value, onChange, onBlur }
         form: { touched, errors } } = _a, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         props = __rest(_a, ["field", "form"]);
-        const inputProps = Object.assign({}, props, { addRef: undefined, ref: (p) => {
+        const inputProps = Object.assign({}, props, { placeholder: undefined, addRef: undefined, ref: (p) => {
                 if (props.addRef && p && p._root && p._root.focus)
                     props.addRef(p._root);
             } });
         const errorMsg = touched[field.name] && errors[field.name];
-        return (React.createElement(Item, { error: !!errorMsg },
+        return (React.createElement(Item, { error: !!errorMsg, style: getBorder(), stackedLabel: true },
             React.createElement(Label, null,
-                React.createElement(Text, null)),
+                React.createElement(Text, null, props.placeholder)),
             React.createElement(Input, Object.assign({}, inputProps, { defaultValue: field.value, onChangeText: this.onChangeText, onBlur: this.onBlur })),
-            errorMsg ? React.createElement(Text, { style: { color: "red" } }, errorMsg) : null));
+            errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));
     }
 }
 //# sourceMappingURL=Input.js.map

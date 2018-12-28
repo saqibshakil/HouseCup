@@ -13,16 +13,26 @@ interface FormValues {
 interface Props {
   submit: (values: FormValues) => Promise<FormikErrors<FormValues> | null>;
   saving: boolean,
+  teacher: any
 }
 
 class C extends React.PureComponent<FormikProps<FormValues> & Props> {
+  inputs: any[] = []
+
+  addRef = (p: any) => {
+    this.inputs.push(p)
+  }
+
   render() {
     const { handleSubmit, saving } = this.props;
     return (
       <View>
-        <Field name='empId' placeholder='Employee ID' component={InputField} />
-        <Field name='name' placeholder='Name' component={InputField} />
-        <Field name='email' placeholder='Email Address' component={InputField} />
+        <Field name='empId' placeholder='Employee ID' component={InputField}  keyboardType='default'
+          returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }}/>
+        <Field name='name' placeholder='Name' component={InputField} addRef={this.addRef}
+        returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
+        <Field name='email' placeholder='Email Address' component={InputField} keyboardType='email-address' addRef={this.addRef}
+          returnKeyType={'done'} onSubmitEditing={() => { handleSubmit() }} />
         <Button block disabled={saving} onPress={handleSubmit as any}>
           <Text>Submit</Text>
           {saving && <Spinner color='white' />}
@@ -34,7 +44,9 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
 
 export default withFormik<Props, FormValues>({
   validationSchema: TeacherSchema,
-  mapPropsToValues: () => ({ email: '', name: '', empId: '' }),
+  mapPropsToValues: (params: any) => {
+    return params.teacher
+  },
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);
     if (errors) {

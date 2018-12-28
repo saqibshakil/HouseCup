@@ -1,20 +1,22 @@
-import * as React from "react";
-import { Spinner } from "native-base";
-import { KeyboardAvoidingView } from 'react-native';
+import * as React from 'react';
+import { Spinner } from 'native-base';
 import TeacherSignUpForm from './teacherSignUpForm';
-import getBorder from "../../utils/addBorder";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import getBorder from '../../utils/addBorder';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import colors from '../../native-base-theme/variables/commonColor';
-import { loadTeacherByKeyCode, clearTeacher } from "../../actions/teacher";
-import KeyCodePromptForm from "./keyCodePromptForm";
+import { loadTeacherByKeyCode, clearTeacher, updatePasswordAndLogin } from '../../actions/teacher';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import KeyCodePromptForm from './keyCodePromptForm';
 class Login extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
             inputText: ''
         };
-        this.submit = (values) => {
+        // tslint:disable-next-line:no-empty
+        this.submit = (user) => {
+            this.props.updatePasswordAndLogin(user);
         };
         this.loadTeacher = (values) => {
             const keyCode = values.keyCode;
@@ -22,15 +24,19 @@ class Login extends React.Component {
         };
     }
     componentDidMount() {
-        const keyCode = this.props.navigation.getParam("keyCode");
+        const keyCode = this.props.navigation.getParam('keyCode');
         if (keyCode)
             this.props.loadTeacherByKeyCode(keyCode);
+    }
+    componentWillReceiveProps(newProps) {
+        if (newProps.errorOccured && this.props.errorOccured !== newProps.errorOccured)
+            this.props.navigation.navigate('PreLoginHome');
     }
     componentWillUnmount() {
         this.props.clearTeacher();
     }
     render() {
-        return React.createElement(KeyboardAvoidingView, { enabled: true, style: Object.assign({ flexDirection: "column", flex: 1 }, getBorder()) }, this.showDetail());
+        return React.createElement(KeyboardAwareScrollView, { style: Object.assign({ flexDirection: 'column', flex: 1 }, getBorder()) }, this.showDetail());
     }
     showDetail() {
         const { loading, teacher } = this.props;
@@ -61,7 +67,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         loadTeacherByKeyCode,
-        clearTeacher
+        clearTeacher,
+        updatePasswordAndLogin
     }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

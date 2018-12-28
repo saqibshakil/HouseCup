@@ -10,6 +10,8 @@ import { checkLogin } from '../actions/base';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NavigationService from './navigationService';
+import { navigateTo } from '../actions/base';
+
 const Nav = createSwitchNavigator({
     Loading: {
         screen: Loading
@@ -30,16 +32,22 @@ const Nav = createSwitchNavigator({
     initialRouteName: 'Loading'
 } as any)
 
-
 interface IStateProps {
-    navigateTo: string
+    navigateTo: string,
+    params: any
+}
+
+interface IDispatchProps {
+    navigate: any
 }
 
 const Container = createAppContainer(Nav);
-export class App extends Component<IStateProps> {
+export class App extends Component<IStateProps & IDispatchProps> {
     componentWillReceiveProps(newProps: IStateProps) {
-        if (this.props.navigateTo !== newProps.navigateTo)
-            NavigationService.navigate(newProps.navigateTo)
+        if (newProps.navigateTo && this.props.navigateTo !== newProps.navigateTo) {
+            NavigationService.navigate(newProps.navigateTo, newProps.params)
+            this.props.navigate('')
+        }
     }
 
     render() {
@@ -54,15 +62,17 @@ export class App extends Component<IStateProps> {
 }
 
 function mapStateToProps(state: any) {
-    const { navigateTo } = state.base
+    // tslint:disable-next-line:no-shadowed-variable
+    const { navigateTo, params } = state.base
     return {
-        navigateTo
+        navigateTo, params
     }
 }
 
 function mapDispatchToProps(dispatch: any) {
     return bindActionCreators({
-        checkLogin
+        checkLogin,
+        navigate: navigateTo
     }, dispatch)
 }
 

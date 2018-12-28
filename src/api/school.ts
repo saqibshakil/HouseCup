@@ -2,9 +2,9 @@ import { apiUrl, emailUrl, throwError, guid } from './base';
 
 interface ISchool {
     id?: number,
-    name: string,
+    name?: string,
     maxTeachers?: number,
-    enfOfTerm: Date
+    enfOfTerm?: Date
 }
 
 interface ITeacher {
@@ -33,15 +33,28 @@ export const createSchool = (school: ISchool) => {
                     reject()
                 }
             })
-            // .catch(p => null)
+        // .catch(p => null)
     });
 }
 
-export const createAdmin = (school: ISchool, teacher: ITeacher) => {
-    return new Promise(function (resolve, reject) {
-        fetch(apiUrl + '/teacher', {
+const sendEmail = (to: string, link: string) => {
+    fetch(emailUrl,
+        {
             method: 'POST',
-            body: JSON.stringify({ ...teacher, schoolId: school.id, isAdmin: 1 })
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}`)
+        }
+    )
+}
+export const createAdmin = (school: ISchool, teacher: ITeacher, isAdmin: boolean) => {
+    return new Promise(function (resolve, reject) {
+        const apiPath = apiUrl + '/teacher' + (teacher.id ? ('/' + teacher.id) : '')
+        const method = teacher.id ? 'PUT' : 'POST'
+        fetch(apiPath, {
+            method,
+            body: JSON.stringify({ ...teacher, schoolId: school.id, isAdmin: isAdmin ? 1 : 0 })
         })
             .then(throwError)
             .then(p => p.text())
@@ -49,17 +62,17 @@ export const createAdmin = (school: ISchool, teacher: ITeacher) => {
                 if (teacherId) {
                     const keyCode = guid().toUpperCase()
                     fetch(apiUrl + '/user', {
-                        method: 'POST',
+                        method,
                         body: JSON.stringify({
                             email: teacher.email,
-                            teacherId: parseInt(teacherId, 10),
+                            teacherId: teacher.id ? teacher.id : parseInt(teacherId, 10),
                             keyCode: keyCode
                         })
                     }).then(throwError)
                         .then(res => res.text())
                         .then(userId => {
                             if (userId) {
-                                sendEmail(teacher.email, 'https://app.readers.com.pk/PreLogin/TeacherSignUp?keyCode=' + keyCode)
+                                sendEmail(teacher.email, keyCode)
                                 resolve(teacher.id)
                             } else {
                                 fetch(apiUrl + '/teacher/' + teacherId, {
@@ -78,14 +91,12 @@ export const createAdmin = (school: ISchool, teacher: ITeacher) => {
 
 }
 
-const sendEmail = (to: string, link: string) => {
-    fetch(emailUrl,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: (`To=${encodeURIComponent(to)}&Link=${encodeURIComponent(link)}`)
-        }
-    )
-}
+export const deleteTeacher = (id: string) =>
+    new Promise(function (resolve, reject) {
+        fetch(apiUrl + '/teacher/' + id, {
+            method: 'DELETE'
+        }).then(throwError)
+            .then(res => res.text())
+            .then(() => resolve())
+            .catch(() => reject('Unable to delete'))
+    })

@@ -1,4 +1,4 @@
-import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_CLEAR } from '../contants/teacherSignUp';
+import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_CLEAR, TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS } from '../contants/teacherSignUp';
 export default (state = {}, action) => {
     switch (action.type) {
         case TEACHER_RESOLVE_KEYCODE:
@@ -11,6 +11,12 @@ export default (state = {}, action) => {
         }
         case TEACHER_CLEAR:
             return Object.assign({}, state, { teacher: null });
+        case TEACHER_SAVE:
+            return Object.assign({}, state, { saving: true });
+        case TEACHER_SAVE_SUCCESS:
+            return Object.assign({}, state, { saving: false, teacher: null });
+        case TEACHER_SAVE_FAILED:
+            return Object.assign({}, state, { saving: false, teacher: null });
         default:
             return state;
     }

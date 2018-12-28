@@ -41,17 +41,37 @@ export const cacheData = (success: any) =>
             dispatch(reNavigate())
         })
     }
+export const reCacheTeachers = (schoolId: string) =>
+    (dispatch: any) => {
+        console.log('recahce')
+        api.getTeacher(schoolId).then(teachers => {
+            dispatch({
+                type: CACHE_TEACHERS,
+                teachers
+            })
+        })
+    }
+
+    export const reCacheHouses = (schoolId: string) =>
+    (dispatch: any) => {
+        api.getHouses(schoolId).then(houses => {
+            dispatch({
+                type: CACHE_HOUSES,
+                houses
+            })
+        })
+    }
 
 export const reNavigate = () =>
     (dispatch: any, getState: any) => {
         const state = getState()
-        const teacher = state.teacher.teachers.filter((p: any) => p.id = state.login.teacherId)[0]
+        const teacher = state.teacher.teachers.filter((p: any) => p.id === state.login.teacherId)[0]
         if (teacher.isAdmin)
-            dispatch ({
+            dispatch({
                 type: RENAVIGATE,
                 to: 'Admin'
             })
-            else
+        else
             dispatch({
                 type: RENAVIGATE,
                 to: 'Teacher'

@@ -1,10 +1,11 @@
 import {
     TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_RESOLVE_KEYCODE_SUCCESS,
-    TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS, TEACHER_CLEAR, TEACHER_LOGGEDIN
+    TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS, TEACHER_CLEAR
 } from '../contants/teacherSignUp'
 
 import * as api from '../api/teacher'
-import { Toast } from 'native-base';
+import { Toast } from 'native-base'
+import { TEACHER_LOGGEDIN } from '../contants/login'
 
 export const loadTeacherByKeyCode = (keyCode: string) =>
     (dispatch: any) => {
@@ -16,9 +17,9 @@ export const loadTeacherByKeyCode = (keyCode: string) =>
             })
             .catch((p) => {
                 Toast.show({
-                    text: "Key Code is invalid or already used up",
+                    text: 'Key Code is invalid or already used up',
                     position: 'bottom',
-                    type: 'danger',
+                    type: 'danger'
                 })
                 dispatch({ type: TEACHER_RESOLVE_KEYCODE_FAILED, p })
             })
@@ -36,7 +37,7 @@ export const updatePasswordAndLogin = (user: any) =>
             })
             .catch((p) => {
                 Toast.show({
-                    text: "Unexpected error, please try again in a few minutes",
+                    text: 'Unexpected error, please try again in a few minutes',
                     position: 'top',
                     type: 'danger'
                 })

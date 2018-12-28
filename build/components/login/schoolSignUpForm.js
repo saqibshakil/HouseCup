@@ -6,16 +6,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as React from "react";
-import { withFormik, Field } from "formik";
-import schoolSchema from "../../schema/school";
-import { View, Button, Text } from "native-base";
-import { InputField } from "../shared/Input";
+import * as React from 'react';
+import { withFormik, Field } from 'formik';
+import schoolSchema from '../../schema/school';
+import { View, Button, Text } from 'native-base';
+import { InputField } from '../shared/Input';
 class C extends React.PureComponent {
     render() {
         const { handleSubmit } = this.props;
         return (React.createElement(View, null,
-            React.createElement(Field, { name: "name", placeholder: "School Name", component: InputField }),
+            React.createElement(Field, { name: 'name', placeholder: 'School Name', component: InputField }),
             React.createElement(Button, { block: true, onPress: handleSubmit },
                 React.createElement(Text, null, "Next"))));
     }

@@ -1,33 +1,29 @@
 import Home from '../components/login/home';
-import Login from '../components/login/login'
-import SchoolSignUp from '../components/login/schoolSignUp'
-import AdminSignUp from '../components/login/adminSignup'
-import TeacherSignUp from '../components/login/teacherSignUp'
-import colors from '../native-base-theme/variables/commonColor'
 import IonIcons from 'react-native-ionicons'
 import React from 'react';
-import { Text } from 'native-base'
 import TeacherHome from '../components/admin/teacherHome'
-import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import HouseHome from '../components/admin/houseHome'
+import ReasonHome from '../components/admin/reasonHome'
+import { createBottomTabNavigator } from 'react-navigation';
 
-export default createMaterialTopTabNavigator(
+export default createBottomTabNavigator(
   {
-    Award: {
+    Reward: {
       screen: Home
     },
     TeacherList: {
       screen: TeacherHome
     },
     HouseList: {
-      screen: SchoolSignUp
+      screen: HouseHome
     },
     ReasonList: {
-      screen: AdminSignUp
+      screen: ReasonHome
     }
   },
   {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+    defaultNavigationOptions: ({ navigation }: any) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }: any) => {
         const { routeName } = navigation.state;
         let iconName;
         if (routeName === 'Home') {

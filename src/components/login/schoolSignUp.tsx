@@ -27,7 +27,7 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     submit = (values: any) => {
         const { createSchool, navigation: { navigate } } = this.props
         createSchool(values)
-        navigate('AdminSignUp')
+        navigate('AdminSignUp', { isAdmin: true })
     }
 
     render() {

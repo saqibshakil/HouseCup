@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import reducers from './reducers/index'; //Import the reducer
+import reducers from './reducers/index'; // Import the reducer
 const middlewares = [thunk];
 const enhancer = composeWithDevTools({
 // Options: https://github.com/jhen0409/react-native-#options

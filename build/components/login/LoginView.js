@@ -6,28 +6,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as React from "react";
-import { withFormik, Field } from "formik";
-import { validUserSchema } from "../../schema/user";
-import { View, Button } from "react-native";
-import { InputField } from "../shared/Input";
-class C extends React.PureComponent {
+import * as React from 'react';
+import { withFormik, Field } from 'formik';
+import { validUserSchema } from '../../schema/user';
+import { View } from 'react-native';
+import { InputField } from '../shared/Input';
+import { Button, Spinner, Text } from 'native-base';
+import KeyboardPad from '../shared/KeyboardPad';
+class LoginViewForm extends React.PureComponent {
+    constructor() {
+        super(...arguments);
+        this.inputs = [];
+        this.addRef = (p) => {
+            this.inputs.push(p);
+        };
+    }
     render() {
         const { handleSubmit } = this.props;
         return (React.createElement(View, null,
-            React.createElement(Field, { name: "email", placeholder: "Email", component: InputField }),
-            React.createElement(Field, { name: "password", secureTextEntry: true, placeholder: "Password", component: InputField }),
-            React.createElement(Button, { title: "Submit", onPress: handleSubmit })));
+            React.createElement(Field, { name: 'email', placeholder: 'Email', component: InputField, keyboardType: 'email-address', returnKeyType: 'next', onSubmitEditing: () => { this.inputs[0].focus(); } }),
+            React.createElement(Field, { name: 'password', secureTextEntry: true, placeholder: 'Password', component: InputField, addRef: this.addRef, returnKeyType: 'done', onSubmitEditing: handleSubmit }),
+            React.createElement(Button, { primary: true, onPress: handleSubmit, block: true, disabled: this.props.saving },
+                React.createElement(Text, null, "Login"),
+                this.props.saving && React.createElement(Spinner, { color: 'white' })),
+            React.createElement(KeyboardPad, null)));
     }
 }
-export const RegisterView = withFormik({
+export default withFormik({
     validationSchema: validUserSchema,
-    mapPropsToValues: () => ({ email: "", password: "" }),
+    mapPropsToValues: () => ({ email: '', password: '' }),
     handleSubmit: (values, { props, setErrors }) => __awaiter(this, void 0, void 0, function* () {
         const errors = yield props.submit(values);
         if (errors) {
             setErrors(errors);
         }
     })
-})(C);
+})(LoginViewForm);
 //# sourceMappingURL=LoginView.js.map

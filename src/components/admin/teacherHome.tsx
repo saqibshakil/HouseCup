@@ -7,6 +7,7 @@ const Nav = createStackNavigator(
     {
         List: {
             screen: List
+
         },
         SignUp: {
             screen: AdminSignUp

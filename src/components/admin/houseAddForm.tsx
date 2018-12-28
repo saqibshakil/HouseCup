@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withFormik, FormikErrors, FormikProps, Field } from 'formik';
-import TeacherSchemaFull from '../../schema/teacherFull';
+import HouseSchema from '../../schema/house';
 import { View, Button, Text, Spinner } from 'native-base';
 import { InputField } from '../shared/Input';
 import KeyboardPad from '../shared/KeyboardPad'
@@ -13,8 +13,8 @@ interface FormValues {
 
 interface Props {
   submit: (values: FormValues) => Promise<FormikErrors<FormValues> | null>;
-  house: any,
-  saving: boolean
+  house?: any,
+  saving?: boolean
 }
 
 class C extends React.Component<FormikProps<FormValues> & Props> {
@@ -26,15 +26,18 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
 
   render() {
     const { handleSubmit, saving } = this.props;
+    const submit = () => {
+      handleSubmit()
+    }
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>
         <Field name='name' addRef={this.addRef} placeholder='Name' component={InputField}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
         <Field name='slogan' addRef={this.addRef} placeholder='Slogan' component={InputField}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[2].focus(); }} />
-        <Field name='color' addRef={this.addRef} placeholder='Slogan' component={InputField}
-          returnKeyType={'next'} onSubmitEditing={() => { this.inputs[2].focus(); }} />
-        <Button block disabled={saving} onPress={handleSubmit as any}>
+        <Field name='color' addRef={this.addRef} placeholder='Color' component={InputField}
+          returnKeyType={'done'} onSubmitEditing={() => { submit() }} />
+        <Button block disabled={saving} onPress={submit as any}>
           <Text>Submit</Text>
           {saving && <Spinner color='white' />}
         </Button>
@@ -45,9 +48,9 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
 }
 
 export default withFormik<Props, FormValues>({
-  validationSchema: TeacherSchemaFull,
+  validationSchema: HouseSchema,
   mapPropsToValues: (props) => {
-    return ({ ...props.teacher, password: '', confirmPassword: '' })
+    return ({ ...props.house })
   },
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);

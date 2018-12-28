@@ -6,7 +6,11 @@ import Teacher from '../screens/teacher';
 import Student from '../screens/student';
 import Loading from '../screens/loading';
 import { View } from 'react-native';
-import commonColor from '../native-base-theme/variables/commonColor';
+import { checkLogin } from '../actions/base';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import NavigationService from './navigationService';
+import { navigateTo } from '../actions/base';
 const Nav = createSwitchNavigator({
     Loading: {
         screen: Loading
@@ -15,7 +19,7 @@ const Nav = createSwitchNavigator({
         screen: Admin
     },
     PreLogin: {
-        screen: PreLogin,
+        screen: PreLogin
     },
     Teacher: {
         screen: Teacher
@@ -24,23 +28,35 @@ const Nav = createSwitchNavigator({
         screen: Student
     }
 }, {
-    initialRouteName: 'Loading',
-    defaultNavigationOptions: {
-        headerStyle: {
-            backgroundColor: commonColor.btnPrimaryBg,
-            color: commonColor.btnPrimaryColor
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
-    },
+    initialRouteName: 'Loading'
 });
 const Container = createAppContainer(Nav);
-export default class App extends Component {
+export class App extends Component {
+    componentWillReceiveProps(newProps) {
+        if (newProps.navigateTo && this.props.navigateTo !== newProps.navigateTo) {
+            NavigationService.navigate(newProps.navigateTo, newProps.params);
+            this.props.navigate('');
+        }
+    }
     render() {
         return (React.createElement(View, { style: { flex: 1, alignSelf: 'stretch' } },
-            React.createElement(Container, null)));
+            React.createElement(Container, { ref: (navigatorRef) => {
+                    NavigationService.setTopLevelNavigator(navigatorRef);
+                } })));
     }
 }
+function mapStateToProps(state) {
+    // tslint:disable-next-line:no-shadowed-variable
+    const { navigateTo, params } = state.base;
+    return {
+        navigateTo, params
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        checkLogin,
+        navigate: navigateTo
+    }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 //# sourceMappingURL=home.js.map

@@ -8,7 +8,6 @@ export default class Example extends Component {
             keyboardHeight: 0
         };
         this._keyboardDidShow = (e) => {
-            console.log("didShow", e);
             this.setState({ keyboardVisible: true, keyboardHeight: e.endCoordinates.height });
         };
         this._keyboardDidHide = () => {
@@ -25,8 +24,9 @@ export default class Example extends Component {
     }
     render() {
         const { keyboardHeight, keyboardVisible } = this.state;
-        console.log(keyboardHeight, keyboardVisible);
-        return (keyboardVisible ? React.createElement(View, { style: { height: keyboardHeight } }) : null);
+        return (
+        // tslint:disable-next-line:no-null-keyword
+        keyboardVisible ? React.createElement(View, { style: { height: keyboardHeight } }) : null);
     }
 }
 //# sourceMappingURL=KeyboardPad.js.map

@@ -1,11 +1,14 @@
-import { createSchool as postSchool, createAdmin as postAdmin } from '../api/school'
-import { SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER, SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, SCHOOL_POST_STARTED, SCHOOL_POSTED, SCHOOL_POST_FAILED } from '../contants/schoolSignUp';
+import { createSchool as postSchool, createAdmin as postAdmin, deleteTeacher } from '../api/school'
+import {
+    SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER,
+    SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, SCHOOL_POST_STARTED, SCHOOL_POSTED, SCHOOL_POST_FAILED
+} from '../contants/schoolSignUp';
+import { reCacheTeachers } from './login';
 
-export const createSchool = (school: any) =>
-    ({
-        type: SCHOOL_CREATE,
-        school
-    })
+export const createSchool = (school: any) => ({
+    type: SCHOOL_CREATE,
+    school
+})
 
 export const createAdmin = (admin: any) =>
     ({
@@ -14,45 +17,81 @@ export const createAdmin = (admin: any) =>
     })
 
 export const addTeacher = (email: string) => ({
+
     type: SCHOOL_ADD_TEACHER,
     email
 })
 
-export const removeTeacher = (email: string) => ({
-    type: SCHOOL_REMOVE_TEACHER,
-    email
-})
+export const removeTeacher = (id: string) => (dispatch: any, getState: any) => {
+    dispatch({
+        type: SCHOOL_POST_STARTED
+    })
+
+    deleteTeacher(id).then(() => {
+        try {
+            const email = getState().teacher.teachers.find((q: any) => q.id === id).email
+            dispatch({
+                type: SCHOOL_REMOVE_TEACHER,
+                email: email
+            })
+            dispatch(reCacheTeachers(getState().login.schoolId))
+        } catch (p) {
+            console.log(p)
+        }
+    }).catch((error) => {
+        dispatch({
+            type: SCHOOL_POST_FAILED, error
+        })
+    })
+}
 
 export const addHouse = (house: any) => ({
     type: SCHOOL_ADD_HOUSE,
     house
 })
 
-
 export const removeHouse = (name: any) => ({
     type: SCHOOL_REMOVE_HOUSE,
     name
 })
 
-export const submit =
-    () => (dispatch: any, getState: any) => {
-        dispatch({
-            type: SCHOOL_POST_STARTED
-        })
+export const submit = () => (dispatch: any, getState: any) => {
+    dispatch({
+        type: SCHOOL_POST_STARTED
+    })
 
-        postSchool(getState().schoolSignUp.school)
-            .then((p: any) => {
-                postAdmin(p, getState().schoolSignUp.admin).then(p => {
+    postSchool(getState().schoolSignUp.school)
+        .then((p: any) => {
+            postAdmin(p, getState().schoolSignUp.admin, true).then(() => {
+                dispatch({
+                    type: SCHOOL_POSTED
+                })
+            })
+                .catch((error) => {
                     dispatch({
-                        type: SCHOOL_POSTED
+                        type: SCHOOL_POST_FAILED, error
                     })
                 })
-                    .catch((error) => {
-                        dispatch({
-                            type: SCHOOL_POST_FAILED, error
-                        })
-                    })
-            }).catch((error) => dispatch({
+        }).catch((error) => dispatch({
+            type: SCHOOL_POST_FAILED, error
+        }))
+}
+
+export const createTeacher = (values: any) => (dispatch: any, getState: any) => {
+    dispatch({
+        type: SCHOOL_POST_STARTED
+    })
+    const id = getState().login.schoolId
+    postAdmin({ id }, values, false).then(() => {
+        dispatch({
+            type: SCHOOL_POSTED
+        })
+
+        dispatch(reCacheTeachers(id))
+    })
+        .catch((error: string) => {
+            dispatch({
                 type: SCHOOL_POST_FAILED, error
-            }))
-    }
+            })
+        })
+}

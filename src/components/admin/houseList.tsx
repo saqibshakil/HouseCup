@@ -1,53 +1,82 @@
 import * as React from 'react';
-import { Toast, Title, Body, Container, Header, Content, Footer, Text, View, Left } from 'native-base';
-import getBorder from '../../utils/addBorder';
+import { Icon, Title, Body, Container, Header, Content, Footer, Text, View, Left, List, ListItem, Right, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createAdmin as createAdminAction, removeHouse } from '../../actions/school';
 import { NavigationContainerProps } from 'react-navigation';
+import { navigateTo } from '../../actions/base';
+import { createHouse, remove } from '../../actions/house';
 
 export interface IStateProps {
-    houses: []
+    houses: [],
+    canAdd: boolean
 }
 
 export interface IDispatchProps {
-    createAdmin: (admin: any) => void
+    navigateTo: (to: any, props: any) => void
+    remove: (id: string) => void
 }
+
 export interface State {
     inputText: string
 }
+
 class HouseList extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
     textInput: any;
     state = {
         inputText: ''
     }
-    submit = (values: any) => {
-        const { createAdmin, navigation: { navigate } } = this.props
-    }
 
     render() {
+        const { houses, canAdd } = this.props
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
             <Header style={{ flex: 0 }}>
                 <Body>
-                    <Title>House Setup</Title>
+                    <Title>Houses</Title>
                 </Body>
+                {canAdd && <Button transparent onPress={this.newTeacher}><Icon name='add'></Icon></Button>}
             </Header>
-            <Content style={getBorder()}>
-                <AdminSignUpForm submit={this.submit as any} />
+            <Content>
+                <List>
+                    {
+                        houses.map(this.listItem)
+                    }
+                </List>
             </Content>
         </Container>;
+    }
+
+    listItem = (houses: any) => {
+        return <ListItem key={houses.id}>
+            <Content>
+                <Text>{houses.name}</Text>
+            </Content>
+            <Right style={{ flexDirection: 'row' }}>
+                <Button primary icon onPress={() => this.editHouse(houses.id)} ><Icon name='open' /></Button>
+                <Button danger icon onPress={() => this.props.remove(houses.id)}><Icon name='trash' /></Button>
+            </Right>
+        </ListItem>
+    }
+
+    editHouse = (id: string) => {
+        this.props.navigateTo('Detail', { id })
+    }
+
+    newTeacher = () => {
+        this.props.navigateTo('Detail', { })
     }
 }
 
 function mapStateToProps(state: any): IStateProps {
     return {
-        houses: state.house.houses
+        houses: state.house.houses,
+        canAdd: true
     }
 }
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: any): IDispatchProps {
     return bindActionCreators({
-        removeHouse
+        remove,
+        navigateTo
     }, dispatch)
 }
 

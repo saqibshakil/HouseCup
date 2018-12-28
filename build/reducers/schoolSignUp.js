@@ -1,4 +1,4 @@
-import { SCHOOL_ADD_ADMIN, SCHOOL_ADD_HOUSE, SCHOOL_ADD_TEACHER, SCHOOL_CREATE, SCHOOL_POST_FAILED, SCHOOL_POST_STARTED, SCHOOL_POSTED, SCHOOL_REMOVE_HOUSE, SCHOOL_REMOVE_TEACHER } from '../contants/schoolSignUp';
+import { SCHOOL_ADD_ADMIN, SCHOOL_ADD_HOUSE, SCHOOL_ADD_TEACHER, SCHOOL_CREATE, SCHOOL_POST_FAILED, SCHOOL_POST_STARTED, SCHOOL_POSTED } from '../contants/schoolSignUp';
 let dataState = {};
 export default (state = dataState, action) => {
     switch (action.type) {
@@ -11,23 +11,15 @@ export default (state = dataState, action) => {
                     ...state.houses,
                     action.house
                 ] });
-        case SCHOOL_REMOVE_HOUSE:
-            return Object.assign({}, state, { houses: [
-                    ...state.houses.filter((p) => p.name !== action.name),
-                ] });
         case SCHOOL_ADD_TEACHER:
             return Object.assign({}, state, { teachers: [
                     ...state.teachers,
                     { email: action.email }
                 ] });
-        case SCHOOL_REMOVE_TEACHER:
-            return Object.assign({}, state, { teachers: [
-                    ...state.teachers.filter((p) => p.email !== action.email),
-                ] });
         case SCHOOL_POST_STARTED:
-            return Object.assign({}, state, { saving: true, error: null });
+            return Object.assign({}, state, { saving: true, error: undefined });
         case SCHOOL_POST_FAILED:
-            return Object.assign({}, state, { saving: false, error: action.error == 409 ? 'Email Already used' : 'Unable to sign you up please try again later' });
+            return Object.assign({}, state, { saving: false, error: action.error === 409 ? 'Email Already used' : 'Unable to sign you up please try again later' });
         case SCHOOL_POSTED:
             return {
                 message: 'Your school has been signed up.You will recieve an email from our admin soon'

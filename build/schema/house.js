@@ -1,7 +1,7 @@
-import * as yup from "yup";
-export const notLongEnough = "Too short";
-export const invalidEmail = "Invalid email";
-export const mandatory = "Mandatory";
+import * as yup from 'yup';
+export const notLongEnough = 'Too short';
+export const invalidEmail = 'Invalid email';
+export const mandatory = 'Mandatory';
 export default yup.object().shape({
     slogan: yup
         .string()
@@ -17,6 +17,6 @@ export default yup.object().shape({
         .string()
         .min(2)
         .max(7)
-        .required(),
+        .required()
 });
 //# sourceMappingURL=house.js.map

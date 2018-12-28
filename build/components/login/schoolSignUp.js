@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Title, Body, Container, Header, Content, Left } from "native-base";
+import * as React from 'react';
+import { Title, Body, Container, Header, Content, Left } from 'native-base';
 import { Image } from 'react-native';
 import SchoolSignUpForm from './schoolSignUpForm';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { createSchool } from "../../actions/school";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { createSchool } from '../../actions/school';
 class Login extends React.Component {
     constructor() {
         super(...arguments);
@@ -14,7 +14,7 @@ class Login extends React.Component {
         this.submit = (values) => {
             const { createSchool, navigation: { navigate } } = this.props;
             createSchool(values);
-            navigate("AdminSignUp");
+            navigate('AdminSignUp', { isAdmin: true });
         };
     }
     render() {

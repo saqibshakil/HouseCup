@@ -1,4 +1,4 @@
-import { apiUrl, emailUrl, throwError } from './base';
+import { apiUrl, emailUrl, throwError, guid } from './base';
 export const createSchool = (school) => {
     return new Promise(function (resolve, reject) {
         fetch(apiUrl + '/school', {
@@ -8,29 +8,31 @@ export const createSchool = (school) => {
             .then(p => p.text())
             .then(p => {
             if (p) {
-                resolve(Object.assign({}, school, { id: parseInt(p) }));
+                resolve(Object.assign({}, school, { id: parseInt(p, 10) }));
             }
             else {
                 reject();
             }
-        })
-            .catch(p => {
         });
+        // .catch(p => null)
     });
 };
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4();
-}
-export const createAdmin = (school, teacher) => {
+const sendEmail = (to, link) => {
+    fetch(emailUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}`)
+    });
+};
+export const createAdmin = (school, teacher, isAdmin) => {
     return new Promise(function (resolve, reject) {
-        fetch(apiUrl + '/teacher', {
-            method: 'POST',
-            body: JSON.stringify(Object.assign({}, teacher, { schoolId: school.id, isAdmin: 1 }))
+        const apiPath = apiUrl + '/teacher' + (teacher.id ? ('/' + teacher.id) : '');
+        const method = teacher.id ? 'PUT' : 'POST';
+        fetch(apiPath, {
+            method,
+            body: JSON.stringify(Object.assign({}, teacher, { schoolId: school.id, isAdmin: isAdmin ? 1 : 0 }))
         })
             .then(throwError)
             .then(p => p.text())
@@ -38,17 +40,17 @@ export const createAdmin = (school, teacher) => {
             if (teacherId) {
                 const keyCode = guid().toUpperCase();
                 fetch(apiUrl + '/user', {
-                    method: 'POST',
+                    method,
                     body: JSON.stringify({
                         email: teacher.email,
-                        teacherId: parseInt(teacherId),
+                        teacherId: teacher.id ? teacher.id : parseInt(teacherId, 10),
                         keyCode: keyCode
                     })
                 }).then(throwError)
                     .then(res => res.text())
                     .then(userId => {
                     if (userId) {
-                        sendEmail(teacher.email, 'https://app.readers.com.pk/PreLogin/TeacherSignUp?keyCode=' + keyCode);
+                        sendEmail(teacher.email, keyCode);
                         resolve(teacher.id);
                     }
                     else {
@@ -66,13 +68,12 @@ export const createAdmin = (school, teacher) => {
         }).catch(reject);
     });
 };
-const sendEmail = (to, link) => {
-    fetch(emailUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: (`To=${encodeURIComponent(to)}&Link=${encodeURIComponent(link)}`)
-    });
-};
+export const deleteTeacher = (id) => new Promise(function (resolve, reject) {
+    fetch(apiUrl + '/teacher/' + id, {
+        method: 'DELETE'
+    }).then(throwError)
+        .then(res => res.text())
+        .then(() => resolve())
+        .catch(() => reject('Unable to delete'));
+});
 //# sourceMappingURL=school.js.map

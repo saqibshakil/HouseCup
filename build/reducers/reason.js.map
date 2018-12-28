@@ -1,0 +1,1 @@
+{"version":3,"file":"reason.js","sourceRoot":"","sources":["../../src/reducers/reason.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,mBAAmB,CAAC;AAElD,eAAe,CAAC,QAAa,EAAE,EAAE,MAAW,EAAE,EAAE;IAC5C,QAAQ,MAAM,CAAC,IAAI,EAAE;QAEjB,KAAK,aAAa;YACd,yBACO,KAAK,IACR,OAAO,EAAE,MAAM,CAAC,OAAO,IAC1B;QAGL;YACI,OAAO,KAAK,CAAA;KACnB;AACL,CAAC,CAAA"}

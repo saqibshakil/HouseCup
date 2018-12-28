@@ -3,7 +3,7 @@ import { Constants } from 'expo'
 import school from '../schema/school';
 export const login = (email: string, password: string) => {
     return new Promise(function (resolve, reject) {
-        fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher`, {
+        fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher,school`, {
             method: 'GET'
         }).then(p => {
             if (p.status === 200)
@@ -23,7 +23,8 @@ export const login = (email: string, password: string) => {
                         updateLoginHash(user.id, hash)
                             .then(() => resolve({
                                 teacherId: user.teacherId.id,
-                                schoolId: user.teacherId.schoolId,
+                                schoolId: user.teacherId.schoolId.id,
+                                maxTeachers: user.teacherId.schoolId.maxTeachers,
                                 loginHash: hash
                             }))
                             .catch(() => reject())
@@ -68,13 +69,13 @@ export const updateLoginHash = (id: string, loginHash: string) => {
 export const verifyLoginAndCache = (p: { teacherId: string, loginHash: string, schoolId: string }) => {
     return new Promise(function (resolve, reject) {
         fetch(`${apiUrl}/user?filter=loginHash,eq,${p.loginHash}&filter=teacherId,eq,${p.teacherId}`)
-            .then(p => {
-                if (p.status === 200)
-                    return p
+            .then(s => {
+                if (s.status === 200)
+                    return s
                 else
                     throw 'Error'
             })
-            .then(p => p.json())
+            .then((s: any) => s.json())
             .then(user => {
                 user = user.records[0]
                 if (user) {

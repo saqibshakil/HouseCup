@@ -24,16 +24,12 @@ class App extends Component {
     loadFonts() {
         return __awaiter(this, void 0, void 0, function* () {
             yield Font.loadAsync({
-                Roboto: require("native-base/Fonts/Roboto.ttf"),
-                Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-                Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+                Roboto: require('native-base/Fonts/Roboto.ttf'),
+                Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+                Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf')
             });
             this.props.checkLogin();
         });
-    }
-    componentWillReceiveProps(newProps) {
-        const prop = this.props;
-        prop.navigation.navigate(newProps.navigateTo);
     }
 }
 const styles = StyleSheet.create({
@@ -41,8 +37,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
-    },
+        justifyContent: 'center'
+    }
 });
 function mapStateToProps(state) {
     const { navigateTo } = state.base;
