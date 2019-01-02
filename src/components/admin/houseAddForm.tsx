@@ -4,6 +4,7 @@ import HouseSchema from '../../schema/house';
 import { View, Button, Text, Spinner } from 'native-base';
 import { InputField } from '../shared/Input';
 import KeyboardPad from '../shared/KeyboardPad'
+import { ColorInputField } from '../shared/ColorInput';
 
 interface FormValues {
   name: string;
@@ -35,7 +36,7 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
         <Field name='slogan' addRef={this.addRef} placeholder='Slogan' component={InputField}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[2].focus(); }} />
-        <Field name='color' addRef={this.addRef} placeholder='Color' component={InputField}
+        <Field name='color' addRef={this.addRef} placeholder='Color' component={ColorInputField}
           returnKeyType={'done'} onSubmitEditing={() => { submit() }} />
         <Button block disabled={saving} onPress={submit as any}>
           <Text>Submit</Text>

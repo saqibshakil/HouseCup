@@ -14,6 +14,7 @@ export const checkLogin = () => (dispatch) => {
 export const verifyLogin = (p) => (dispatch) => {
     fetch(`http://readers.com.pk/api.php/user?filter=loginHash,eq,${p}`)
         .then((res) => {
+        dispatch();
         console.log(res);
     });
 };

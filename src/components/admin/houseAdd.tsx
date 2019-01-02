@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
 import HouseAddForm from './houseAddForm'
 import { createHouse } from '../../actions/house';
-import house from '../../reducers/house';
 
 export interface IStateProps {
     saving: boolean,
@@ -25,6 +24,11 @@ class HouseAdd extends React.Component<IStateProps & IDispatchProps & Navigation
     state = {
         inputText: ''
     }
+
+    static navigationOptions = ({ navigation }: any) => ({
+        title: navigation.getParam('id') ? 'Edit House' : 'Add New House'
+    })
+
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
         const { createHouse, navigation: { goBack } } = this.props

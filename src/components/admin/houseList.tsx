@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Icon, Title, Body, Container, Header, Content, Footer, Text, View, Left, List, ListItem, Right, Button } from 'native-base';
+import { Icon, Title, Body, Container, Header, Content, Text, List, ListItem, Right, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
 import { navigateTo } from '../../actions/base';
-import { createHouse, remove } from '../../actions/house';
+import { remove } from '../../actions/house';
+import colors from '../../native-base-theme/variables/commonColor'
 
 export interface IStateProps {
     houses: [],
@@ -21,6 +22,10 @@ export interface State {
 }
 
 class HouseList extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+
+    static navigationOptions = {
+        headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
+    }
     textInput: any;
     state = {
         inputText: ''
@@ -62,7 +67,7 @@ class HouseList extends React.Component<IStateProps & IDispatchProps & Navigatio
     }
 
     newTeacher = () => {
-        this.props.navigateTo('Detail', { })
+        this.props.navigateTo('Detail', {})
     }
 }
 

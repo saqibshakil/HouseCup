@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { navigateTo } from '../../actions/base';
 import { remove } from '../../actions/house';
+import colors from '../../native-base-theme/variables/commonColor';
 class HouseList extends React.Component {
     constructor() {
         super(...arguments);
@@ -39,6 +40,9 @@ class HouseList extends React.Component {
                 React.createElement(List, null, houses.map(this.listItem))));
     }
 }
+HouseList.navigationOptions = {
+    headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
+};
 function mapStateToProps(state) {
     return {
         houses: state.house.houses,

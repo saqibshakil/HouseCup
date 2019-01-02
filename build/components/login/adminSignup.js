@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Toast, Title, Body, Container, Header, Content, Left } from 'native-base';
-import { Image } from 'react-native';
+import { Toast, Container, Content } from 'native-base';
 import AdminSignUpForm from './adminSignUpForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -36,15 +35,15 @@ class AdminSignUp extends React.Component {
     }
     render() {
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
-            React.createElement(Header, { style: { flex: 0 } },
-                React.createElement(Left, null,
-                    React.createElement(Image, { style: { width: 36, height: 36 }, resizeMode: 'contain', source: require('./../../../assets/cup.png') })),
-                React.createElement(Body, null,
-                    React.createElement(Title, null, "Admin Signup"))),
             React.createElement(Content, null,
                 React.createElement(AdminSignUpForm, { submit: this.submit, saving: this.props.saving, teacher: this.props.teacher })));
     }
 }
+AdminSignUp.navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('id')
+        ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+        : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+});
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,

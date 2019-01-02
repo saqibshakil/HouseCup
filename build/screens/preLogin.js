@@ -32,10 +32,12 @@ const Nav = createStackNavigator({
         headerTintColor: '#fff'
     }
 });
-Nav.navigationOptions = (props) => {
+Nav.navigationOptions = ({}) => {
     return {
         // headerBackImage: params.headerBackImage,
-        headerTitle: React.createElement(Text, { style: { color: 'black' } }, "Welcome"),
+        headerTitle: React.createElement(Text, { style: { color: 'black' } }, "Welcome")
+        // Render a button on the right side of the header.
+        // When pressed switches the screen to edit mode.
     };
 };
 export default Nav;

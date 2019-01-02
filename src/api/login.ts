@@ -1,6 +1,6 @@
 import { apiUrl, longGuid } from './base';
 import { Constants } from 'expo'
-import school from '../schema/school';
+import { getPointsPerHouses } from './home';
 export const login = (email: string, password: string) => {
     return new Promise(function (resolve, reject) {
         fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher,school`, {
@@ -89,9 +89,9 @@ export const verifyLoginAndCache = (p: { teacherId: string, loginHash: string, s
 
 export const cacheSchoolInfo = (schoolId: string) => {
     return new Promise(function (resolve, reject) {
-        Promise.all([getHouses(schoolId), getReason(schoolId), getTeacher(schoolId)])
-            .then(([houses, reasons, teachers]) => {
-                resolve({ houses, reasons, teachers })
+        Promise.all([getHouses(schoolId), getReason(schoolId), getTeacher(schoolId), getPointsPerHouses(schoolId)])
+            .then(([houses, reasons, teachers, points]) => {
+                resolve({ houses, reasons, teachers, points })
             }).catch(() => reject())
     })
 }

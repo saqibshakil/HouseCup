@@ -19,13 +19,14 @@ export const verifyLogin = (p: string) =>
     (dispatch: any) => {
         fetch(`http://readers.com.pk/api.php/user?filter=loginHash,eq,${p}`)
             .then((res: any) => {
+                dispatch()
                 console.log(res)
             })
     }
 
-    export const navigateTo = (to: string, params: any) => ({
-        type: RENAVIGATE,
-        to,
-        params
-    })
+export const navigateTo = (to: string, params: any) => ({
+    type: RENAVIGATE,
+    to,
+    params
+})
 export const gotoLogin = () => ({ type: GOTO_LOGIN })

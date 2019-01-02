@@ -19,19 +19,12 @@ export interface State {
 }
 
 class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
-    navigationOptions = (props: NavigationContainerProps) => {
-        return {
-            headerTitle: 'House Cup Login'
-        };
-    };
+    static navigationOptions = () => ({
+        title: 'Sign In'
+    })
 
     submit = (values: any) => {
         this.props.login(values.email, values.password)
-    }
-
-    componentWillReceiveProps(newProps: IStateProps) {
-        // if (newProps.errorOccured === false && newProps.loading === false && newProps.loading !== this.props.loading)
-        //    this.props.navigation.navigate({ routeName: 'Teacher' })
     }
 
     render() {

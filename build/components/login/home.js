@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Body, Container, Header, Content, Footer, Text, View, Button } from 'native-base';
+import { Body, Container, Header, Content, Text, View, Button } from 'native-base';
 import { Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
+import colors from '../../native-base-theme/variables/commonColor';
 class Home extends React.Component {
     constructor() {
         super(...arguments);
@@ -41,15 +42,12 @@ class Home extends React.Component {
                     React.createElement(Button, { block: true, style: { flex: 1, marginVertical: 10, marginLeft: 5 }, light: true, onPress: this.gotoSchoolSignup },
                         React.createElement(Text, null, "School Signup"))),
                 this.props.message && React.createElement(View, null,
-                    React.createElement(Text, null, this.props.message))),
-            React.createElement(Footer, { style: { backgroundColor: '#F8F8F8' } },
-                React.createElement(View, { style: { alignItems: 'center', opacity: 0.5, flexDirection: 'row' } },
-                    React.createElement(View, { padder: true },
-                        React.createElement(Text, { style: { color: '#000' } }, "Made with love at ")),
-                    React.createElement(Image, { source: { uri: 'https://geekyants.com/images/logo-dark.png' }, style: { width: 422 / 4, height: 86 / 4 } }))));
+                    React.createElement(Text, null, this.props.message))));
     }
 }
-Home.navigationOptions = {};
+Home.navigationOptions = {
+    headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
+};
 function mapStateToProps(state) {
     return {
         message: state.schoolSignUp.message

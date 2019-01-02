@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeTeacher } from '../../actions/school';
 import { navigateTo } from '../../actions/base';
+import colors from '../../native-base-theme/variables/commonColor';
 class TeacherList extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
             inputText: ''
-        };
-        this.submit = (values) => {
-            const { createAdmin, navigation: { navigate } } = this.props;
         };
         this.listItem = (teacher) => {
             return React.createElement(ListItem, { key: teacher.id },
@@ -42,6 +40,9 @@ class TeacherList extends React.Component {
                 React.createElement(List, null, teachers.map(this.listItem))));
     }
 }
+TeacherList.navigationOptions = {
+    headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
+};
 function mapStateToProps(state) {
     return {
         teachers: state.teacher.teachers,

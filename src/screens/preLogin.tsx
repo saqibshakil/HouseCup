@@ -10,37 +10,36 @@ import React from 'react';
 import { Text } from 'native-base'
 import { NavigationContainerProps } from 'react-navigation';
 
-const Nav = createStackNavigator(
-	{
-		PreLoginHome: {
-			screen: Home
-		},
-		Login: {
-			screen: Login
-		},
-		SchoolSignUp: {
-			screen: SchoolSignUp
-		},
-		AdminSignUp: {
-			screen: AdminSignUp
-		},
-		TeacherSignUp: {
-			screen: TeacherSignUp
-		}
-	}, {
-		initialRouteName: 'PreLoginHome',
-		defaultNavigationOptions: {
-			headerStyle: { backgroundColor: colors.brandPrimary },
-			headerTitleStyle: { color: colors.btnPrimaryColor },
-			headerBackTitleStyle: { color: colors.btnPrimaryColor },
-			headerTintColor: '#fff'
-		}
-	} as any)
+const Nav = createStackNavigator({
+	PreLoginHome: {
+		screen: Home
+	},
+	Login: {
+		screen: Login
+	},
+	SchoolSignUp: {
+		screen: SchoolSignUp
+	},
+	AdminSignUp: {
+		screen: AdminSignUp
+	},
+	TeacherSignUp: {
+		screen: TeacherSignUp
+	}
+}, {
+	initialRouteName: 'PreLoginHome',
+	defaultNavigationOptions: {
+		headerStyle: { backgroundColor: colors.brandPrimary },
+		headerTitleStyle: { color: colors.btnPrimaryColor },
+		headerBackTitleStyle: { color: colors.btnPrimaryColor },
+		headerTintColor: '#fff'
+	}
+} as any)
 
-Nav.navigationOptions = (props: NavigationContainerProps) => {
+Nav.navigationOptions = ({}: NavigationContainerProps) => {
 	return {
 		// headerBackImage: params.headerBackImage,
-		headerTitle: <Text style={{ color: 'black' }}>Welcome</Text>,
+		headerTitle: <Text style={{ color: 'black' }}>Welcome</Text>
 		// Render a button on the right side of the header.
 		// When pressed switches the screen to edit mode.
 	};

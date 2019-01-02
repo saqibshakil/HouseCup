@@ -1,4 +1,6 @@
 export const apiUrl = 'http://app.readers.com.pk/api.php/records'
+export const sumUrl = 'http://app.readers.com.pk/sum.php?school='
+
 export const emailUrl = 'http://app.readers.com.pk/mail/handler.php'
 export const throwError = (p: Response) => {
     console.log(p.status, p.headers)

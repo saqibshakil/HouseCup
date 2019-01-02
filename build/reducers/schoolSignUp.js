@@ -1,4 +1,4 @@
-import { SCHOOL_ADD_ADMIN, SCHOOL_ADD_HOUSE, SCHOOL_ADD_TEACHER, SCHOOL_CREATE, SCHOOL_POST_FAILED, SCHOOL_POST_STARTED, SCHOOL_POSTED } from '../contants/schoolSignUp';
+import { SCHOOL_ADD_ADMIN, SCHOOL_ADD_HOUSE, SCHOOL_ADD_TEACHER, SCHOOL_CREATE, CALL_FAILED, CALL_STARTED, CALL_DONE } from '../contants/schoolSignUp';
 let dataState = {};
 export default (state = dataState, action) => {
     switch (action.type) {
@@ -16,11 +16,11 @@ export default (state = dataState, action) => {
                     ...state.teachers,
                     { email: action.email }
                 ] });
-        case SCHOOL_POST_STARTED:
+        case CALL_STARTED:
             return Object.assign({}, state, { saving: true, error: undefined });
-        case SCHOOL_POST_FAILED:
+        case CALL_FAILED:
             return Object.assign({}, state, { saving: false, error: action.error === 409 ? 'Email Already used' : 'Unable to sign you up please try again later' });
-        case SCHOOL_POSTED:
+        case CALL_DONE:
             return {
                 message: 'Your school has been signed up.You will recieve an email from our admin soon'
             };

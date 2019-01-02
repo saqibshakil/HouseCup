@@ -1,6 +1,4 @@
-import Home from '../components/login/home';
-import IonIcons from 'react-native-ionicons';
-import React from 'react';
+import Home from '../components/teacher/awardHome';
 import TeacherHome from '../components/admin/teacherHome';
 import HouseHome from '../components/admin/houseHome';
 import ReasonHome from '../components/admin/reasonHome';
@@ -19,21 +17,6 @@ export default createBottomTabNavigator({
         screen: ReasonHome
     }
 }, {
-    defaultNavigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({ focused, horizontal, tintColor }) => {
-            const { routeName } = navigation.state;
-            let iconName;
-            if (routeName === 'Home') {
-                iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-            }
-            else if (routeName === 'Settings') {
-                iconName = `ios-options${focused ? '' : '-outline'}`;
-            }
-            // You can return any component that you like here! We usually use an
-            // icon component from react-native-vector-icons
-            return React.createElement(IonIcons, { name: iconName, size: horizontal ? 20 : 25, color: tintColor });
-        }
-    }),
     tabBarOptions: {
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray'

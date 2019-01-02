@@ -7,24 +7,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 class Login extends React.Component {
     constructor() {
         super(...arguments);
-        this.navigationOptions = (props) => {
-            return {
-                headerTitle: 'House Cup Login'
-            };
-        };
         this.submit = (values) => {
             this.props.login(values.email, values.password);
         };
-    }
-    componentWillReceiveProps(newProps) {
-        // if (newProps.errorOccured === false && newProps.loading === false && newProps.loading !== this.props.loading)
-        //    this.props.navigation.navigate({ routeName: 'Teacher' })
     }
     render() {
         return React.createElement(KeyboardAwareScrollView, null,
             React.createElement(LoginView, { submit: this.submit, saving: this.props.loading }));
     }
 }
+Login.navigationOptions = () => ({
+    title: 'Sign In'
+});
 function mapStateToProps(state) {
     return {
         loading: state.login.loading,

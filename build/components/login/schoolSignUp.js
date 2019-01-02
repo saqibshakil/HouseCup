@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Title, Body, Container, Header, Content, Left } from 'native-base';
-import { Image } from 'react-native';
+import { Container, Content } from 'native-base';
 import SchoolSignUpForm from './schoolSignUpForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,6 +11,7 @@ class Login extends React.Component {
             inputText: ''
         };
         this.submit = (values) => {
+            // tslint:disable-next-line:no-shadowed-variable
             const { createSchool, navigation: { navigate } } = this.props;
             createSchool(values);
             navigate('AdminSignUp', { isAdmin: true });
@@ -19,16 +19,14 @@ class Login extends React.Component {
     }
     render() {
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
-            React.createElement(Header, { style: { flex: 0 } },
-                React.createElement(Left, null,
-                    React.createElement(Image, { style: { width: 36, height: 36 }, resizeMode: 'contain', source: require('./../../../assets/cup.png') })),
-                React.createElement(Body, null,
-                    React.createElement(Title, null, "School Signup"))),
             React.createElement(Content, null,
                 React.createElement(SchoolSignUpForm, { submit: this.submit })));
     }
 }
-function mapStateToProps(state) {
+Login.navigationOptions = () => ({
+    title: 'School SignUp'
+});
+function mapStateToProps( /*state: any*/) {
     return {};
 }
 function mapDispatchToProps(dispatch) {

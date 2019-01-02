@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Toast, Title, Body, Container, Header, Content, Left } from 'native-base';
-import { Image } from 'react-native'
+import { Toast, Container, Content } from 'native-base';
 import AdminSignUpForm from './adminSignUpForm'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -28,6 +27,13 @@ class AdminSignUp extends React.Component<IStateProps & IDispatchProps & Navigat
     state = {
         inputText: ''
     }
+
+    static navigationOptions = ({ navigation }: any) => ({
+        title: navigation.getParam('id')
+            ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+            : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+    })
+
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
         const { createAdmin, createTeacher, navigation: { state: { params } } } = this.props
@@ -55,14 +61,6 @@ class AdminSignUp extends React.Component<IStateProps & IDispatchProps & Navigat
 
     render() {
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
-            <Header style={{ flex: 0 }}>
-                <Left>
-                    <Image style={{ width: 36, height: 36 }} resizeMode='contain' source={require('./../../../assets/cup.png')} />
-                </Left>
-                <Body>
-                    <Title>Admin Signup</Title>
-                </Body>
-            </Header>
             <Content>
                 <AdminSignUpForm submit={this.submit as any} saving={this.props.saving} teacher={this.props.teacher} />
             </Content>

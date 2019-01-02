@@ -12,6 +12,7 @@ import HouseSchema from '../../schema/house';
 import { View, Button, Text, Spinner } from 'native-base';
 import { InputField } from '../shared/Input';
 import KeyboardPad from '../shared/KeyboardPad';
+import { ColorInputField } from '../shared/ColorInput';
 class C extends React.Component {
     constructor() {
         super(...arguments);
@@ -28,7 +29,7 @@ class C extends React.Component {
         return (React.createElement(View, { style: { flexDirection: 'column', flex: 1 } },
             React.createElement(Field, { name: 'name', addRef: this.addRef, placeholder: 'Name', component: InputField, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[1].focus(); } }),
             React.createElement(Field, { name: 'slogan', addRef: this.addRef, placeholder: 'Slogan', component: InputField, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[2].focus(); } }),
-            React.createElement(Field, { name: 'color', addRef: this.addRef, placeholder: 'Color', component: InputField, returnKeyType: 'done', onSubmitEditing: () => { submit(); } }),
+            React.createElement(Field, { name: 'color', addRef: this.addRef, placeholder: 'Color', component: ColorInputField, returnKeyType: 'done', onSubmitEditing: () => { submit(); } }),
             React.createElement(Button, { block: true, disabled: saving, onPress: submit },
                 React.createElement(Text, null, "Submit"),
                 saving && React.createElement(Spinner, { color: 'white' })),

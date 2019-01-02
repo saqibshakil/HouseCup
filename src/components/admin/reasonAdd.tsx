@@ -3,41 +3,45 @@ import { Container, Content } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
-import HouseAddForm from './houseAddForm'
-import { createHouse } from '../../actions/house';
-import house from '../../reducers/house';
+import ReasonAddForm from './reasonAddForm'
+import { createReason } from '../../actions/reason';
 
 export interface IStateProps {
     saving: boolean,
     error: string,
     message: string,
-    house: any
+    reason: any
 }
 
 export interface IDispatchProps {
-    createHouse: (admin: any) => void
+    createReason: (admin: any) => void
 }
 export interface State {
     inputText: string
 }
-class HouseAdd extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+class ReasonAdd extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+
     textInput: any;
+
     state = {
         inputText: ''
     }
+    static navigationOptions = ({ navigation }: any) => ({
+        title: navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'
+    })
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
-        const { createHouse, navigation: { goBack } } = this.props
-        createHouse(values)
+        const { createReason, navigation: { goBack } } = this.props
+        createReason(values)
         goBack()
     }
 
     render() {
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
             <Content>
-                <HouseAddForm submit={this.submit as any} saving={this.props.saving} house={this.props.house} />
+                <ReasonAddForm submit={this.submit as any} saving={this.props.saving} reason={this.props.reason} />
             </Content>
-        </Container>;
+        </Container>
     }
 }
 
@@ -46,14 +50,14 @@ function mapStateToProps(state: any, ownProps: any): IStateProps {
         error: state.schoolSignUp.error,
         saving: state.schoolSignUp.saving,
         message: state.schoolSignUp.message,
-        house: state.house.houses && state.house.houses.filter((p: any) => p.id === ownProps.navigation.state.params.id)[0]
+        reason: state.reason.reasons && state.reason.reasons.filter((p: any) => p.id === ownProps.navigation.state.params.id)[0]
     }
 }
 
 function mapDispatchToProps(dispatch: any) {
     return bindActionCreators({
-        createHouse
+        createReason
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HouseAdd)
+export default connect(mapStateToProps, mapDispatchToProps)(ReasonAdd)

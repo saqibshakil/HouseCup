@@ -23,6 +23,9 @@ class HouseAdd extends React.Component {
                 React.createElement(HouseAddForm, { submit: this.submit, saving: this.props.saving, house: this.props.house })));
     }
 }
+HouseAdd.navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('id') ? 'Edit House' : 'Add New House'
+});
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,

@@ -4,6 +4,7 @@ import ReasonSchema from '../../schema/reason';
 import { View, Button, Text, Spinner } from 'native-base';
 import { InputField } from '../shared/Input';
 import KeyboardPad from '../shared/KeyboardPad'
+import { CategoryInputField } from '../shared/CategoryInput';
 
 interface FormValues {
   name: string;
@@ -31,11 +32,9 @@ class ReasonAddForm extends React.Component<FormikProps<FormValues> & Props> {
     }
     return (
       <View style={{ flexDirection: 'column', flex: 1 }}>
-        <Field name='name' addRef={this.addRef} placeholder='Name' component={InputField}
+        <Field name='reason' addRef={this.addRef} placeholder='Reason' component={InputField}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
-        <Field name='slogan' addRef={this.addRef} placeholder='Slogan' component={InputField}
-          returnKeyType={'next'} onSubmitEditing={() => { this.inputs[2].focus(); }} />
-        <Field name='color' addRef={this.addRef} placeholder='Color' component={InputField} keyboardType='numeric'
+        <Field name='isGood' addRef={this.addRef} placeholder='Category' component={CategoryInputField}
           returnKeyType={'done'} onSubmitEditing={() => { submit() }} />
         <Button block disabled={saving} onPress={submit as any}>
           <Text>Submit</Text>

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Icon, Title, Body, Container, Header, Content, Footer, Text, View, Left, List, ListItem, Right, Button } from 'native-base';
+import { Icon, Title, Body, Container, Header, Content, Text, List, ListItem, Right, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeTeacher } from '../../actions/school';
 import { NavigationContainerProps } from 'react-navigation';
 import { navigateTo } from '../../actions/base';
+import colors from '../../native-base-theme/variables/commonColor'
 
 export interface IStateProps {
     teachers: [],
@@ -21,12 +22,13 @@ export interface State {
 }
 
 class TeacherList extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+    static navigationOptions = {
+        headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
+    }
+
     textInput: any;
     state = {
         inputText: ''
-    }
-    submit = (values: any) => {
-        const { createAdmin, navigation: { navigate } } = this.props
     }
 
     render() {

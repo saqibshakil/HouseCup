@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Title, Body, Container, Header, Content, Left } from 'native-base';
-import { Image } from 'react-native'
+import { Container, Content } from 'native-base';
 import SchoolSignUpForm from './schoolSignUpForm'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,8 +22,11 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     state = {
         inputText: ''
     }
-
+    static navigationOptions = () => ({
+        title: 'School SignUp'
+    })
     submit = (values: any) => {
+        // tslint:disable-next-line:no-shadowed-variable
         const { createSchool, navigation: { navigate } } = this.props
         createSchool(values)
         navigate('AdminSignUp', { isAdmin: true })
@@ -32,14 +34,6 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
 
     render() {
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
-            <Header style={{ flex: 0 }}>
-                <Left>
-                    <Image style={{ width: 36, height: 36 }} resizeMode='contain' source={require('./../../../assets/cup.png')} />
-                </Left>
-                <Body>
-                    <Title>School Signup</Title>
-                </Body>
-            </Header>
             <Content>
                 <SchoolSignUpForm submit={this.submit as any} />
             </Content>
@@ -47,7 +41,8 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(/*state: any*/) {
+
     return {
     }
 }

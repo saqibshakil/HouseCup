@@ -1,5 +1,5 @@
 import { createSchool as postSchool, createAdmin as postAdmin, deleteTeacher } from '../api/school';
-import { SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER, SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, SCHOOL_POST_STARTED, SCHOOL_POSTED, SCHOOL_POST_FAILED } from '../contants/schoolSignUp';
+import { SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER, SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
 import { reCacheTeachers } from './login';
 export const createSchool = (school) => ({
     type: SCHOOL_CREATE,
@@ -15,7 +15,7 @@ export const addTeacher = (email) => ({
 });
 export const removeTeacher = (id) => (dispatch, getState) => {
     dispatch({
-        type: SCHOOL_POST_STARTED
+        type: CALL_STARTED
     });
     deleteTeacher(id).then(() => {
         try {
@@ -31,7 +31,7 @@ export const removeTeacher = (id) => (dispatch, getState) => {
         }
     }).catch((error) => {
         dispatch({
-            type: SCHOOL_POST_FAILED, error
+            type: CALL_FAILED, error
         });
     });
 };
@@ -45,38 +45,38 @@ export const removeHouse = (name) => ({
 });
 export const submit = () => (dispatch, getState) => {
     dispatch({
-        type: SCHOOL_POST_STARTED
+        type: CALL_STARTED
     });
     postSchool(getState().schoolSignUp.school)
         .then((p) => {
         postAdmin(p, getState().schoolSignUp.admin, true).then(() => {
             dispatch({
-                type: SCHOOL_POSTED
+                type: CALL_DONE
             });
         })
             .catch((error) => {
             dispatch({
-                type: SCHOOL_POST_FAILED, error
+                type: CALL_FAILED, error
             });
         });
     }).catch((error) => dispatch({
-        type: SCHOOL_POST_FAILED, error
+        type: CALL_FAILED, error
     }));
 };
 export const createTeacher = (values) => (dispatch, getState) => {
     dispatch({
-        type: SCHOOL_POST_STARTED
+        type: CALL_STARTED
     });
     const id = getState().login.schoolId;
     postAdmin({ id }, values, false).then(() => {
         dispatch({
-            type: SCHOOL_POSTED
+            type: CALL_DONE
         });
         dispatch(reCacheTeachers(id));
     })
         .catch((error) => {
         dispatch({
-            type: SCHOOL_POST_FAILED, error
+            type: CALL_FAILED, error
         });
     });
 };

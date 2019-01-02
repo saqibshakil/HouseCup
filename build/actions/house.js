@@ -1,9 +1,9 @@
 import { del, create } from '../api/house';
-import { SCHOOL_POST_STARTED, SCHOOL_REMOVE_HOUSE, SCHOOL_POST_FAILED, SCHOOL_POSTED } from '../contants/schoolSignUp';
+import { CALL_STARTED, SCHOOL_REMOVE_HOUSE, CALL_FAILED, CALL_DONE } from '../contants/schoolSignUp';
 import { reCacheHouses } from './login';
 export const remove = (id) => (dispatch, getState) => {
     dispatch({
-        type: SCHOOL_POST_STARTED
+        type: CALL_STARTED
     });
     del(id).then(() => {
         try {
@@ -13,7 +13,7 @@ export const remove = (id) => (dispatch, getState) => {
             });
             dispatch(reCacheHouses(getState().login.schoolId));
             dispatch({
-                type: SCHOOL_POSTED
+                type: CALL_DONE
             });
         }
         catch (p) {
@@ -21,24 +21,24 @@ export const remove = (id) => (dispatch, getState) => {
         }
     }).catch((error) => {
         dispatch({
-            type: SCHOOL_POST_FAILED, error
+            type: CALL_FAILED, error
         });
     });
 };
 export const createHouse = (values) => (dispatch, getState) => {
     dispatch({
-        type: SCHOOL_POST_STARTED
+        type: CALL_STARTED
     });
     const id = getState().login.schoolId;
     create({ id }, values).then(() => {
         dispatch({
-            type: SCHOOL_POSTED
+            type: CALL_DONE
         });
         dispatch(reCacheHouses(id));
     })
         .catch((error) => {
         dispatch({
-            type: SCHOOL_POST_FAILED, error
+            type: CALL_FAILED, error
         });
     });
 };

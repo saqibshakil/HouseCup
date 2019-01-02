@@ -4,6 +4,31 @@ import {
 
 import * as api from '../api/login'
 import { Toast } from 'native-base'
+import { FETCH_HOUSE_POINTS } from '../contants/home';
+
+export const cacheData = (success: any) =>
+    (dispatch: any) => {
+        api.cacheSchoolInfo(success.schoolId).then(({ houses, reasons, teachers, points }) => {
+            dispatch({
+                type: CACHE_HOUSES,
+                houses
+            })
+            dispatch({
+                type: CACHE_REASONS,
+                reasons
+            })
+            dispatch({
+                type: CACHE_TEACHERS,
+                teachers
+            })
+            dispatch({
+                type: FETCH_HOUSE_POINTS,
+                points
+            })
+            dispatch({ type: TEACHER_LOGGEDIN, ...success })
+            dispatch(reNavigate())
+        })
+    }
 
 export const login = (email: string, password: string) =>
     (dispatch: any) => {
@@ -22,28 +47,8 @@ export const login = (email: string, password: string) =>
             })
     }
 
-export const cacheData = (success: any) =>
-    (dispatch: any) => {
-        api.cacheSchoolInfo(success.schoolId).then(({ houses, reasons, teachers }) => {
-            dispatch({
-                type: CACHE_HOUSES,
-                houses
-            })
-            dispatch({
-                type: CACHE_REASONS,
-                reasons
-            })
-            dispatch({
-                type: CACHE_TEACHERS,
-                teachers
-            })
-            dispatch({ type: TEACHER_LOGGEDIN, ...success })
-            dispatch(reNavigate())
-        })
-    }
 export const reCacheTeachers = (schoolId: string) =>
     (dispatch: any) => {
-        console.log('recahce')
         api.getTeacher(schoolId).then(teachers => {
             dispatch({
                 type: CACHE_TEACHERS,
@@ -52,12 +57,22 @@ export const reCacheTeachers = (schoolId: string) =>
         })
     }
 
-    export const reCacheHouses = (schoolId: string) =>
+export const reCacheHouses = (schoolId: string) =>
     (dispatch: any) => {
         api.getHouses(schoolId).then(houses => {
             dispatch({
                 type: CACHE_HOUSES,
                 houses
+            })
+        })
+    }
+
+export const reCacheReasons = (schoolId: string) =>
+    (dispatch: any) => {
+        api.getReason(schoolId).then(reasons => {
+            dispatch({
+                type: CACHE_REASONS,
+                reasons
             })
         })
     }

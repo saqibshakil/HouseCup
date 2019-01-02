@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Container, Content } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import HouseAddForm from './houseAddForm';
-import { createHouse } from '../../actions/house';
-class HouseAdd extends React.Component {
+import ReasonAddForm from './reasonAddForm';
+import { createReason } from '../../actions/reason';
+class ReasonAdd extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
@@ -12,29 +12,32 @@ class HouseAdd extends React.Component {
         };
         this.submit = (values) => {
             // tslint:disable-next-line:no-shadowed-variable
-            const { createHouse, navigation: { goBack } } = this.props;
-            createHouse(values);
+            const { createReason, navigation: { goBack } } = this.props;
+            createReason(values);
             goBack();
         };
     }
     render() {
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
             React.createElement(Content, null,
-                React.createElement(HouseAddForm, { submit: this.submit, saving: this.props.saving, house: this.props.house })));
+                React.createElement(ReasonAddForm, { submit: this.submit, saving: this.props.saving, reason: this.props.reason })));
     }
 }
+ReasonAdd.navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'
+});
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,
         saving: state.schoolSignUp.saving,
         message: state.schoolSignUp.message,
-        house: state.house.houses && state.house.houses.filter((p) => p.id === ownProps.navigation.state.params.id)[0]
+        reason: state.reason.reasons && state.reason.reasons.filter((p) => p.id === ownProps.navigation.state.params.id)[0]
     };
 }
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        createHouse
+        createReason
     }, dispatch);
 }
-export default connect(mapStateToProps, mapDispatchToProps)(HouseAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(ReasonAdd);
 //# sourceMappingURL=reasonAdd.js.map
