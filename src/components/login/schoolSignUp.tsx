@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSchool } from '../../actions/school';
 import { NavigationContainerProps } from 'react-navigation';
+import { navigationOptions } from '../shared/NavigationOptions';
 
 export interface IStateProps {
 }
@@ -18,13 +19,11 @@ export interface State {
 }
 
 class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+    static navigationOptions = navigationOptions('School SignUp')
     textInput: any;
     state = {
         inputText: ''
     }
-    static navigationOptions = () => ({
-        title: 'School SignUp'
-    })
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
         const { createSchool, navigation: { navigate } } = this.props

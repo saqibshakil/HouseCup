@@ -1,36 +1,34 @@
 import * as React from 'react';
-import { Container, Content, Text, View, Button, H3, H1 } from 'native-base';
+import { Container, Content, Text, View, Button, H3, H1, Header, Body, Left } from 'native-base';
 import { connect } from 'react-redux';
 import colors from '../../native-base-theme/variables/commonColor';
+import { Image } from 'react-native';
 class Home extends React.Component {
     constructor() {
         super(...arguments);
-        this.gotoLogin = () => {
-            const { navigation: { navigate } } = this.props;
-            navigate({ routeName: 'Login' });
-        };
-        this.gotoSchoolSignup = () => {
-            const { navigation: { navigate } } = this.props;
-            navigate({ routeName: 'SchoolSignUp' });
-        };
-        this.gotoTeacherSignup = () => {
-            const { navigation: { navigate } } = this.props;
-            navigate({
-                routeName: 'TeacherSignUp'
-            });
+        this.gotoScan = () => {
+            this.props.navigation.navigate('ScanStudent');
         };
     }
     render() {
         const { points } = this.props;
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
+            React.createElement(Header, null,
+                React.createElement(Left, { style: { flex: 0 } },
+                    React.createElement(Image, { resizeMode: 'contain', style: { width: 38, height: 38 }, source: require('./../../../assets/icon.png') })),
+                React.createElement(Body, { style: { alignItems: 'center' } },
+                    React.createElement(Text, { style: { color: 'white' } }, "House Cup"))),
             React.createElement(Content, { style: { paddingHorizontal: 10, paddingTop: 10 } },
-                React.createElement(Button, { primary: true, block: true, onPress: this.gotoLogin },
+                React.createElement(Button, { primary: true, block: true, onPress: this.gotoScan },
                     React.createElement(Text, null, "Award Points")),
-                React.createElement(View, { style: { flexDirection: 'row' } }, points.map(p => React.createElement(Button, { block: true, style: { width: '50%', marginVertical: 10, marginRight: 5, flexDirection: 'column' }, light: true, onPress: this.gotoTeacherSignup },
-                    React.createElement(H3, null, p.name),
-                    React.createElement(H1, null, p.points)))),
-                this.props.message && React.createElement(View, null,
-                    React.createElement(Text, null, this.props.message))));
+                React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' } }, points.map((p) => React.createElement(View, { key: p.id, style: {
+                        width: '49%', marginVertical: 5, flexDirection: 'column'
+                    } },
+                    React.createElement(Button, { block: true, style: {
+                            height: 100, backgroundColor: p.color, flexDirection: 'column'
+                        }, light: true },
+                        React.createElement(H3, null, p.name),
+                        React.createElement(H1, null, p.points)))))));
     }
 }
 Home.navigationOptions = {
@@ -38,11 +36,14 @@ Home.navigationOptions = {
 };
 function mapStateToProps(state) {
     const points = state.house.houses.map((p) => {
+        // tslint:disable-next-line:triple-equals
+        const housePoints = state.home.points.find((x) => x.houseId == p.id);
         return {
             id: p.id,
             name: p.name,
+            color: p.color,
             // tslint:disable-next-line:triple-equals
-            points: state.home.points.find((x) => x.houseId == p.id)
+            points: housePoints === undefined ? 0 : housePoints.Points
         };
     });
     return {

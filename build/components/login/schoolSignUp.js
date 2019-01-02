@@ -4,6 +4,7 @@ import SchoolSignUpForm from './schoolSignUpForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSchool } from '../../actions/school';
+import { navigationOptions } from '../shared/NavigationOptions';
 class Login extends React.Component {
     constructor() {
         super(...arguments);
@@ -23,9 +24,7 @@ class Login extends React.Component {
                 React.createElement(SchoolSignUpForm, { submit: this.submit })));
     }
 }
-Login.navigationOptions = () => ({
-    title: 'School SignUp'
-});
+Login.navigationOptions = navigationOptions('School SignUp');
 function mapStateToProps( /*state: any*/) {
     return {};
 }

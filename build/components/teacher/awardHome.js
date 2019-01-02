@@ -3,9 +3,13 @@ import { createStackNavigator } from 'react-navigation';
 import React from 'react';
 import IonIcons from 'react-native-ionicons';
 import Home from './home';
+import ScanStudent from './scanStudent';
 const Nav = createStackNavigator({
     Home: {
         screen: Home
+    },
+    ScanStudent: {
+        screen: ScanStudent
     }
 }, {
     initialRouteName: 'Home',

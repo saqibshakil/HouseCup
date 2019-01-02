@@ -4,11 +4,11 @@ import TeacherSignUpForm from './teacherSignUpForm'
 import getBorder from '../../utils/addBorder';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import colors from '../../native-base-theme/variables/commonColor'
 import { NavigationContainerProps } from 'react-navigation';
 import { loadTeacherByKeyCode, clearTeacher, updatePasswordAndLogin } from '../../actions/teacher';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import KeyCodePromptForm from './keyCodePromptForm'
+import { navigationOptions } from '../shared/NavigationOptions';
 
 export interface IStateProps {
 
@@ -28,12 +28,7 @@ export interface State {
 }
 
 class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
-    static navigationOptions = {
-        title: 'Signup',
-        headerStyle: { backgroundColor: colors.brandPrimary },
-        headerTitleStyle: { color: colors.btnPrimaryColor },
-        headerBackTitleStyle: { color: colors.btnPrimaryColor }
-    }
+    static navigationOptions = navigationOptions('Signup')
 
     textInput: any;
     state = {

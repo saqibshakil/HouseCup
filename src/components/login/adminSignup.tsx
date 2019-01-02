@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createAdmin, submit, createTeacher, removeTeacher } from '../../actions/school';
 import { NavigationContainerProps } from 'react-navigation';
-
+import { navigationOptions } from '../shared/NavigationOptions'
 export interface IStateProps {
     saving: boolean,
     error: string,
@@ -23,16 +23,14 @@ export interface State {
     inputText: string
 }
 class AdminSignUp extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+
+    static navigationOptions = navigationOptions(({ navigation }: any) => navigation.getParam('id')
+        ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+        : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher'))
     textInput: any;
     state = {
         inputText: ''
     }
-
-    static navigationOptions = ({ navigation }: any) => ({
-        title: navigation.getParam('id')
-            ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
-            : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
-    })
 
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable

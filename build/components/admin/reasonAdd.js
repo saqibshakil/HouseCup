@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReasonAddForm from './reasonAddForm';
 import { createReason } from '../../actions/reason';
+import { navigationOptions } from '../shared/NavigationOptions';
 class ReasonAdd extends React.Component {
     constructor() {
         super(...arguments);
@@ -23,9 +24,7 @@ class ReasonAdd extends React.Component {
                 React.createElement(ReasonAddForm, { submit: this.submit, saving: this.props.saving, reason: this.props.reason })));
     }
 }
-ReasonAdd.navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'
-});
+ReasonAdd.navigationOptions = navigationOptions(({ navigation }) => (navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'));
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,

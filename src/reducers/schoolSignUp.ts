@@ -50,7 +50,7 @@ export default (state: any = dataState, action: any) => {
             }
         case CALL_DONE:
             return {
-                message: 'Your school has been signed up.You will recieve an email from our admin soon'
+                message: action.message
             }
         default:
             return state;

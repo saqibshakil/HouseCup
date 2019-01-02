@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../../actions/login';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { navigationOptions } from '../shared/NavigationOptions';
 class Login extends React.Component {
     constructor() {
         super(...arguments);
@@ -16,9 +17,7 @@ class Login extends React.Component {
             React.createElement(LoginView, { submit: this.submit, saving: this.props.loading }));
     }
 }
-Login.navigationOptions = () => ({
-    title: 'Sign In'
-});
+Login.navigationOptions = navigationOptions('Sign In');
 function mapStateToProps(state) {
     return {
         loading: state.login.loading,

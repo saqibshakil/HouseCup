@@ -64,7 +64,8 @@ export const submit = () => (dispatch: any, getState: any) => {
         .then((p: any) => {
             postAdmin(p, getState().schoolSignUp.admin, true).then(() => {
                 dispatch({
-                    type: CALL_DONE
+                    type: CALL_DONE,
+                    message: 'Your school has been signed up.You will recieve an email from our admin soon'
                 })
             })
                 .catch((error) => {

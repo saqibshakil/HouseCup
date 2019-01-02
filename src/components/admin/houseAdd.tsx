@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
 import HouseAddForm from './houseAddForm'
 import { createHouse } from '../../actions/house';
+import { navigationOptions } from '../shared/NavigationOptions';
 
 export interface IStateProps {
     saving: boolean,
@@ -20,14 +21,11 @@ export interface State {
     inputText: string
 }
 class HouseAdd extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+    static navigationOptions = navigationOptions(({ navigation }: any) => (navigation.getParam('id') ? 'Edit House' : 'Add New House'))
     textInput: any;
     state = {
         inputText: ''
     }
-
-    static navigationOptions = ({ navigation }: any) => ({
-        title: navigation.getParam('id') ? 'Edit House' : 'Add New House'
-    })
 
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable

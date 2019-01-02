@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
 import ReasonAddForm from './reasonAddForm'
 import { createReason } from '../../actions/reason';
-
+import { navigationOptions } from '../shared/NavigationOptions'
 export interface IStateProps {
     saving: boolean,
     error: string,
@@ -20,15 +20,13 @@ export interface State {
     inputText: string
 }
 class ReasonAdd extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
+    static navigationOptions = navigationOptions(({ navigation }: any) => (navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'))
 
     textInput: any;
 
     state = {
         inputText: ''
     }
-    static navigationOptions = ({ navigation }: any) => ({
-        title: navigation.getParam('id') ? 'Edit Reason' : 'Add New Reason'
-    })
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
         const { createReason, navigation: { goBack } } = this.props

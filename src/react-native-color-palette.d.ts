@@ -1,5 +1,8 @@
 
 import * as React from 'react';
+declare module 'react-native-color-palette' {
+    export default ColorInput;
+}
 
 declare class ColorInput extends React.Component<ReactSwipe.Props> {
 }
@@ -14,7 +17,4 @@ declare namespace ReactSwipe {
         icon: any
         value?: string
     }
-}
-declare module 'react-native-color-palette' {
-    export default ColorInput;
 }

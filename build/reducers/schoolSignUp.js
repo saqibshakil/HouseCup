@@ -22,7 +22,7 @@ export default (state = dataState, action) => {
             return Object.assign({}, state, { saving: false, error: action.error === 409 ? 'Email Already used' : 'Unable to sign you up please try again later' });
         case CALL_DONE:
             return {
-                message: 'Your school has been signed up.You will recieve an email from our admin soon'
+                message: action.message
             };
         default:
             return state;

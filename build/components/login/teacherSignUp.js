@@ -4,10 +4,10 @@ import TeacherSignUpForm from './teacherSignUpForm';
 import getBorder from '../../utils/addBorder';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import colors from '../../native-base-theme/variables/commonColor';
 import { loadTeacherByKeyCode, clearTeacher, updatePasswordAndLogin } from '../../actions/teacher';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import KeyCodePromptForm from './keyCodePromptForm';
+import { navigationOptions } from '../shared/NavigationOptions';
 class Login extends React.Component {
     constructor() {
         super(...arguments);
@@ -51,12 +51,7 @@ class Login extends React.Component {
             return React.createElement(KeyCodePromptForm, { submit: this.loadTeacher, saving: loading });
     }
 }
-Login.navigationOptions = {
-    title: 'Signup',
-    headerStyle: { backgroundColor: colors.brandPrimary },
-    headerTitleStyle: { color: colors.btnPrimaryColor },
-    headerBackTitleStyle: { color: colors.btnPrimaryColor }
-};
+Login.navigationOptions = navigationOptions('Signup');
 function mapStateToProps(state) {
     return {
         errorOccured: state.teacherSignUp.errorOccured,

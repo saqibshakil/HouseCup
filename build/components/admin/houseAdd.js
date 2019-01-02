@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import HouseAddForm from './houseAddForm';
 import { createHouse } from '../../actions/house';
+import { navigationOptions } from '../shared/NavigationOptions';
 class HouseAdd extends React.Component {
     constructor() {
         super(...arguments);
@@ -23,9 +24,7 @@ class HouseAdd extends React.Component {
                 React.createElement(HouseAddForm, { submit: this.submit, saving: this.props.saving, house: this.props.house })));
     }
 }
-HouseAdd.navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('id') ? 'Edit House' : 'Add New House'
-});
+HouseAdd.navigationOptions = navigationOptions(({ navigation }) => (navigation.getParam('id') ? 'Edit House' : 'Add New House'));
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,

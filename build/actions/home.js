@@ -33,7 +33,7 @@ export const fetchPoints = (schoolId) => (dispatch) => {
         dispatch({
             type: CALL_DONE
         });
-    }).catch(p => dispatch({
+    }).catch(() => dispatch({
         type: CALL_FAILED,
         error: 'Unable to fetch points'
     }));

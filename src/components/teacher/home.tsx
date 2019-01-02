@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { Container, Content, Text, View, Button, H3, H1 } from 'native-base';
+import { Container, Content, Text, View, Button, H3, H1, Header, Body, Left } from 'native-base';
 import { NavigationContainerProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import colors from '../../native-base-theme/variables/commonColor'
+import { Image } from 'react-native'
 
 export interface IStateProps {
     message: string;
-    points: [{ id: any, name: string, points: number }]
+    points: [{ id: any, name: string, points: number, color: string }]
 }
 export interface State {
 }
@@ -16,40 +17,39 @@ class Home extends React.Component<NavigationContainerProps & IStateProps, State
         headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
     }
 
-    gotoLogin = () => {
-        const { navigation: { navigate } } = this.props
-        navigate({ routeName: 'Login' })
+    gotoScan = () => {
+        this.props.navigation.navigate('ScanStudent')
     }
-
-    gotoSchoolSignup = () => {
-        const { navigation: { navigate } } = this.props
-        navigate({ routeName: 'SchoolSignUp' })
-    }
-
-    gotoTeacherSignup = () => {
-        const { navigation: { navigate } } = this.props
-        navigate({
-            routeName: 'TeacherSignUp'
-        })
-    }
-
     render() {
         const { points } = this.props
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
+            <Header>
+                <Left style={{ flex: 0 }}>
+                    <Image resizeMode='contain' style={{ width: 38, height: 38 }} source={require('./../../../assets/icon.png')} />
+                </Left>
+                <Body style={{ alignItems: 'center' }}>
+                    <Text style={{ color: 'white' }}>House Cup</Text>
+                </Body>
+            </Header>
             <Content style={{ paddingHorizontal: 10, paddingTop: 10 }}  >
-                <Button primary block onPress={this.gotoLogin}>
+                <Button primary block onPress={this.gotoScan}>
                     <Text>Award Points</Text>
                 </Button>
-                <View style={{ flexDirection: 'row' }}>
-                    {points.map(p =>
-                        <Button block style={{ width: '50%', marginVertical: 10, marginRight: 5, flexDirection: 'column' }}
-                            light onPress={this.gotoTeacherSignup}>
-                            <H3>{p.name}</H3>
-                            <H1>{p.points}</H1>
-                        </Button>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                    {points.map((p) =>
+                        <View key={p.id} style={{
+                            width: '49%', marginVertical: 5, flexDirection: 'column'
+                        }}>
+                            <Button block style={{
+                                height: 100, backgroundColor: p.color, flexDirection: 'column'
+                            }}
+                                light>
+                                <H3>{p.name}</H3>
+                                <H1>{p.points}</H1>
+                            </Button>
+                        </View>
                     )}
                 </View>
-                {this.props.message && <View><Text>{this.props.message}</Text></View>}
             </Content>
         </Container>
     }
@@ -57,11 +57,14 @@ class Home extends React.Component<NavigationContainerProps & IStateProps, State
 
 function mapStateToProps(state: any): IStateProps {
     const points = state.house.houses.map((p: any) => {
+        // tslint:disable-next-line:triple-equals
+        const housePoints = state.home.points.find((x: any) => x.houseId == p.id)
         return {
             id: p.id,
             name: p.name,
+            color: p.color,
             // tslint:disable-next-line:triple-equals
-            points: state.home.points.find((x: any) => x.houseId == p.id)
+            points: housePoints === undefined ? 0 : housePoints.Points
         }
     })
     return {

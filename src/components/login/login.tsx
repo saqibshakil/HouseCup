@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../../actions/login';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { navigationOptions } from '../shared/NavigationOptions';
 
 export interface IStateProps {
     loading: boolean;
@@ -19,9 +20,7 @@ export interface State {
 }
 
 class Login extends React.Component<IStateProps & IDispatchProps & NavigationContainerProps, State> {
-    static navigationOptions = () => ({
-        title: 'Sign In'
-    })
+    static navigationOptions = navigationOptions('Sign In')
 
     submit = (values: any) => {
         this.props.login(values.email, values.password)

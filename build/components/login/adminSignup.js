@@ -4,6 +4,7 @@ import AdminSignUpForm from './adminSignUpForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createAdmin, submit, createTeacher, removeTeacher } from '../../actions/school';
+import { navigationOptions } from '../shared/NavigationOptions';
 class AdminSignUp extends React.Component {
     constructor() {
         super(...arguments);
@@ -39,11 +40,9 @@ class AdminSignUp extends React.Component {
                 React.createElement(AdminSignUpForm, { submit: this.submit, saving: this.props.saving, teacher: this.props.teacher })));
     }
 }
-AdminSignUp.navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('id')
-        ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
-        : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
-});
+AdminSignUp.navigationOptions = navigationOptions(({ navigation }) => navigation.getParam('id')
+    ? 'Edit ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher')
+    : 'Add New ' + (navigation.getParam('isAdmin') ? 'Admin' : 'Teacher'));
 function mapStateToProps(state, ownProps) {
     return {
         error: state.schoolSignUp.error,
