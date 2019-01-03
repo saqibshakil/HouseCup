@@ -15,9 +15,22 @@ function navigate(routeName: any, params?: any) {
   );
 }
 
+function back() {
+  _navigator.dispatch(
+    NavigationActions.back()
+  );
+}
+
+function popToTop() {
+  _navigator.dispatch(
+    NavigationActions.back({
+    })
+  );
+}
 // add other navigation functions that you need and export them
 
 export default {
   navigate,
-  setTopLevelNavigator
+  setTopLevelNavigator,
+  back
 };

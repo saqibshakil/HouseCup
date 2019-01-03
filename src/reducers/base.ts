@@ -1,7 +1,7 @@
 import { CHECK_LOGIN_KEY, GOTO_LOGIN } from '../actions/base'
-import { RENAVIGATE } from '../contants/login';
+import { RENAVIGATE, BACK, POPTOTOP } from '../contants/login';
 
-let dataState = {
+let dataState: any = {
     loading: true,
     loginHash: '',
     navigateTo: 'Loading'
@@ -26,6 +26,22 @@ export default (state = dataState, action: any) => {
                 ...state,
                 navigateTo: action.to,
                 params: action.params
+            }
+        case BACK:
+            return {
+                ...state,
+                navigateTo: '',
+                params: undefined,
+                back: true,
+                popToTop: false
+            }
+        case POPTOTOP:
+            return {
+                ...state,
+                navigateTo: '',
+                params: undefined,
+                back: false,
+                popToTop: true
             }
         default:
             return state;

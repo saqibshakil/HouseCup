@@ -1,7 +1,8 @@
-import { fetchStudentOrCreate, getPointsPerHouses, studentExist, fetchStudent as _fetchStudent } from '../api/home';
+import { fetchStudentOrCreate, getPointsPerHouses, studentExist, fetchStudent as _fetchStudent, postPoints as _postPoints } from '../api/home';
 import { CALL_STARTED, CALL_FAILED, CALL_DONE } from '../contants/schoolSignUp';
 import { FETCH_HOUSE_POINTS, FETCH_STUDENT } from '../contants/home'
 import { FieldProps } from 'formik';
+import { popToTop } from './base';
 
 export const createStudent = (values: any) => (dispatch: any, getState: any) => {
     dispatch({
@@ -88,3 +89,25 @@ export const fetchStudentAndUpdate = (fieldProps: FieldProps<any>, value: string
             error: 'Unable to Student'
         }))
 }
+
+export const postPoints = (obj: { points: number, reasonId: any }) =>
+    (dispatch: any, getState: any) => {
+        const { login: { teacherId, schoolId }, home: { student: { id: studentId, houseId } } } = getState()
+        dispatch({ type: CALL_STARTED })
+        _postPoints({
+            ...obj,
+            teacherId,
+            schoolId,
+            studentId,
+            houseId
+
+        }).then(() => {
+            dispatch({
+                type: CALL_DONE
+            })
+            dispatch(popToTop())
+        }).catch(() => dispatch({
+            type: CALL_FAILED,
+            error: 'Unable to post points'
+        }))
+    }

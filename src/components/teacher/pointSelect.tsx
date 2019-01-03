@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text  } from 'react-native';
+import { Text } from 'react-native';
 import { navigationOptions } from '../shared/NavigationOptions';
 import { Button, Container, Content } from 'native-base'
 import { connect } from 'react-redux';
@@ -28,16 +28,20 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
         return (
             <Container style={{ flex: 1, alignSelf: 'stretch' }}>
                 <Content>
-                    <Button danger block large onPress={() => this.props.navigateTo('SelectReason', { points: -50 })}><Text>-50</Text></Button>
-                    <Button warning block large onPress={() => this.props.navigateTo('SelectReason', { points: -20 })}><Text>-20</Text></Button>
-                    <Button light block large onPress={() => this.props.navigateTo('SelectReason', { points: -10 })}><Text>-10</Text></Button>
-                    <Button light block large onPress={() => this.props.navigateTo('SelectReason', { points: 10 })}><Text>10</Text></Button>
-                    <Button info block large onPress={() => this.props.navigateTo('SelectReason', { points: 20 })}><Text>20</Text></Button>
-                    <Button primary block large onPress={() => this.props.navigateTo('SelectReason', { points: 50 })}><Text>50</Text></Button>
-                    <Button success block large onPress={() => this.props.navigateTo('SelectReason', { points: 100 })}><Text>100</Text></Button>
+                    <Button danger block large onPress={() => this.postPoint(-50)}><Text>-50</Text></Button>
+                    <Button warning block large onPress={() => this.postPoint(-20)}><Text>-20</Text></Button>
+                    <Button light block large onPress={() => this.postPoint(-10)}><Text>-10</Text></Button>
+                    <Button light block large onPress={() => this.postPoint(10)}><Text>10</Text></Button>
+                    <Button info block large onPress={() => this.postPoint(20)}><Text>20</Text></Button>
+                    <Button primary block large onPress={() => this.postPoint(50)}><Text>50</Text></Button>
+                    <Button success block large onPress={() => this.postPoint(100)}><Text>100</Text></Button>
                 </Content>
             </Container>
         );
+    }
+
+    postPoint = (points: number) => {
+
     }
 }
 

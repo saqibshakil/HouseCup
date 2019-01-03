@@ -6,4 +6,6 @@ export const CACHE_HOUSES = 'CACHE_HOUSES'
 export const CACHE_TEACHERS = 'CACHE_TEACHERS'
 export const CACHE_REASONS = 'CACHE_REASONS'
 
-export const RENAVIGATE = 'RENAVIGATE';
+export const RENAVIGATE = 'RENAVIGATE'
+export const BACK = 'BACK'
+export const POPTOTOP = 'POPTOTOP'

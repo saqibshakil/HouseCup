@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NavigationService from './navigationService';
 import { navigateTo } from '../actions/base';
+import { NavigationContainerProps } from 'react-navigation';
 
 const Nav = createSwitchNavigator({
     Loading: {
@@ -34,7 +35,9 @@ const Nav = createSwitchNavigator({
 
 interface IStateProps {
     navigateTo: string,
-    params: any
+    params: any,
+    back: boolean,
+    popToTop: boolean
 }
 
 interface IDispatchProps {
@@ -42,11 +45,18 @@ interface IDispatchProps {
 }
 
 const Container = createAppContainer(Nav);
-export class App extends Component<IStateProps & IDispatchProps> {
+export class App extends Component<NavigationContainerProps & IStateProps & IDispatchProps> {
     componentWillReceiveProps(newProps: IStateProps) {
-        if (newProps.navigateTo && this.props.navigateTo !== newProps.navigateTo) {
-            NavigationService.navigate(newProps.navigateTo, newProps.params)
-            this.props.navigate('')
+        // tslint:disable-next-line:no-shadowed-variable
+        const { navigateTo } = this.props
+        if (navigateTo !== newProps.navigateTo) {
+            if (newProps.navigateTo)
+                NavigationService.navigate(newProps.navigateTo, newProps.params)
+            if (!newProps.navigateTo && newProps.back)
+                NavigationService.back()
+            if (!newProps.navigateTo && newProps.popToTop)
+                NavigationService.back()
+
         }
     }
 
@@ -63,9 +73,9 @@ export class App extends Component<IStateProps & IDispatchProps> {
 
 function mapStateToProps(state: any) {
     // tslint:disable-next-line:no-shadowed-variable
-    const { navigateTo, params } = state.base
+    const { navigateTo, params, back, popToTop } = state.base
     return {
-        navigateTo, params
+        navigateTo, params, back, popToTop
     }
 }
 

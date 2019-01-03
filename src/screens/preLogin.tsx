@@ -8,7 +8,6 @@ import colors from '../native-base-theme/variables/commonColor'
 import { createStackNavigator } from 'react-navigation';
 import React from 'react';
 import { Text } from 'native-base'
-import { NavigationContainerProps } from 'react-navigation';
 
 const Nav = createStackNavigator({
 	PreLoginHome: {

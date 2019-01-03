@@ -1,10 +1,13 @@
 import colors from '../../native-base-theme/variables/commonColor'
-import { createStackNavigator } from 'react-navigation';
-import React from 'react';
+import { createStackNavigator } from 'react-navigation'
+import React from 'react'
 import IonIcons from 'react-native-ionicons'
 import Home from './home'
-import ScanStudent from './scanStudent';
-import StudentAdd from './studentAdd';
+import ScanStudent from './scanStudent'
+import StudentAdd from './studentAdd'
+import SelectReason from './selectReason'
+import SelectPoint from './pointSelect'
+
 const Nav = createStackNavigator(
     {
         Home: {
@@ -15,6 +18,12 @@ const Nav = createStackNavigator(
         },
         AddStudent: {
             screen: StudentAdd
+        },
+        SelectReason: {
+            screen: SelectReason
+        },
+        SelectPoint: {
+            screen: SelectPoint
         }
     }, {
         initialRouteName: 'Home',
