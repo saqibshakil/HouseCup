@@ -32,7 +32,7 @@ export const cacheData = (success: any) =>
 
 export const login = (email: string, password: string) =>
     (dispatch: any) => {
-        dispatch({ type: TEACHER_LOGIN, email, password })
+        dispatch({ type: TEACHER_LOGIN })
         api.login(email, password)
             .then((success: any) => {
                 dispatch(cacheData(success))

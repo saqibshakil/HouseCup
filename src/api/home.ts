@@ -10,38 +10,63 @@ export const getPointsPerHouses = (schoolId: string) =>
         })
         .then(p => p.json())
 
+export const studentExist = (student: any, schoolId: any) => {
+    return fetch(apiUrl + `/student?filter=schoolId,eq,${schoolId}&filter=grNo,eq,${student.grNo}`)
+        .then(p => {
+            if (p.status === 200)
+                return p
+            else
+                throw 'Error'
+        })
+        .then(p => p.json())
+        .then(data => data.records)
+        .then((students: any) => {
+            if (students.length)
+                return students[0]
+            else
+                return undefined
+        })
+}
+
 export const create = (schoolId: any, student: any) => {
     return new Promise(function (resolve, reject) {
-        const urlAppendage = student.id ? '/' + student.id : ''
-        fetch(apiUrl + '/student' + urlAppendage, {
-            method: student.id ? 'PUT' : 'POST',
-            body: JSON.stringify({
-                ...student,
-                schoolId: schoolId
-            })
-        }).then(throwError)
-            .then(p => p.text())
-            .then(p => {
 
-                if (p) {
-                    resolve({
-                        ...student,
-                        id: parseInt(p, 10)
-                    })
-                } else {
-
-                    reject()
+        studentExist(student, schoolId)
+            .then((std: any) => {
+                if (std) {
+                    student.id = std.id
                 }
+                const urlAppendage = student.id ? '/' + student.id : ''
+                fetch(apiUrl + '/student' + urlAppendage, {
+                    method: student.id ? 'PUT' : 'POST',
+                    body: JSON.stringify({
+                        ...student,
+                        schoolId: schoolId
+                    })
+                }).then(throwError)
+                    .then(p => p.text())
+                    .then(p => {
+
+                        if (p) {
+                            resolve({
+                                ...student,
+                                id: parseInt(p, 10)
+                            })
+                        } else {
+
+                            reject()
+                        }
+                    })
             })
         // .catch(p => null)
     });
 }
 
 export const fetchStudentOrCreate = (student: any, schoolId: any) => {
-    return fetchStudent(student, schoolId)
-        .then((students: [any]) => {
-            if (students.length)
-                return students[0]
+    return studentExist(student, schoolId)
+        .then((std: any) => {
+            if (std)
+                return std
             else
                 return create(schoolId, student)
         })

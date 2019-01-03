@@ -5,7 +5,7 @@ import {
 
 import * as api from '../api/teacher'
 import { Toast } from 'native-base'
-import { TEACHER_LOGGEDIN } from '../contants/login'
+import { cacheData } from './login';
 
 export const loadTeacherByKeyCode = (keyCode: string) =>
     (dispatch: any) => {
@@ -33,7 +33,7 @@ export const updatePasswordAndLogin = (user: any) =>
         api.updateTeacher(user)
             .then((teacher) => {
                 dispatch({ type: TEACHER_SAVE_SUCCESS, teacher })
-                dispatch({ type: TEACHER_LOGGEDIN, teacher })
+                dispatch(cacheData(teacher))
             })
             .catch((p) => {
                 Toast.show({

@@ -47,10 +47,8 @@ export const updateTeacher = (user: any) => {
             .then(recordsUpdated => {
                 if (parseInt(recordsUpdated, 10) > 0) {
                     resolve({
-                        user: {
-                            ...user,
-                            loginHash
-                        }
+                        ...user,
+                        loginHash
                     })
                 } else {
 

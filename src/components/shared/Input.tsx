@@ -3,13 +3,20 @@ import { FieldProps } from 'formik';
 import { Input, Item, Label, Text } from 'native-base';
 import getBorder from '../../utils/addBorder';
 
-export class InputField extends React.Component<FieldProps<any> & { placeholder: string, addRef: (p: any) => void }> {
+interface IProps {
+  placeholder: string, addRef: (p: any) => void, onValueChanged?: (props: FieldProps<any>, value: string) => void
+}
+
+export class InputField extends React.Component<FieldProps<any> & IProps> {
   onChangeText = (text: string) => {
     const {
       form: { setFieldValue },
-      field: { name }
+      field: { name },
+      onValueChanged
     } = this.props;
     setFieldValue(name, text);
+    if (onValueChanged)
+      onValueChanged(this.props, text)
   };
 
   onBlur = () => {

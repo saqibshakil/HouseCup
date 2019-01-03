@@ -4,6 +4,7 @@ import React from 'react';
 import IonIcons from 'react-native-ionicons'
 import Home from './home'
 import ScanStudent from './scanStudent';
+import StudentAdd from './studentAdd';
 const Nav = createStackNavigator(
     {
         Home: {
@@ -11,6 +12,9 @@ const Nav = createStackNavigator(
         },
         ScanStudent: {
             screen: ScanStudent
+        },
+        AddStudent: {
+            screen: StudentAdd
         }
     }, {
         initialRouteName: 'Home',

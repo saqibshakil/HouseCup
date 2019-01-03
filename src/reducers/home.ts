@@ -1,4 +1,4 @@
-import { FETCH_HOUSE_POINTS } from '../contants/home';
+import { FETCH_HOUSE_POINTS, FETCH_STUDENT } from '../contants/home';
 
 export default (state: any = { points: [] }, action: any) => {
     switch (action.type) {
@@ -9,6 +9,11 @@ export default (state: any = { points: [] }, action: any) => {
                 points: action.points
             }
 
+        case FETCH_STUDENT:
+            return {
+                ...state,
+                student: action.student
+            }
         default:
             return state
     }

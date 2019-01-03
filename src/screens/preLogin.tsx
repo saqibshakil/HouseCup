@@ -36,7 +36,7 @@ const Nav = createStackNavigator({
 	}
 } as any)
 
-Nav.navigationOptions = ({}: NavigationContainerProps) => {
+Nav.navigationOptions = () => {
 	return {
 		// headerBackImage: params.headerBackImage,
 		headerTitle: <Text style={{ color: 'black' }}>Welcome</Text>

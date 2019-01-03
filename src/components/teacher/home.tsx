@@ -4,21 +4,27 @@ import { NavigationContainerProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import colors from '../../native-base-theme/variables/commonColor'
 import { Image } from 'react-native'
+import { bindActionCreators } from 'redux';
+import { navigateTo } from '../../actions/base';
 
 export interface IStateProps {
     message: string;
     points: [{ id: any, name: string, points: number, color: string }]
 }
+export interface IDispatchProps {
+    navigateTo: (path: string, params?: any) => void
+}
+
 export interface State {
 }
 
-class Home extends React.Component<NavigationContainerProps & IStateProps, State> {
+class Home extends React.Component<NavigationContainerProps & IStateProps & IDispatchProps, State> {
     static navigationOptions = {
         headerStyle: { backgroundColor: colors.brandPrimary, height: 0 }
     }
 
     gotoScan = () => {
-        this.props.navigation.navigate('ScanStudent')
+        this.props.navigateTo('ScanStudent')
     }
     render() {
         const { points } = this.props
@@ -73,4 +79,10 @@ function mapStateToProps(state: any): IStateProps {
     }
 }
 
-export default connect(mapStateToProps)(Home)
+function mapDispatchToProps(dispatch: any): IDispatchProps {
+    return bindActionCreators({
+        navigateTo
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

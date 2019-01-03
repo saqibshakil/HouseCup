@@ -3,13 +3,25 @@ import { Text, View, StyleSheet, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import { navigationOptions } from '../shared/NavigationOptions';
 import { Button } from 'native-base'
-import getBorder from '../../utils/addBorder';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { navigateTo } from '../../actions/base';
+import { createStudent } from '../../actions/home';
+import studentSchema from '../../schema/student'
 
 interface IState {
     hasCameraPermission: boolean
 }
 
-export default class ScanStudent extends Component<{}, IState> {
+interface IStateProps {
+}
+
+interface IDispatchProps {
+    navigateTo: (to: string, params?: any) => void
+    createStudent: (student: any) => void
+}
+
+class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
     static navigationOptions = navigationOptions('Scan Student')
     state: IState = {
         hasCameraPermission: null
@@ -27,32 +39,40 @@ export default class ScanStudent extends Component<{}, IState> {
     };
 
     _handleBarCodeRead = (data: any) => {
-        Alert.alert(
-            'Scan successful!',
-            JSON.stringify(data)
-        );
+        try {
+            const student = JSON.parse(data.data)
+            if (!studentSchema.isValidSync(student))
+                throw 'Not Complete'
+            this.props.createStudent(student)
+        } catch (error) {
+            console.log(error)
+            Alert.alert('QR Code does not belong to a student')
+        }
     };
+
+    gotoAddStudent = () => this.props.navigateTo('AddStudent')
 
     render() {
         return (
-                this.state.hasCameraPermission === null ?
-                    <Text>Requesting for camera permission</Text> :
-                    this.state.hasCameraPermission === false ?
-                        <Text>Camera permission is not granted</Text> :
-                        <BarCodeScanner
-                        onBarCodeRead={(scan) => alert(scan.data)}
+            this.state.hasCameraPermission === null ?
+                <Text>Requesting for camera permission</Text> :
+                this.state.hasCameraPermission === false ?
+                    <Text>Camera permission is not granted</Text> :
+                    <BarCodeScanner
+                        onBarCodeRead={this._handleBarCodeRead}
                         style={[StyleSheet.absoluteFill, styles.container]}
-                      >
+                    >
                         <View style={styles.layerTop} />
                         <View style={styles.layerCenter}>
-                          <View style={styles.layerLeft} />
-                          <View style={styles.focused} />
-                          <View style={styles.layerRight} />
+                            <View style={styles.layerLeft} />
+                            <View style={styles.focused} />
+                            <View style={styles.layerRight} />
                         </View>
                         <View style={styles.layerBottom} >
-                            <Button light style={{ padding: 5 }}><Text>Add Student Manually</Text></Button>
+                            <Button light style={{ padding: 5, marginTop: 10 }}
+                                onPress={this.gotoAddStudent}><Text>Add Student Manually</Text></Button>
                         </View>
-                      </BarCodeScanner>
+                    </BarCodeScanner>
 
         );
     }
@@ -90,3 +110,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     }
 });
+
+function mapStateToProps(): IStateProps {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch: any): IDispatchProps {
+    return bindActionCreators({
+        navigateTo,
+        createStudent
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScanStudent)

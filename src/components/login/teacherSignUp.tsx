@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Spinner } from 'native-base';
 import TeacherSignUpForm from './teacherSignUpForm'
-import getBorder from '../../utils/addBorder';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavigationContainerProps } from 'react-navigation';
@@ -62,7 +61,7 @@ class Login extends React.Component<IStateProps & IDispatchProps & NavigationCon
     }
 
     render() {
-        return <KeyboardAwareScrollView style={{ flexDirection: 'column', flex: 1, ...getBorder() }}>
+        return <KeyboardAwareScrollView style={{ flexDirection: 'column', flex: 1 }}>
             {this.showDetail()}
         </KeyboardAwareScrollView>;
     }
