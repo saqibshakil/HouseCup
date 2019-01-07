@@ -25,7 +25,7 @@ export const cacheData = (success) => (dispatch) => {
     });
 };
 export const login = (email, password) => (dispatch) => {
-    dispatch({ type: TEACHER_LOGIN, email, password });
+    dispatch({ type: TEACHER_LOGIN });
     api.login(email, password)
         .then((success) => {
         dispatch(cacheData(success));

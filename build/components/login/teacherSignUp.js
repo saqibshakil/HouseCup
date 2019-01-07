@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Spinner } from 'native-base';
 import TeacherSignUpForm from './teacherSignUpForm';
-import getBorder from '../../utils/addBorder';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loadTeacherByKeyCode, clearTeacher, updatePasswordAndLogin } from '../../actions/teacher';
@@ -36,7 +35,7 @@ class Login extends React.Component {
         this.props.clearTeacher();
     }
     render() {
-        return React.createElement(KeyboardAwareScrollView, { style: Object.assign({ flexDirection: 'column', flex: 1 }, getBorder()) }, this.showDetail());
+        return React.createElement(KeyboardAwareScrollView, { style: { flexDirection: 'column', flex: 1 } }, this.showDetail());
     }
     showDetail() {
         const { loading, teacher } = this.props;

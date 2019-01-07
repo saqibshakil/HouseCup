@@ -37,14 +37,15 @@ export const createSchool = (school: ISchool) => {
     });
 }
 
-const sendEmail = (to: string, link: string) => {
+export const sendEmail = (to: string, link: string, name: string) => {
     fetch(emailUrl,
         {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}`)
+            body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}&email=${encodeURIComponent(to)}
+            &name==${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
         }
     )
 }
@@ -72,7 +73,7 @@ export const createAdmin = (school: ISchool, teacher: ITeacher, isAdmin: boolean
                         .then(res => res.text())
                         .then(userId => {
                             if (userId) {
-                                sendEmail(teacher.email, keyCode)
+                                sendEmail(teacher.email, keyCode, teacher.name)
                                 resolve(teacher.id)
                             } else {
                                 fetch(apiUrl + '/teacher/' + teacherId, {

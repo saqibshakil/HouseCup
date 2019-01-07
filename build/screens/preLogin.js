@@ -32,7 +32,7 @@ const Nav = createStackNavigator({
         headerTintColor: '#fff'
     }
 });
-Nav.navigationOptions = ({}) => {
+Nav.navigationOptions = () => {
     return {
         // headerBackImage: params.headerBackImage,
         headerTitle: React.createElement(Text, { style: { color: 'black' } }, "Welcome")

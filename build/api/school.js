@@ -17,13 +17,14 @@ export const createSchool = (school) => {
         // .catch(p => null)
     });
 };
-const sendEmail = (to, link) => {
+export const sendEmail = (to, link, name) => {
     fetch(emailUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}`)
+        body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}&email=${encodeURIComponent(to)}
+            &name==${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
     });
 };
 export const createAdmin = (school, teacher, isAdmin) => {
@@ -50,7 +51,7 @@ export const createAdmin = (school, teacher, isAdmin) => {
                     .then(res => res.text())
                     .then(userId => {
                     if (userId) {
-                        sendEmail(teacher.email, keyCode);
+                        sendEmail(teacher.email, keyCode, teacher.name);
                         resolve(teacher.id);
                     }
                     else {

@@ -1,7 +1,9 @@
 import { TEACHER_RESOLVE_KEYCODE, TEACHER_RESOLVE_KEYCODE_FAILED, TEACHER_RESOLVE_KEYCODE_SUCCESS, TEACHER_SAVE, TEACHER_SAVE_FAILED, TEACHER_SAVE_SUCCESS, TEACHER_CLEAR } from '../contants/teacherSignUp';
 import * as api from '../api/teacher';
 import { Toast } from 'native-base';
-import { TEACHER_LOGGEDIN } from '../contants/login';
+import { cacheData, reCacheTeachers } from './login';
+import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
+import { back } from './base';
 export const loadTeacherByKeyCode = (keyCode) => (dispatch) => {
     dispatch({ type: TEACHER_RESOLVE_KEYCODE, keyCode });
     api.loadTeacherByKeyCode(keyCode)
@@ -23,7 +25,7 @@ export const updatePasswordAndLogin = (user) => (dispatch) => {
     api.updateTeacher(user)
         .then((teacher) => {
         dispatch({ type: TEACHER_SAVE_SUCCESS, teacher });
-        dispatch({ type: TEACHER_LOGGEDIN, teacher });
+        dispatch(cacheData(teacher));
     })
         .catch((p) => {
         Toast.show({
@@ -32,6 +34,19 @@ export const updatePasswordAndLogin = (user) => (dispatch) => {
             type: 'danger'
         });
         dispatch({ type: TEACHER_SAVE_FAILED, p });
+    });
+};
+export const resetPassword = (teacher) => (dispatch) => {
+    dispatch({
+        type: CALL_STARTED
+    });
+    api.resetUser(teacher)
+        .then(() => {
+        dispatch({ type: CALL_DONE });
+        dispatch(reCacheTeachers(teacher.schoolId));
+        dispatch(back());
+    }).catch((err) => {
+        dispatch({ type: CALL_FAILED, error: err });
     });
 };
 //# sourceMappingURL=teacher.js.map

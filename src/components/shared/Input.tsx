@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { FieldProps } from 'formik';
-import { Input, Item, Label, Text } from 'native-base';
-import getBorder from '../../utils/addBorder';
+import * as React from 'react'
+import { FieldProps } from 'formik'
+import { Input, Item, Label, Text } from 'native-base'
 
 interface IProps {
   placeholder: string, addRef: (p: any) => void, onValueChanged?: (props: FieldProps<any>, value: string) => void
@@ -45,10 +44,10 @@ export class InputField extends React.Component<FieldProps<any> & IProps> {
 
     const errorMsg = touched[field.name] && errors[field.name];
     return (
-      <Item error={!!errorMsg} style={getBorder()} stackedLabel >
+      <Item error={!!errorMsg} stackedLabel >
         <Label><Text>{props.placeholder}</Text></Label>
         <Input {...inputProps} defaultValue={field.value} onChangeText={this.onChangeText}
-          onBlur={this.onBlur}
+          onBlur={this.onBlur} style={{ borderBottomColor: '#8cb8ff', borderBottomWidth: 2 }}
         />
         {errorMsg ? <Text style={{ color: 'red' }}>{errorMsg}</Text> : null}
       </Item>

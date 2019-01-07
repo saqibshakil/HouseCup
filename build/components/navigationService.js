@@ -9,9 +9,13 @@ function navigate(routeName, params) {
         params
     }));
 }
+function back() {
+    _navigator.dispatch(NavigationActions.back());
+}
 // add other navigation functions that you need and export them
 export default {
     navigate,
-    setTopLevelNavigator
+    setTopLevelNavigator,
+    back
 };
 //# sourceMappingURL=navigationService.js.map

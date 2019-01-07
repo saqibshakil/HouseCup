@@ -6,12 +6,14 @@ export const GOTO_LOGIN = 'GOTO_LOGIN'
 
 export const checkLogin =
     () =>
-        (dispatch: any) => {
+        (dispatch: any, getState: () => any) => {
             SecureStore.getItemAsync('loginKey').then(p => {
                 if (p)
                     dispatch(verifyLogin(p))
-                else
-                    dispatch(gotoLogin())
+                else {
+                    if (getState().base.navigateTo === 'Loading')
+                        dispatch(gotoLogin())
+                }
             })
         }
 
@@ -24,7 +26,7 @@ export const verifyLogin = (p: string) =>
             })
     }
 
-export const navigateTo = (to: string, params: any) => ({
+export const navigateTo = (to: string, params?: any) => ({
     type: RENAVIGATE,
     to,
     params

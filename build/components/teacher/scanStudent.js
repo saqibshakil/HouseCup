@@ -11,7 +11,12 @@ import { Text, View, StyleSheet, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import { navigationOptions } from '../shared/NavigationOptions';
 import { Button } from 'native-base';
-export default class ScanStudent extends Component {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { navigateTo } from '../../actions/base';
+import { createStudent } from '../../actions/home';
+import studentSchema from '../../schema/student';
+class ScanStudent extends Component {
     constructor() {
         super(...arguments);
         this.state = {
@@ -24,8 +29,18 @@ export default class ScanStudent extends Component {
             });
         });
         this._handleBarCodeRead = (data) => {
-            Alert.alert('Scan successful!', JSON.stringify(data));
+            try {
+                const student = JSON.parse(data.data);
+                if (!studentSchema.isValidSync(student))
+                    throw 'Not Complete';
+                this.props.createStudent(student);
+            }
+            catch (error) {
+                console.log(error);
+                Alert.alert('QR Code does not belong to a student');
+            }
         };
+        this.gotoAddStudent = () => this.props.navigateTo('AddStudent');
     }
     componentDidMount() {
         this._requestCameraPermission();
@@ -35,14 +50,14 @@ export default class ScanStudent extends Component {
             React.createElement(Text, null, "Requesting for camera permission") :
             this.state.hasCameraPermission === false ?
                 React.createElement(Text, null, "Camera permission is not granted") :
-                React.createElement(BarCodeScanner, { onBarCodeRead: (scan) => alert(scan.data), style: [StyleSheet.absoluteFill, styles.container] },
+                React.createElement(BarCodeScanner, { onBarCodeRead: this._handleBarCodeRead, style: [StyleSheet.absoluteFill, styles.container] },
                     React.createElement(View, { style: styles.layerTop }),
                     React.createElement(View, { style: styles.layerCenter },
                         React.createElement(View, { style: styles.layerLeft }),
                         React.createElement(View, { style: styles.focused }),
                         React.createElement(View, { style: styles.layerRight })),
                     React.createElement(View, { style: styles.layerBottom },
-                        React.createElement(Button, { light: true, style: { padding: 5 } },
+                        React.createElement(Button, { light: true, style: { padding: 5, marginTop: 10 }, onPress: this.gotoAddStudent },
                             React.createElement(Text, null, "Add Student Manually")))));
     }
 }
@@ -79,4 +94,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     }
 });
+function mapStateToProps() {
+    return {};
+}
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        navigateTo,
+        createStudent
+    }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ScanStudent);
 //# sourceMappingURL=scanStudent.js.map

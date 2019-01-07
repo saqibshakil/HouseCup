@@ -3,11 +3,13 @@ import { Container, Content, Text, View, Button, H3, H1, Header, Body, Left } fr
 import { connect } from 'react-redux';
 import colors from '../../native-base-theme/variables/commonColor';
 import { Image } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { navigateTo } from '../../actions/base';
 class Home extends React.Component {
     constructor() {
         super(...arguments);
         this.gotoScan = () => {
-            this.props.navigation.navigate('ScanStudent');
+            this.props.navigateTo('ScanStudent');
         };
     }
     render() {
@@ -51,5 +53,10 @@ function mapStateToProps(state) {
         points
     };
 }
-export default connect(mapStateToProps)(Home);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        navigateTo
+    }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 //# sourceMappingURL=home.js.map

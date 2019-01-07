@@ -5,7 +5,9 @@ import {
 
 import * as api from '../api/teacher'
 import { Toast } from 'native-base'
-import { cacheData } from './login';
+import { cacheData, reCacheTeachers } from './login';
+import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
+import { back } from './base';
 
 export const loadTeacherByKeyCode = (keyCode: string) =>
     (dispatch: any) => {
@@ -44,3 +46,17 @@ export const updatePasswordAndLogin = (user: any) =>
                 dispatch({ type: TEACHER_SAVE_FAILED, p })
             })
     }
+
+export const resetPassword = (teacher: any) => (dispatch: (arg: { type: string } & any) => void) => {
+    dispatch({
+        type: CALL_STARTED
+    })
+    api.resetUser(teacher)
+        .then(() => {
+            dispatch({ type: CALL_DONE })
+            dispatch(reCacheTeachers(teacher.schoolId))
+            dispatch(back())
+        }).catch((err: string) => {
+            dispatch({ type: CALL_FAILED, error: err })
+        })
+}

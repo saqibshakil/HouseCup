@@ -10,7 +10,7 @@ export default yup.object().shape({
         .required(mandatory),
     isGood: yup
         .number()
-        .min(1)
+        .min(0)
         .max(5)
         .required(mandatory)
 });

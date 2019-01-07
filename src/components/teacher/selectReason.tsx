@@ -31,7 +31,7 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
             <Container style={{ flex: 1, alignSelf: 'stretch' }}>
                 <Content>
                     {reasons.map((reason: any) =>
-                        <Button danger block large onPress={() => this.props.navigateTo('SelectPoint', { reasonId: reason.id })}
+                        <Button key={reason.id} danger block large onPress={() => this.props.navigateTo('SelectPoint', { reasonId: reason.id })}
                             style={this.getStyle(reason.isGood)}>
                             <Text>{reason.reason}</Text>
                         </Button>

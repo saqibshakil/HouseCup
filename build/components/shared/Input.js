@@ -9,13 +9,14 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import * as React from 'react';
 import { Input, Item, Label, Text } from 'native-base';
-import getBorder from '../../utils/addBorder';
 export class InputField extends React.Component {
     constructor() {
         super(...arguments);
         this.onChangeText = (text) => {
-            const { form: { setFieldValue }, field: { name } } = this.props;
+            const { form: { setFieldValue }, field: { name }, onValueChanged } = this.props;
             setFieldValue(name, text);
+            if (onValueChanged)
+                onValueChanged(this.props, text);
         };
         this.onBlur = () => {
             const { form: { setFieldTouched }, field: { name } } = this.props;
@@ -31,10 +32,10 @@ export class InputField extends React.Component {
                     props.addRef(p._root);
             } });
         const errorMsg = touched[field.name] && errors[field.name];
-        return (React.createElement(Item, { error: !!errorMsg, style: getBorder(), stackedLabel: true },
+        return (React.createElement(Item, { error: !!errorMsg, stackedLabel: true },
             React.createElement(Label, null,
                 React.createElement(Text, null, props.placeholder)),
-            React.createElement(Input, Object.assign({}, inputProps, { defaultValue: field.value, onChangeText: this.onChangeText, onBlur: this.onBlur })),
+            React.createElement(Input, Object.assign({}, inputProps, { defaultValue: field.value, onChangeText: this.onChangeText, onBlur: this.onBlur, style: { borderBottomColor: '#8cb8ff', borderBottomWidth: 2 } })),
             errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));
     }
 }

@@ -8,6 +8,7 @@ import { createStudent } from '../../actions/home';
 import { navigationOptions } from '../shared/NavigationOptions';
 import { fetchStudentAndUpdate } from '../../actions/home';
 import { FieldProps } from 'formik';
+import { navigateTo } from '../../actions/base';
 
 export interface IStateProps {
     saving: boolean,
@@ -17,6 +18,7 @@ export interface IStateProps {
 }
 
 export interface IDispatchProps {
+    navigateTo: (to: string, params?: any) => void,
     createStudent: (admin: any) => void,
     fetchStudentAndUpdate: (fieldProps: FieldProps<any>) => void
 }
@@ -32,9 +34,9 @@ class StudentAdd extends React.Component<IStateProps & IDispatchProps & Navigati
 
     submit = (values: any) => {
         // tslint:disable-next-line:no-shadowed-variable
-        const { createStudent, navigation: { goBack } } = this.props
+        const { createStudent, navigateTo } = this.props
         createStudent(values)
-        goBack()
+        navigateTo('SelectReason')
     }
 
     render() {
@@ -61,7 +63,8 @@ function mapStateToProps(state: any): IStateProps {
 function mapDispatchToProps(dispatch: any) {
     return bindActionCreators({
         createStudent,
-        fetchStudentAndUpdate
+        fetchStudentAndUpdate,
+        navigateTo
     }, dispatch)
 }
 

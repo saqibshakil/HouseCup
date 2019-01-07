@@ -1,5 +1,5 @@
 import { CHECK_LOGIN_KEY, GOTO_LOGIN } from '../actions/base';
-import { RENAVIGATE } from '../contants/login';
+import { RENAVIGATE, BACK, POPTOTOP } from '../contants/login';
 let dataState = {
     loading: true,
     loginHash: '',
@@ -13,6 +13,10 @@ export default (state = dataState, action) => {
             return Object.assign({}, state, { loading: false, navigateTo: 'PreLogin' });
         case RENAVIGATE:
             return Object.assign({}, state, { navigateTo: action.to, params: action.params });
+        case BACK:
+            return Object.assign({}, state, { navigateTo: '', params: undefined, back: true, popToTop: false });
+        case POPTOTOP:
+            return Object.assign({}, state, { navigateTo: '', params: undefined, back: false, popToTop: true });
         default:
             return state;
     }

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Toast, Container, Content } from 'native-base';
+import { Toast, Container, Content, Button, Text } from 'native-base';
 import AdminSignUpForm from './adminSignUpForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createAdmin, submit, createTeacher, removeTeacher } from '../../actions/school';
 import { navigationOptions } from '../shared/NavigationOptions';
+import { resetPassword } from '../../actions/teacher';
 class AdminSignUp extends React.Component {
     constructor() {
         super(...arguments);
@@ -22,6 +23,9 @@ class AdminSignUp extends React.Component {
                 createTeacher(values);
             }
         };
+        this.resetUser = () => {
+            this.props.resetPassword(this.props.teacher);
+        };
     }
     componentWillReceiveProps(newProps) {
         const { navigation: { popToTop } } = this.props;
@@ -35,9 +39,14 @@ class AdminSignUp extends React.Component {
         }
     }
     render() {
+        const { currentTeacherId, teacher } = this.props;
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
             React.createElement(Content, null,
-                React.createElement(AdminSignUpForm, { submit: this.submit, saving: this.props.saving, teacher: this.props.teacher })));
+                React.createElement(AdminSignUpForm, { submit: this.submit, saving: this.props.saving, teacher: teacher }),
+                currentTeacherId != teacher.id ?
+                    React.createElement(Button, { danger: true, onPress: this.resetUser },
+                        React.createElement(Text, null, "Reset Password"))
+                    : null));
     }
 }
 AdminSignUp.navigationOptions = navigationOptions(({ navigation }) => navigation.getParam('id')
@@ -48,7 +57,8 @@ function mapStateToProps(state, ownProps) {
         error: state.schoolSignUp.error,
         saving: state.schoolSignUp.saving,
         message: state.schoolSignUp.message,
-        teacher: state.teacher.teachers && state.teacher.teachers.filter((p) => p.id === ownProps.navigation.state.params.id)[0]
+        teacher: state.teacher.teachers && state.teacher.teachers.filter((p) => p.id === ownProps.navigation.state.params.id)[0],
+        currrentTeacherId: state.login.teacherId
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -56,7 +66,8 @@ function mapDispatchToProps(dispatch) {
         createAdmin,
         submit,
         createTeacher,
-        removeTeacher
+        removeTeacher,
+        resetPassword
     }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AdminSignUp);

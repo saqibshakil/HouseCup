@@ -30,35 +30,28 @@ export const studentExist = (student: any, schoolId: any) => {
 
 export const create = (schoolId: any, student: any) => {
     return new Promise(function (resolve, reject) {
-
-        studentExist(student, schoolId)
-            .then((std: any) => {
-                if (std) {
-                    student.id = std.id
-                }
-                const urlAppendage = student.id ? '/' + student.id : ''
-                fetch(apiUrl + '/student' + urlAppendage, {
-                    method: student.id ? 'PUT' : 'POST',
-                    body: JSON.stringify({
-                        ...student,
-                        schoolId: schoolId
-                    })
-                }).then(throwError)
-                    .then(p => p.text())
-                    .then(p => {
-
-                        if (p) {
-                            resolve({
-                                ...student,
-                                id: parseInt(p, 10)
-                            })
-                        } else {
-
-                            reject()
-                        }
-                    })
+        const urlAppendage = student.id ? '/' + student.id : ''
+        fetch(apiUrl + '/student' + urlAppendage, {
+            method: student.id ? 'PUT' : 'POST',
+            body: JSON.stringify({
+                ...student,
+                schoolId: schoolId
             })
-        // .catch(p => null)
+        }).then(throwError)
+            .then(p => p.text())
+            .then(p => {
+
+                if (p) {
+                    resolve({
+                        ...student,
+                        id: student.id ? student.id : p,
+                        schoolId
+                    })
+                } else {
+
+                    reject()
+                }
+            })
     });
 }
 

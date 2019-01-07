@@ -1,9 +1,10 @@
-import { apiUrl, longGuid } from './base';
+import { apiUrl, longGuid, guid, throwError } from './base';
 import { Constants } from 'expo'
+import { sendEmail } from './school';
 
 export const loadTeacherByKeyCode = (keycode: string) => {
     return new Promise(function (resolve, reject) {
-        fetch(apiUrl + `/user?filter=keyCode,eq,${keycode}&join=teacher`, {
+        fetch(apiUrl + `/user?filter=keyCode,eq,${keycode}&join=teacher,school`, {
             method: 'GET'
         }).then(p => {
             if (p.status === 200)
@@ -31,6 +32,25 @@ export const loadTeacherByKeyCode = (keycode: string) => {
     });
 }
 
+export const loadUserByTeacher = (teacher: any) => {
+    return fetch(apiUrl + `/user?filter=teacherId,eq,${teacher.id}`, {
+        method: 'GET'
+    }).then(p => {
+        if (p.status === 200)
+            return p
+        else
+            throw 'Error'
+    }).then(p => p.json())
+        .then(user => {
+            user = user.records[0]
+            if (user) {
+                return user
+            } else {
+                throw 'No users'
+            }
+        })
+}
+
 export const updateTeacher = (user: any) => {
     return new Promise(function (resolve, reject) {
         const loginHash = longGuid()
@@ -47,7 +67,9 @@ export const updateTeacher = (user: any) => {
             .then(recordsUpdated => {
                 if (parseInt(recordsUpdated, 10) > 0) {
                     resolve({
-                        ...user,
+                        teacherId: user.teacherId,
+                        schoolId: user.schoolId.id,
+                        maxTeachers: user.schoolId.maxTeachers,
                         loginHash
                     })
                 } else {
@@ -59,4 +81,32 @@ export const updateTeacher = (user: any) => {
                 reject()
             })
     });
+}
+
+export const resetUser = (teacher: any) => {
+    return loadUserByTeacher(teacher)
+        .then((user: any) => {
+            const apiPath = apiUrl + '/user/' + user.id
+            const keyCode = guid().toUpperCase()
+            fetch(apiPath, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    deviceId: null,
+                    loginHash: null,
+                    password: null,
+                    keyCode
+                })
+            })
+                .then(throwError)
+                .then(p => p.text())
+                .then(updated => {
+                    if (updated) {
+                        sendEmail(teacher.email, keyCode, teacher.name)
+                        return true
+                    } else {
+                        throw 'Unable to reset password'
+                    }
+                })
+        })
+
 }

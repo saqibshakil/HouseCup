@@ -5,12 +5,12 @@ import PreLogin from '../screens/preLogin';
 import Teacher from '../screens/teacher';
 import Student from '../screens/student';
 import Loading from '../screens/loading';
-import { View } from 'react-native';
+import { View, BackHandler } from 'react-native';
 import { checkLogin } from '../actions/base';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NavigationService from './navigationService';
-import { navigateTo } from '../actions/base';
+import { navigateTo, back } from '../actions/base';
 const Nav = createSwitchNavigator({
     Loading: {
         screen: Loading
@@ -32,11 +32,27 @@ const Nav = createSwitchNavigator({
 });
 const Container = createAppContainer(Nav);
 export class App extends Component {
+    constructor() {
+        super(...arguments);
+        this.handleBackButton = () => {
+            this.props.back();
+            return true;
+        };
+    }
     componentWillReceiveProps(newProps) {
-        if (newProps.navigateTo && this.props.navigateTo !== newProps.navigateTo) {
-            NavigationService.navigate(newProps.navigateTo, newProps.params);
-            this.props.navigate('');
+        // tslint:disable-next-line:no-shadowed-variable
+        const base = newProps.base;
+        if (this.props.base !== base) {
+            if (base.navigateTo)
+                NavigationService.navigate(base.navigateTo, base.params);
+            if (base.back)
+                NavigationService.back();
+            if (base.popToTop)
+                NavigationService.back();
         }
+    }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
     render() {
         return (React.createElement(View, { style: { flex: 1, alignSelf: 'stretch' } },
@@ -47,14 +63,14 @@ export class App extends Component {
 }
 function mapStateToProps(state) {
     // tslint:disable-next-line:no-shadowed-variable
-    const { navigateTo, params } = state.base;
     return {
-        navigateTo, params
+        base: state.base
     };
 }
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         checkLogin,
+        back,
         navigate: navigateTo
     }, dispatch);
 }

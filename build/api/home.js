@@ -7,6 +7,23 @@ export const getPointsPerHouses = (schoolId) => fetch(`${sumUrl}${schoolId}`)
         throw 'Error';
 })
     .then(p => p.json());
+export const studentExist = (student, schoolId) => {
+    return fetch(apiUrl + `/student?filter=schoolId,eq,${schoolId}&filter=grNo,eq,${student.grNo}`)
+        .then(p => {
+        if (p.status === 200)
+            return p;
+        else
+            throw 'Error';
+    })
+        .then(p => p.json())
+        .then(data => data.records)
+        .then((students) => {
+        if (students.length)
+            return students[0];
+        else
+            return undefined;
+    });
+};
 export const create = (schoolId, student) => {
     return new Promise(function (resolve, reject) {
         const urlAppendage = student.id ? '/' + student.id : '';
@@ -17,20 +34,19 @@ export const create = (schoolId, student) => {
             .then(p => p.text())
             .then(p => {
             if (p) {
-                resolve(Object.assign({}, student, { id: parseInt(p, 10) }));
+                resolve(Object.assign({}, student, { id: student.id ? student.id : p, schoolId }));
             }
             else {
                 reject();
             }
         });
-        // .catch(p => null)
     });
 };
 export const fetchStudentOrCreate = (student, schoolId) => {
-    return fetchStudent(student, schoolId)
-        .then((students) => {
-        if (students.length)
-            return students[0];
+    return studentExist(student, schoolId)
+        .then((std) => {
+        if (std)
+            return std;
         else
             return create(schoolId, student);
     });
