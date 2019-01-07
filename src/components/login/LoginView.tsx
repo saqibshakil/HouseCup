@@ -25,7 +25,7 @@ class LoginViewForm extends React.PureComponent<FormikProps<FormValues> & Props>
   render() {
     const { handleSubmit } = this.props;
     return (
-      <View>
+      <View style={{ marginHorizontal: 10, marginVertical: 5}}>
         <Field name='email' placeholder='Email' component={InputField} keyboardType='email-address'
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }} />
         <Field

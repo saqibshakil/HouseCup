@@ -24,7 +24,7 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
   render() {
     const { handleSubmit, saving } = this.props;
     return (
-      <View>
+      <View style={{ marginHorizontal: 10, marginVertical: 5}}>
         <Field name='keyCode' placeholder='Key Code' component={InputField}
           returnKeyType='done' onSubmitEditing={handleSubmit} />
         <Button block disabled={saving} onPress={handleSubmit as any}>

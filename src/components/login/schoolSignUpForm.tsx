@@ -16,7 +16,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
     render() {
         const { handleSubmit } = this.props;
         return (
-            <View>
+            <View style={{ marginHorizontal: 10, marginVertical: 5}}>
                 <Field name='name' placeholder='School Name' component={InputField} />
 
                 <Button block onPress={handleSubmit as any}>

@@ -70,6 +70,7 @@ export const updateTeacher = (user: any) => {
                         teacherId: user.teacherId,
                         schoolId: user.schoolId.id,
                         maxTeachers: user.schoolId.maxTeachers,
+                        userId: user.id,
                         loginHash
                     })
                 } else {

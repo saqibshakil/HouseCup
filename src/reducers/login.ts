@@ -1,4 +1,4 @@
-import { TEACHER_LOGIN, TEACHER_LOGGEDIN, TEACHER_LOGIN_FAILED } from '../contants/login';
+import { TEACHER_LOGIN, TEACHER_LOGGEDIN, TEACHER_LOGIN_FAILED, TEACHER_LOGGEDOUT } from '../contants/login';
 const defaultState = {
     loading: false,
     errorOccured: false
@@ -20,13 +20,23 @@ export default (state: any = defaultState, action: any) => {
                 schoolId: action.schoolId,
                 teacherId: action.teacherId,
                 loginHash: action.loginHash,
+                userId: action.userId,
                 maxTeachers: action.maxTeachers
+            }
+
+        case TEACHER_LOGGEDOUT:
+            return {
+                ...state,
+                loading: false,
+                schoolId: undefined,
+                teacherId: undefined,
+                loginHash: undefined,
+                maxTeachers: undefined
             }
 
         case TEACHER_LOGIN_FAILED:
             return {
                 ...state,
-                user: action.teacher,
                 errorOccured: true,
                 loading: false
             }

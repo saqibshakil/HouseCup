@@ -30,7 +30,7 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
   render() {
     const { handleSubmit, saving } = this.props;
     return (
-      <View style={{ flexDirection: 'column', flex: 1 }}>
+      <View style={{ marginHorizontal: 10, marginVertical: 5, flexDirection: 'column', flex: 1 }}>
         <Field name='empId' placeholder='Employee ID' component={InputField} editable={false}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }} />
         <Field name='name' addRef={this.addRef} placeholder='Name' component={InputField} editable={false}

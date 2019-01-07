@@ -22,6 +22,8 @@ class C extends React.PureComponent {
     render() {
         const { handleSubmit, saving } = this.props;
         return (React.createElement(View, null,
+            " style=",
+            { marginHorizontal: 10, marginVertical: 5 },
             React.createElement(Field, { name: 'empId', placeholder: 'Employee ID', component: InputField, keyboardType: 'default', returnKeyType: 'next', onSubmitEditing: () => { this.inputs[0].focus(); } }),
             React.createElement(Field, { name: 'name', placeholder: 'Name', component: InputField, addRef: this.addRef, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[1].focus(); } }),
             React.createElement(Field, { name: 'email', placeholder: 'Email Address', component: InputField, keyboardType: 'email-address', addRef: this.addRef, returnKeyType: 'done', onSubmitEditing: () => { handleSubmit(); } }),

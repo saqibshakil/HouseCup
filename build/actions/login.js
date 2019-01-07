@@ -1,7 +1,9 @@
-import { TEACHER_LOGIN, TEACHER_LOGGEDIN, TEACHER_LOGIN_FAILED, CACHE_HOUSES, CACHE_REASONS, CACHE_TEACHERS, RENAVIGATE } from '../contants/login';
+import { TEACHER_LOGIN, TEACHER_LOGGEDIN, TEACHER_LOGIN_FAILED, CACHE_HOUSES, CACHE_REASONS, CACHE_TEACHERS, RENAVIGATE, TEACHER_LOGGEDOUT } from '../contants/login';
 import * as api from '../api/login';
 import { Toast } from 'native-base';
 import { FETCH_HOUSE_POINTS } from '../contants/home';
+import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
+import { setLoginKey, clearLoginKey } from './base';
 export const cacheData = (success) => (dispatch) => {
     api.cacheSchoolInfo(success.schoolId).then(({ houses, reasons, teachers, points }) => {
         dispatch({
@@ -22,6 +24,7 @@ export const cacheData = (success) => (dispatch) => {
         });
         dispatch(Object.assign({ type: TEACHER_LOGGEDIN }, success));
         dispatch(reNavigate());
+        setLoginKey(success.loginHash);
     });
 };
 export const login = (email, password) => (dispatch) => {
@@ -76,5 +79,22 @@ export const reNavigate = () => (dispatch, getState) => {
             type: RENAVIGATE,
             to: 'Teacher'
         });
+};
+export const logout = () => (dispatch, getState) => {
+    const { login: { userId } } = getState();
+    dispatch({ type: CALL_STARTED });
+    api.updateLoginHash(userId, null).then(() => {
+        dispatch({ type: CALL_DONE });
+        dispatch({
+            type: TEACHER_LOGGEDOUT
+        });
+        clearLoginKey();
+        dispatch({
+            type: RENAVIGATE,
+            to: 'PreLogin'
+        });
+    }).catch(() => {
+        dispatch({ type: CALL_FAILED });
+    });
 };
 //# sourceMappingURL=login.js.map

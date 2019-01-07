@@ -14,7 +14,7 @@ import { InputField } from '../shared/Input';
 class C extends React.PureComponent {
     render() {
         const { handleSubmit } = this.props;
-        return (React.createElement(View, null,
+        return (React.createElement(View, { style: { marginHorizontal: 10, marginVertical: 5 } },
             React.createElement(Field, { name: 'name', placeholder: 'School Name', component: InputField }),
             React.createElement(Button, { block: true, onPress: handleSubmit },
                 React.createElement(Text, null, "Next"))));

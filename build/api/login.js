@@ -1,9 +1,14 @@
 import { apiUrl, longGuid } from './base';
 import { Constants } from 'expo';
 import { getPointsPerHouses } from './home';
-export const login = (email, password) => {
+export const login = (email, password, loginHash) => {
     return new Promise(function (resolve, reject) {
-        fetch(apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher,school`, {
+        let url;
+        if (loginHash)
+            url = apiUrl + `/user?filter=loginHash,eq,${loginHash}&join=teacher,school`;
+        else
+            url = apiUrl + `/user?filter=email,eq,${email}&filter=password,eq,${password}&join=teacher,school`;
+        fetch(url, {
             method: 'GET'
         }).then(p => {
             if (p.status === 200)
@@ -25,6 +30,7 @@ export const login = (email, password) => {
                         teacherId: user.teacherId.id,
                         schoolId: user.teacherId.schoolId.id,
                         maxTeachers: user.teacherId.schoolId.maxTeachers,
+                        userId: user.id,
                         loginHash: hash
                     }))
                         .catch(() => reject());

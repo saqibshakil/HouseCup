@@ -26,7 +26,7 @@ class C extends React.Component {
         const submit = () => {
             handleSubmit();
         };
-        return (React.createElement(View, { style: { flexDirection: 'column', flex: 1 } },
+        return (React.createElement(View, { style: { marginHorizontal: 10, marginVertical: 5, flexDirection: 'column', flex: 1 } },
             React.createElement(Field, { name: 'grNo', addRef: this.addRef, placeholder: 'GR Number', component: InputField, onValueChanged: this.props.checkAndPopuplate, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[1].focus(); } }),
             React.createElement(Field, { name: 'name', addRef: this.addRef, placeholder: 'Name', component: InputField, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[2].focus(); } }),
             React.createElement(Field, { name: 'class', addRef: this.addRef, placeholder: 'Class', component: InputField }),

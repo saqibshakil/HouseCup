@@ -1,18 +1,21 @@
 import * as React from 'react';
-import { Container, Content, Text, View, Button, H3, H1, Header, Body, Left } from 'native-base';
+import { Container, Content, Text, View, Button, H3, H1, Header, Body, Left, Right } from 'native-base';
 import { NavigationContainerProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import colors from '../../native-base-theme/variables/commonColor'
 import { Image } from 'react-native'
 import { bindActionCreators } from 'redux';
 import { navigateTo } from '../../actions/base';
+import { logout } from '../../actions/login';
 
 export interface IStateProps {
     message: string;
     points: [{ id: any, name: string, points: number, color: string }]
+    saving: boolean
 }
 export interface IDispatchProps {
     navigateTo: (path: string, params?: any) => void
+    logout: () => void
 }
 
 export interface State {
@@ -26,6 +29,12 @@ class Home extends React.Component<NavigationContainerProps & IStateProps & IDis
     gotoScan = () => {
         this.props.navigateTo('ScanStudent')
     }
+
+    logout = () => {
+        const { saving } = this.props
+        if (!saving)
+            this.props.logout()
+    }
     render() {
         const { points } = this.props
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
@@ -36,6 +45,9 @@ class Home extends React.Component<NavigationContainerProps & IStateProps & IDis
                 <Body style={{ alignItems: 'center' }}>
                     <Text style={{ color: 'white' }}>House Cup</Text>
                 </Body>
+                <Right>
+                    <Button danger onPress={this.logout} small><Text>Logout</Text></Button>
+                </Right>
             </Header>
             <Content style={{ paddingHorizontal: 10, paddingTop: 10 }}  >
                 <Button primary block onPress={this.gotoScan}>
@@ -75,13 +87,15 @@ function mapStateToProps(state: any): IStateProps {
     })
     return {
         message: state.schoolSignUp.message,
-        points
+        points,
+        saving: state.schoolSignUp.saving
     }
 }
 
 function mapDispatchToProps(dispatch: any): IDispatchProps {
     return bindActionCreators({
-        navigateTo
+        navigateTo,
+        logout
     }, dispatch)
 }
 

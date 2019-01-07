@@ -33,7 +33,7 @@ class C extends React.Component<FormikProps<FormValues> & Props> {
       handleSubmit()
     }
     return (
-      <View style={{ flexDirection: 'column', flex: 1 }}>
+      <View  style={{ marginHorizontal: 10, marginVertical: 5, flexDirection: 'column', flex: 1 }}>
         <Field name='grNo' addRef={this.addRef} placeholder='GR Number' component={InputField} onValueChanged={this.props.checkAndPopuplate}
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
         <Field name='name' addRef={this.addRef} placeholder='Name' component={InputField}

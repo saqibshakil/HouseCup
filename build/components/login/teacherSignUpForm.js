@@ -22,7 +22,7 @@ class C extends React.Component {
     }
     render() {
         const { handleSubmit, saving } = this.props;
-        return (React.createElement(View, { style: { flexDirection: 'column', flex: 1 } },
+        return (React.createElement(View, { style: { marginHorizontal: 10, marginVertical: 5, flexDirection: 'column', flex: 1 } },
             React.createElement(Field, { name: 'empId', placeholder: 'Employee ID', component: InputField, editable: false, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[0].focus(); } }),
             React.createElement(Field, { name: 'name', addRef: this.addRef, placeholder: 'Name', component: InputField, editable: false, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[1].focus(); } }),
             React.createElement(Field, { name: 'email', addRef: this.addRef, placeholder: 'Email Address', component: InputField, keyboardType: 'email-address', editable: false, returnKeyType: 'next', onSubmitEditing: () => { this.inputs[2].focus(); } }),

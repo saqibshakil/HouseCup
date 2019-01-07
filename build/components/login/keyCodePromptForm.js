@@ -22,7 +22,7 @@ class C extends React.Component {
     }
     render() {
         const { handleSubmit, saving } = this.props;
-        return (React.createElement(View, null,
+        return (React.createElement(View, { style: { marginHorizontal: 10, marginVertical: 5 } },
             React.createElement(Field, { name: 'keyCode', placeholder: 'Key Code', component: InputField, returnKeyType: 'done', onSubmitEditing: handleSubmit }),
             React.createElement(Button, { block: true, disabled: saving, onPress: handleSubmit },
                 React.createElement(Text, null, "Continue"),

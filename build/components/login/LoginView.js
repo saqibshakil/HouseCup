@@ -23,7 +23,7 @@ class LoginViewForm extends React.PureComponent {
     }
     render() {
         const { handleSubmit } = this.props;
-        return (React.createElement(View, null,
+        return (React.createElement(View, { style: { marginHorizontal: 10, marginVertical: 5 } },
             React.createElement(Field, { name: 'email', placeholder: 'Email', component: InputField, keyboardType: 'email-address', returnKeyType: 'next', onSubmitEditing: () => { this.inputs[0].focus(); } }),
             React.createElement(Field, { name: 'password', secureTextEntry: true, placeholder: 'Password', component: InputField, addRef: this.addRef, returnKeyType: 'done', onSubmitEditing: handleSubmit }),
             React.createElement(Button, { primary: true, onPress: handleSubmit, block: true, disabled: this.props.saving },
