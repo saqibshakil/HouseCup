@@ -3,7 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AppLoading, Font } from 'expo'
-import { checkLogin } from '../actions/base'
+import { checkLogin } from '../actions/login'
+import { Spinner } from 'native-base';
 
 interface IDispatchProps {
     checkLogin: () => void
@@ -18,6 +19,7 @@ class App extends Component<IStateProps & IDispatchProps> {
         return (
             <View style={styles.container}>
                 <AppLoading />
+                <Spinner color='white' />
                 <Text>Loading</Text>
             </View>
         );

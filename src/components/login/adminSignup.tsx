@@ -69,8 +69,10 @@ class AdminSignUp extends React.Component<IStateProps & IDispatchProps & Navigat
         return <Container style={{ flex: 1, alignSelf: 'stretch' }}>
             <Content>
                 <AdminSignUpForm submit={this.submit as any} saving={this.props.saving} teacher={teacher} />
-                {currentTeacherId != teacher.id ?
-                    <Button danger onPress={this.resetUser}><Text>Reset Password</Text></Button>
+                {(teacher && currentTeacherId != teacher.id) ?
+                    <Button style={{ marginHorizontal: 10, marginVertical: 5 }} block danger onPress={this.resetUser}>
+                        <Text>Reset Password</Text>
+                    </Button>
                     : null}
             </Content>
         </Container>

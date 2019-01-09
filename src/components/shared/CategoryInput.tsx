@@ -38,7 +38,7 @@ export class CategoryInputField extends React.Component<FieldProps<any> & { plac
           defaultColor={categories[field.value]}
           title=''
           colors={categories}
-          icon={<Text>O</Text>}
+          icon={<Text>✔</Text>}
         />
         {errorMsg ? <Text style={{ color: 'red' }}>{errorMsg}</Text> : null}
       </Item>

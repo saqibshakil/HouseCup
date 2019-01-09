@@ -36,8 +36,8 @@ export class ColorInputField extends React.Component<FieldProps<any> & { placeho
           onChange={this.onChangeText}
           defaultColor={field.value}
           title=''
-          colors={['#C0392B', '#E74C3C', '#9B59B6', '#8E44AD', '#2980B9']}
-          icon={<Text>O</Text>}
+          colors={['#9400D3', '#4B0082', '#0000FF', '#00FF00', '#FFFF00', '#FF7F00', '#FF0000']}
+          icon={<Text>✔</Text>}
         />
         {errorMsg ? <Text style={{ color: 'red' }}>{errorMsg}</Text> : null}
       </Item>

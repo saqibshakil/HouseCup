@@ -6,7 +6,7 @@ import Teacher from '../screens/teacher'
 import Student from '../screens/student'
 import Loading from '../screens/loading'
 import { View, BackHandler } from 'react-native';
-import { checkLogin } from '../actions/base';
+import { checkLogin } from '../actions/login';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NavigationService from './navigationService';

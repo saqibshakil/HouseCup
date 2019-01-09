@@ -11,7 +11,8 @@ import { logout } from '../../actions/login';
 export interface IStateProps {
     message: string;
     points: [{ id: any, name: string, points: number, color: string }]
-    saving: boolean
+    saving: boolean,
+    setupIncomplete: boolean
 }
 export interface IDispatchProps {
     navigateTo: (path: string, params?: any) => void
@@ -50,9 +51,12 @@ class Home extends React.Component<NavigationContainerProps & IStateProps & IDis
                 </Right>
             </Header>
             <Content style={{ paddingHorizontal: 10, paddingTop: 10 }}  >
-                <Button primary block onPress={this.gotoScan}>
-                    <Text>Award Points</Text>
-                </Button>
+                {this.props.setupIncomplete ?
+                    <Text style={{ color: 'red' }}>School setup incomplete please advise school admin to add the respective houses and reasons</Text>
+                    : <Button primary block onPress={this.gotoScan}>
+                        <Text>Award Points</Text>
+                    </Button>
+                }
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {points.map((p) =>
                         <View key={p.id} style={{
@@ -88,7 +92,8 @@ function mapStateToProps(state: any): IStateProps {
     return {
         message: state.schoolSignUp.message,
         points,
-        saving: state.schoolSignUp.saving
+        saving: state.schoolSignUp.saving,
+        setupIncomplete: !(state.house.houses.length > 1 && state.reason.reasons.length > 0)
     }
 }
 

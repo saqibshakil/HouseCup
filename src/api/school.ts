@@ -45,7 +45,7 @@ export const sendEmail = (to: string, link: string, name: string) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}&email=${encodeURIComponent(to)}
-            &name==${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
+            &name=${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
         }
     )
 }

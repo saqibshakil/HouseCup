@@ -39,14 +39,14 @@ class HouseSelectField extends React.Component<FieldProps<any> & IStateProps & {
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {props.houses.map((p) =>
                         <View key={p.id} style={{
-                            width: '49%', marginVertical: 5, flexDirection: 'column', 
-                            borderWidth: field.value === p.id ? 2 : 0, borderColor: 'green'
+                            width: '49%', marginVertical: 5, flexDirection: 'column',
+                            borderWidth: 2, borderColor: field.value === p.id ? 'green' : 'transparent'
                         }}>
                             <Button block style={{
                                 backgroundColor: p.color, flexDirection: 'column'
                             }} onPress={() => this.onChangeText(p.id)}
                                 light>
-                                <Text>{field.value === p.id ? '✔ ' : ''}{p.name}</Text>
+                                <Text style={{ color: 'white' }}>{field.value === p.id ? '✔ ' : ''}{p.name}</Text>
                             </Button>
                         </View>
                     )}

@@ -6,7 +6,8 @@ import * as api from '../api/login'
 import { Toast } from 'native-base'
 import { FETCH_HOUSE_POINTS } from '../contants/home';
 import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
-import { setLoginKey, clearLoginKey } from './base';
+import { setLoginKey, clearLoginKey, gotoLogin } from './base';
+import { SecureStore } from 'expo';
 
 export const cacheData = (success: any) =>
     (dispatch: any) => {
@@ -47,6 +48,18 @@ export const login = (email: string, password: string) =>
                     type: 'danger'
                 })
                 dispatch({ type: TEACHER_LOGIN_FAILED, p })
+            })
+    }
+
+export const verifyLogin = (p: string) =>
+    (dispatch: any) => {
+        api.login('', '', p).then((success: any) => {
+            dispatch(cacheData(success))
+        })
+            .catch((err: string) => {
+                clearLoginKey()
+                dispatch({ type: TEACHER_LOGIN_FAILED, error: err })
+                dispatch(gotoLogin())
             })
     }
 
@@ -115,3 +128,16 @@ export const logout = () =>
             dispatch({ type: CALL_FAILED })
         })
     }
+
+export const checkLogin =
+    () =>
+        (dispatch: any, getState: () => any) => {
+            SecureStore.getItemAsync('loginKey').then(p => {
+                if (p)
+                    dispatch(verifyLogin(p))
+                else {
+                    if (getState().base.navigateTo === 'Loading')
+                        dispatch(gotoLogin())
+                }
+            })
+        }

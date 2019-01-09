@@ -26,7 +26,7 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
   render() {
     const { handleSubmit, saving } = this.props;
     return (
-      <View> style={{ marginHorizontal: 10, marginVertical: 5}}
+      <View style={{ marginHorizontal: 10, marginVertical: 5}}>
         <Field name='empId' placeholder='Employee ID' component={InputField}  keyboardType='default'
           returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }}/>
         <Field name='name' placeholder='Name' component={InputField} addRef={this.addRef}

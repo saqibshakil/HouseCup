@@ -25,7 +25,9 @@ export default (state = dataState, action: any) => {
             return {
                 ...state,
                 navigateTo: action.to,
-                params: action.params
+                params: action.params,
+                back: false,
+                popToTop: false
             }
         case BACK:
             return {
