@@ -4,6 +4,7 @@ import {
     SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, CALL_STARTED, CALL_DONE, CALL_FAILED
 } from '../contants/schoolSignUp';
 import { reCacheTeachers } from './login';
+import { back } from './base';
 
 export const createSchool = (school: any) => ({
     type: SCHOOL_CREATE,
@@ -89,6 +90,7 @@ export const createTeacher = (values: any) => (dispatch: any, getState: any) => 
         })
 
         dispatch(reCacheTeachers(id))
+        dispatch(back())
     })
         .catch((error: string) => {
             dispatch({

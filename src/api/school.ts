@@ -60,6 +60,8 @@ export const createAdmin = (school: ISchool, teacher: ITeacher, isAdmin: boolean
             .then(throwError)
             .then(p => p.text())
             .then(teacherId => {
+                if (teacher.id)
+                    resolve(teacher.id)
                 if (teacherId) {
                     const keyCode = guid().toUpperCase()
                     fetch(apiUrl + '/user', {

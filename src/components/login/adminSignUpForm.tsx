@@ -24,14 +24,15 @@ class C extends React.PureComponent<FormikProps<FormValues> & Props> {
   }
 
   render() {
-    const { handleSubmit, saving } = this.props;
+    const { handleSubmit, saving, teacher } = this.props;
     return (
-      <View style={{ marginHorizontal: 10, marginVertical: 5}}>
-        <Field name='empId' placeholder='Employee ID' component={InputField}  keyboardType='default'
-          returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }}/>
+      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+        <Field name='empId' placeholder='Employee ID' component={InputField} keyboardType='default'
+          returnKeyType={'next'} onSubmitEditing={() => { this.inputs[0].focus(); }} />
         <Field name='name' placeholder='Name' component={InputField} addRef={this.addRef}
-        returnKeyType={'next'} onSubmitEditing={() => { this.inputs[1].focus(); }} />
-        <Field name='email' placeholder='Email Address' component={InputField} keyboardType='email-address' addRef={this.addRef}
+          returnKeyType={teacher.id ? 'done' : 'next'} onSubmitEditing={() => { teacher.id ? handleSubmit() : this.inputs[1].focus(); }} />
+        <Field name='email' disabled={!!(teacher.id)}
+          placeholder='Email Address' component={InputField} keyboardType='email-address' addRef={this.addRef}
           returnKeyType={'done'} onSubmitEditing={() => { handleSubmit() }} />
         <Button block disabled={saving} onPress={handleSubmit as any}>
           <Text>Submit</Text>
