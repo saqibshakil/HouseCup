@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HouseCup",
+    "name": "House Cup",
     "description": "This project is really great.",
     "slug": "HouseCup",
     "privacy": "public",
@@ -9,6 +9,11 @@
       "ios",
       "android"
     ],
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "fallbackToCacheTimeout": 30000
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,9 +22,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#EEEEEE"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -27,6 +29,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.housecupapp.app",
       "intentFilters": [
         {
           "action": "VIEW",
