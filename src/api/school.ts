@@ -55,13 +55,13 @@ export const createAdmin = (school: ISchool, teacher: ITeacher, isAdmin: boolean
         const method = teacher.id ? 'PUT' : 'POST'
         fetch(apiPath, {
             method,
-            body: JSON.stringify({ ...teacher, schoolId: school.id, isAdmin: isAdmin ? 1 : 0 })
+            body: JSON.stringify({ ...teacher, schoolId: school.id, isAdmin: isAdmin ? 1 : undefined })
         })
             .then(throwError)
             .then(p => p.text())
             .then(teacherId => {
                 if (teacher.id)
-                    resolve(teacher.id)
+                    return resolve(teacher.id)
                 if (teacherId) {
                     const keyCode = guid().toUpperCase()
                     fetch(apiUrl + '/user', {

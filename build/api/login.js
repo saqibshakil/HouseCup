@@ -1,5 +1,5 @@
 import { apiUrl, longGuid } from './base';
-import { Constants } from 'expo';
+// ?import { Constants } from 'expo'
 import { getPointsPerHouses } from './home';
 export const login = (email, password, loginHash) => {
     return new Promise(function (resolve, reject) {
@@ -21,19 +21,22 @@ export const login = (email, password, loginHash) => {
             user = user.records[0];
             const hash = longGuid();
             if (user) {
+                /*
+                // Device restriction disabled
                 if (user.deviceKey !== Constants.deviceId)
                     reject('The specified user is not assigned to this device,' +
-                        'If you have changed devices or reinstalled please ask your admin to reset you password');
+                        'If you have changed devices or reinstalled please ask your admin to reset you password')
                 else
-                    updateLoginHash(user.id, hash)
-                        .then(() => resolve({
-                        teacherId: user.teacherId.id,
-                        schoolId: user.teacherId.schoolId.id,
-                        maxTeachers: user.teacherId.schoolId.maxTeachers,
-                        userId: user.id,
-                        loginHash: hash
-                    }))
-                        .catch(() => reject());
+                */
+                updateLoginHash(user.id, hash)
+                    .then(() => resolve({
+                    teacherId: user.teacherId.id,
+                    schoolId: user.teacherId.schoolId.id,
+                    maxTeachers: user.teacherId.schoolId.maxTeachers,
+                    userId: user.id,
+                    loginHash: hash
+                }))
+                    .catch(() => reject());
             }
             else {
                 reject();

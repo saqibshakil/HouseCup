@@ -6,7 +6,10 @@ interface IProps {
   placeholder: string, addRef: (p: any) => void, onValueChanged?: (props: FieldProps<any>, value: string) => void
 }
 
-export class InputField extends React.Component<FieldProps<any> & IProps> {
+export class InputField extends React.Component<FieldProps<any> & IProps, {focused: boolean}> {
+  state = {
+    focused: false
+  }
   onChangeText = (text: string) => {
     const {
       form: { setFieldValue },
@@ -24,8 +27,11 @@ export class InputField extends React.Component<FieldProps<any> & IProps> {
       field: { name }
     } = this.props;
     setFieldTouched(name, true);
+    this.setState({ focused: false })
   };
-
+  onFocus = () => {
+    this.setState({ focused: true })
+  }
   render() {
     const {
       field, // { name, value, onChange, onBlur }
@@ -47,7 +53,7 @@ export class InputField extends React.Component<FieldProps<any> & IProps> {
       <Item error={!!errorMsg} stackedLabel >
         <Label><Text>{props.placeholder}</Text></Label>
         <Input {...inputProps} defaultValue={field.value} onChangeText={this.onChangeText}
-          onBlur={this.onBlur} style={{ borderBottomColor: '#8cb8ff', borderBottomWidth: 2 }}
+          onBlur={this.onBlur} style={{ borderBottomColor: this.state.focused ? '#8cb8ee' : '#8cb8ff', borderBottomWidth: 2 }} onFocus={this.onFocus}
         />
         {errorMsg ? <Text style={{ color: 'red' }}>{errorMsg}</Text> : null}
       </Item>

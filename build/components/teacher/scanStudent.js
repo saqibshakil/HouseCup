@@ -7,20 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Alert } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+import { Text, View, StyleSheet } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions';
 import { navigationOptions } from '../shared/NavigationOptions';
 import { Button } from 'native-base';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { navigateTo } from '../../actions/base';
-import { createStudent } from '../../actions/home';
+import { createStudent, selectStudent, scanFailed } from '../../actions/home';
 import studentSchema from '../../schema/student';
 class ScanStudent extends Component {
     constructor() {
         super(...arguments);
         this.state = {
-            hasCameraPermission: null
+            hasCameraPermission: null,
+            scanning: false
         };
         this._requestCameraPermission = () => __awaiter(this, void 0, void 0, function* () {
             const { status } = yield Permissions.askAsync(Permissions.CAMERA);
@@ -28,19 +30,28 @@ class ScanStudent extends Component {
                 hasCameraPermission: status === 'granted'
             });
         });
-        this._handleBarCodeRead = (data) => {
-            try {
-                const student = JSON.parse(data.data);
-                if (!studentSchema.isValidSync(student))
-                    throw 'Not Complete';
-                this.props.createStudent(student);
-            }
-            catch (error) {
-                console.log(error);
-                Alert.alert('QR Code does not belong to a student');
+        this._handleBarCodeRead = ({ data }) => {
+            if (!this.state.scanning) {
+                try {
+                    this.setState({ scanning: true });
+                    const student = JSON.parse(data);
+                    if (!studentSchema.isValidSync(student))
+                        throw 'Not Complete';
+                    this.props.createStudent(student);
+                }
+                catch (error) {
+                    if (data)
+                        this.props.selectStudent({ grNo: data });
+                }
             }
         };
         this.gotoAddStudent = () => this.props.navigateTo('AddStudent');
+    }
+    componentDidUpdate() {
+        if (this.state.scanning === true && this.props.scanFailedStatus) {
+            this.setState({ scanning: false });
+            this.props.scanFailed(false);
+        }
     }
     componentDidMount() {
         this._requestCameraPermission();
@@ -50,7 +61,9 @@ class ScanStudent extends Component {
             React.createElement(Text, null, "Requesting for camera permission") :
             this.state.hasCameraPermission === false ?
                 React.createElement(Text, null, "Camera permission is not granted") :
-                React.createElement(BarCodeScanner, { onBarCodeRead: this._handleBarCodeRead, style: [StyleSheet.absoluteFill, styles.container] },
+                !this.state.scanning ? React.createElement(BarCodeScanner, { onBarCodeScanned: this._handleBarCodeRead, barCodeScannerSettings: {
+                        barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+                    }, style: [StyleSheet.absoluteFill, styles.container] },
                     React.createElement(View, { style: styles.layerTop }),
                     React.createElement(View, { style: styles.layerCenter },
                         React.createElement(View, { style: styles.layerLeft }),
@@ -58,7 +71,7 @@ class ScanStudent extends Component {
                         React.createElement(View, { style: styles.layerRight })),
                     React.createElement(View, { style: styles.layerBottom },
                         React.createElement(Button, { light: true, style: { padding: 5, marginTop: 10 }, onPress: this.gotoAddStudent },
-                            React.createElement(Text, null, "Add Student Manually")))));
+                            React.createElement(Text, null, "Add Student Manually")))) : React.createElement(Text, null, "Scanning Barcode"));
     }
 }
 ScanStudent.navigationOptions = navigationOptions('Scan Student');
@@ -94,13 +107,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     }
 });
-function mapStateToProps() {
-    return {};
+function mapStateToProps(state) {
+    return {
+        scanFailedStatus: state.home.scanFailed
+    };
 }
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         navigateTo,
-        createStudent
+        createStudent,
+        selectStudent,
+        scanFailed
     }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ScanStudent);

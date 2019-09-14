@@ -1,17 +1,28 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-export default class App extends Component {
-    render() {
-        return (React.createElement(View, { style: styles.container },
-            React.createElement(Text, null, "Teacher")));
+import React from 'react';
+import Home from '../components/teacher/home';
+import colors from '../native-base-theme/variables/commonColor';
+import { createStackNavigator } from 'react-navigation';
+import { Text } from 'native-base';
+const Nav = createStackNavigator({
+    Home: {
+        screen: Home
     }
-}
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
+}, {
+    initialRouteName: 'Home',
+    defaultNavigationOptions: {
+        headerStyle: { backgroundColor: colors.brandPrimary },
+        headerTitleStyle: { color: colors.btnPrimaryColor },
+        headerBackTitleStyle: { color: colors.btnPrimaryColor },
+        headerTintColor: '#fff'
     }
 });
+Nav.navigationOptions = () => {
+    return {
+        // headerBackImage: params.headerBackImage,
+        headerTitle: React.createElement(Text, { style: { color: 'black' } }, "Welcome")
+        // Render a button on the right side of the header.
+        // When pressed switches the screen to edit mode.
+    };
+};
+export default Nav;
 //# sourceMappingURL=teacher.js.map

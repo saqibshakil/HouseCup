@@ -7,26 +7,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AppLoading, Font } from 'expo';
-import { checkLogin } from '../actions/base';
+import { AppLoading, Linking } from 'expo';
+import { checkLogin } from '../actions/login';
+import { Spinner } from 'native-base';
+import * as Expo from 'expo';
+import { loadAsync } from 'expo-font';
+import { log } from '../api/base';
 class App extends Component {
     render() {
         return (React.createElement(View, { style: styles.container },
             React.createElement(AppLoading, null),
-            React.createElement(Text, null, "Loading")));
+            React.createElement(Text, null, this.state.message),
+            React.createElement(Spinner, { color: 'gray' })));
     }
     componentWillMount() {
-        this.loadFonts();
+        try {
+            this.setState({ message: 'Checking for Updates' });
+            if (!__DEV__) {
+                Expo.Updates.checkForUpdateAsync().then((update) => {
+                    if (update.isAvailable) {
+                        this.setState({ message: 'Downloading update' });
+                        Expo.Updates.fetchUpdateAsync().then((event) => {
+                            if (event.isNew)
+                                this.setState({ message: 'Build downloaded' });
+                            Expo.Updates.reloadFromCache();
+                        });
+                        // ... notify user of update ...
+                    }
+                    else {
+                        this.setState({ message: 'No Updates Available' });
+                        Linking.addEventListener('url', (p) => { log(p.url); });
+                        this.loadFonts();
+                    }
+                });
+            }
+            else {
+                Linking.addEventListener('url', (p) => { log(p.url); });
+                this.loadFonts();
+            }
+        }
+        catch (e) {
+            // handle or log error
+        }
     }
     loadFonts() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield Font.loadAsync({
-                Roboto: require('native-base/Fonts/Roboto.ttf'),
-                Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-                Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf')
+            yield loadAsync({
+                Roboto: require('../../Fonts/Roboto.ttf'),
+                Roboto_medium: require('../../Fonts/Roboto_medium.ttf'),
+                Ionicons: require('../../Fonts/Ionicons.ttf')
             });
             this.props.checkLogin();
         });

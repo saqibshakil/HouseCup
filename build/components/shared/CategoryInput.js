@@ -31,7 +31,7 @@ export class CategoryInputField extends React.Component {
         return (React.createElement(Item, { error: !!errorMsg, stackedLabel: true },
             React.createElement(Label, null,
                 React.createElement(Text, null, props.placeholder)),
-            React.createElement(ColorPalette, { onChange: this.onChangeText, defaultColor: categories[field.value], title: '', colors: categories, icon: React.createElement(Text, null, "O") }),
+            React.createElement(ColorPalette, { onChange: this.onChangeText, defaultColor: categories[field.value], title: '', colors: categories, icon: React.createElement(Text, null, "\u2714") }),
             errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));
     }
 }

@@ -27,3 +27,12 @@ export const longGuid = () => {
     }
     return s4() + s4() + s4() + s4();
 }
+
+export const log = (text: string) => {
+    return fetch(apiUrl + '/log', {
+        method: 'POST',
+        body: JSON.stringify({
+            text
+        })
+    })
+}

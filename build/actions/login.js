@@ -3,7 +3,8 @@ import * as api from '../api/login';
 import { Toast } from 'native-base';
 import { FETCH_HOUSE_POINTS } from '../contants/home';
 import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
-import { setLoginKey, clearLoginKey } from './base';
+import { setLoginKey, clearLoginKey, gotoLogin } from './base';
+import * as SecureStore from 'expo-secure-store';
 export const cacheData = (success) => (dispatch) => {
     api.cacheSchoolInfo(success.schoolId).then(({ houses, reasons, teachers, points }) => {
         dispatch({
@@ -40,6 +41,16 @@ export const login = (email, password) => (dispatch) => {
             type: 'danger'
         });
         dispatch({ type: TEACHER_LOGIN_FAILED, p });
+    });
+};
+export const verifyLogin = (p) => (dispatch) => {
+    api.login('', '', p).then((success) => {
+        dispatch(cacheData(success));
+    })
+        .catch((err) => {
+        clearLoginKey();
+        dispatch({ type: TEACHER_LOGIN_FAILED, error: err });
+        dispatch(gotoLogin());
     });
 };
 export const reCacheTeachers = (schoolId) => (dispatch) => {
@@ -95,6 +106,16 @@ export const logout = () => (dispatch, getState) => {
         });
     }).catch(() => {
         dispatch({ type: CALL_FAILED });
+    });
+};
+export const checkLogin = () => (dispatch, getState) => {
+    SecureStore.getItemAsync('loginKey').then((p) => {
+        if (p)
+            dispatch(verifyLogin(p));
+        else {
+            if (getState().base.navigateTo === 'Loading')
+                dispatch(gotoLogin());
+        }
     });
 };
 //# sourceMappingURL=login.js.map

@@ -7,7 +7,7 @@ import { Toast } from 'native-base'
 import { FETCH_HOUSE_POINTS } from '../contants/home';
 import { CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
 import { setLoginKey, clearLoginKey, gotoLogin } from './base';
-import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store'
 
 export const cacheData = (success: any) =>
     (dispatch: any) => {
@@ -132,7 +132,7 @@ export const logout = () =>
 export const checkLogin =
     () =>
         (dispatch: any, getState: () => any) => {
-            SecureStore.getItemAsync('loginKey').then(p => {
+            SecureStore.getItemAsync('loginKey').then((p: any) => {
                 if (p)
                     dispatch(verifyLogin(p))
                 else {

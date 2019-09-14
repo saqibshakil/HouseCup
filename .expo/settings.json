@@ -3,5 +3,6 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "3d-dzc"
+  "urlRandomness": "r5-dn2",
+  "https": false
 }

@@ -12,6 +12,9 @@ import { Input, Item, Label, Text } from 'native-base';
 export class InputField extends React.Component {
     constructor() {
         super(...arguments);
+        this.state = {
+            focused: false
+        };
         this.onChangeText = (text) => {
             const { form: { setFieldValue }, field: { name }, onValueChanged } = this.props;
             setFieldValue(name, text);
@@ -21,6 +24,10 @@ export class InputField extends React.Component {
         this.onBlur = () => {
             const { form: { setFieldTouched }, field: { name } } = this.props;
             setFieldTouched(name, true);
+            this.setState({ focused: false });
+        };
+        this.onFocus = () => {
+            this.setState({ focused: true });
         };
     }
     render() {
@@ -35,7 +42,7 @@ export class InputField extends React.Component {
         return (React.createElement(Item, { error: !!errorMsg, stackedLabel: true },
             React.createElement(Label, null,
                 React.createElement(Text, null, props.placeholder)),
-            React.createElement(Input, Object.assign({}, inputProps, { defaultValue: field.value, onChangeText: this.onChangeText, onBlur: this.onBlur, style: { borderBottomColor: '#8cb8ff', borderBottomWidth: 2 } })),
+            React.createElement(Input, Object.assign({}, inputProps, { defaultValue: field.value, onChangeText: this.onChangeText, onBlur: this.onBlur, style: { borderBottomColor: this.state.focused ? '#8cb8ee' : '#8cb8ff', borderBottomWidth: 2 }, onFocus: this.onFocus })),
             errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));
     }
 }

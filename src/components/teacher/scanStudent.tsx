@@ -1,32 +1,45 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Alert } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+import { Text, View, StyleSheet } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions'
 import { navigationOptions } from '../shared/NavigationOptions';
 import { Button } from 'native-base'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { navigateTo } from '../../actions/base';
-import { createStudent } from '../../actions/home';
+import { createStudent, selectStudent, scanFailed } from '../../actions/home';
 import studentSchema from '../../schema/student'
 
 interface IState {
-    hasCameraPermission: boolean
+    hasCameraPermission: boolean,
+    scanning: boolean
 }
 
 interface IStateProps {
+    scanFailedStatus: boolean
 }
 
 interface IDispatchProps {
     navigateTo: (to: string, params?: any) => void
     createStudent: (student: any) => void
+    selectStudent: (student: any) => any
+    scanFailed: (register: boolean) => void
 }
 
 class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
     static navigationOptions = navigationOptions('Scan Student')
     state: IState = {
-        hasCameraPermission: null
+        hasCameraPermission: null,
+        scanning: false
     };
 
+    componentDidUpdate() {
+        if(this.state.scanning === true && this.props.scanFailedStatus)
+        {
+            this.setState({ scanning: false })
+            this.props.scanFailed(false)
+        }
+    }
     componentDidMount() {
         this._requestCameraPermission();
     }
@@ -38,15 +51,19 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
         });
     };
 
-    _handleBarCodeRead = (data: any) => {
-        try {
-            const student = JSON.parse(data.data)
-            if (!studentSchema.isValidSync(student))
-                throw 'Not Complete'
-            this.props.createStudent(student)
-        } catch (error) {
-            console.log(error)
-            Alert.alert('QR Code does not belong to a student')
+    _handleBarCodeRead = ({ data }: any) => {
+        if (!this.state.scanning) {
+            try {
+                this.setState({ scanning: true })
+                const student = JSON.parse(data)
+                if (!studentSchema.isValidSync(student))
+                    throw 'Not Complete'
+                this.props.createStudent(student)
+            } catch (error) {
+                if (data)
+                    this.props.selectStudent({ grNo: data })
+                
+            }
         }
     };
 
@@ -58,9 +75,14 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
                 <Text>Requesting for camera permission</Text> :
                 this.state.hasCameraPermission === false ?
                     <Text>Camera permission is not granted</Text> :
-                    <BarCodeScanner
-                        onBarCodeRead={this._handleBarCodeRead}
+                    !this.state.scanning ? <BarCodeScanner
+                        onBarCodeScanned={this._handleBarCodeRead}
+                        barCodeScannerSettings={{
+                            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+                        }}
                         style={[StyleSheet.absoluteFill, styles.container]}
+
+
                     >
                         <View style={styles.layerTop} />
                         <View style={styles.layerCenter}>
@@ -72,7 +94,7 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
                             <Button light style={{ padding: 5, marginTop: 10 }}
                                 onPress={this.gotoAddStudent}><Text>Add Student Manually</Text></Button>
                         </View>
-                    </BarCodeScanner>
+                    </BarCodeScanner> : <Text>Scanning Barcode</Text>
 
         );
     }
@@ -111,15 +133,18 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(): IStateProps {
+function mapStateToProps(state): IStateProps {
     return {
+        scanFailedStatus: state.home.scanFailed
     }
 }
 
 function mapDispatchToProps(dispatch: any): IDispatchProps {
     return bindActionCreators({
         navigateTo,
-        createStudent
+        createStudent,
+        selectStudent,
+        scanFailed
     }, dispatch)
 }
 

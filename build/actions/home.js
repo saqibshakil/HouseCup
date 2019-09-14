@@ -1,5 +1,5 @@
 import { getPointsPerHouses, create, studentExist, fetchStudent as _fetchStudent, postPoints as _postPoints } from '../api/home';
-import { CALL_STARTED, CALL_FAILED, CALL_DONE } from '../contants/schoolSignUp';
+import { CALL_STARTED, CALL_FAILED, CALL_DONE, SCAN_UNSUCCESSFULL } from '../contants/schoolSignUp';
 import { FETCH_HOUSE_POINTS, FETCH_STUDENT } from '../contants/home';
 import { navigateTo } from './base';
 export const createStudent = (values) => (dispatch, getState) => {
@@ -41,7 +41,37 @@ export const fetchPoints = (schoolId) => (dispatch) => {
         error: 'Unable to fetch points'
     }));
 };
-export const fetchStudent = (student, schoolId) => (dispatch) => {
+export const selectStudent = (student, schoolId) => (dispatch, getState) => {
+    if (!schoolId)
+        schoolId = getState().login.schoolId;
+    dispatch({
+        type: CALL_STARTED
+    });
+    _fetchStudent(student, schoolId)
+        .then(std => {
+        dispatch({
+            type: FETCH_STUDENT,
+            student: std[0]
+        });
+        dispatch({
+            type: CALL_DONE
+        });
+        dispatch(navigateTo('SelectReason'));
+    }).catch(() => {
+        dispatch({
+            type: CALL_FAILED,
+            error: 'Unable to Student'
+        });
+        dispatch(scanFailed());
+    });
+};
+export const scanFailed = (register = true) => ({
+    type: SCAN_UNSUCCESSFULL,
+    register
+});
+export const fetchStudent = (student, schoolId) => (dispatch, getState) => {
+    if (!schoolId)
+        schoolId = getState().login.schoolId;
     dispatch({
         type: CALL_STARTED
     });
@@ -86,12 +116,10 @@ export const fetchStudentAndUpdate = (fieldProps, value) => (dispatch, getState)
     }));
 };
 export const postPoints = (obj) => (dispatch, getState) => {
-    const { login: { teacherId, schoolId }, home: { student: { id: studentId, houseId } } } = getState();
+    const { login: { teacherId, schoolId }, home: { student: { id, houseId } } } = getState();
     dispatch({ type: CALL_STARTED });
     _postPoints(Object.assign({}, obj, { teacherId,
-        schoolId,
-        studentId,
-        houseId })).then(() => {
+        schoolId, studentId: id, houseId })).then(() => {
         dispatch({
             type: CALL_DONE
         });

@@ -1,4 +1,4 @@
-import { SecureStore } from 'expo'
+import * as SecureStore from 'expo-secure-store'
 import { RENAVIGATE, BACK, POPTOTOP } from '../contants/login';
 export const CHECK_LOGIN_KEY = 'CHECK_LOGIN_KEY'
 export const LOGIN_KEY_VERIFY = 'LOGIN_KEY_VERIFY'

@@ -43,8 +43,8 @@ class AdminSignUp extends React.Component {
         return React.createElement(Container, { style: { flex: 1, alignSelf: 'stretch' } },
             React.createElement(Content, null,
                 React.createElement(AdminSignUpForm, { submit: this.submit, saving: this.props.saving, teacher: teacher }),
-                currentTeacherId != teacher.id ?
-                    React.createElement(Button, { danger: true, onPress: this.resetUser },
+                (teacher && currentTeacherId != teacher.id) ?
+                    React.createElement(Button, { style: { marginHorizontal: 10, marginVertical: 5 }, block: true, danger: true, onPress: this.resetUser },
                         React.createElement(Text, null, "Reset Password"))
                     : null));
     }

@@ -33,12 +33,12 @@ class HouseSelectField extends React.Component {
                 React.createElement(Text, null, props.placeholder)),
             React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' } }, props.houses.map((p) => React.createElement(View, { key: p.id, style: {
                     width: '49%', marginVertical: 5, flexDirection: 'column',
-                    borderWidth: field.value === p.id ? 2 : 0, borderColor: 'green'
+                    borderWidth: 2, borderColor: field.value === p.id ? 'green' : 'transparent'
                 } },
                 React.createElement(Button, { block: true, style: {
                         backgroundColor: p.color, flexDirection: 'column'
                     }, onPress: () => this.onChangeText(p.id), light: true },
-                    React.createElement(Text, null,
+                    React.createElement(Text, { style: { color: 'white' } },
                         field.value === p.id ? '✔ ' : '',
                         p.name))))),
             errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));

@@ -1,6 +1,7 @@
 import { createSchool as postSchool, createAdmin as postAdmin, deleteTeacher } from '../api/school';
 import { SCHOOL_ADD_ADMIN, SCHOOL_CREATE, SCHOOL_REMOVE_TEACHER, SCHOOL_ADD_TEACHER, SCHOOL_ADD_HOUSE, SCHOOL_REMOVE_HOUSE, CALL_STARTED, CALL_DONE, CALL_FAILED } from '../contants/schoolSignUp';
 import { reCacheTeachers } from './login';
+import { back } from './base';
 export const createSchool = (school) => ({
     type: SCHOOL_CREATE,
     school
@@ -74,6 +75,7 @@ export const createTeacher = (values) => (dispatch, getState) => {
             type: CALL_DONE
         });
         dispatch(reCacheTeachers(id));
+        dispatch(back());
     })
         .catch((error) => {
         dispatch({

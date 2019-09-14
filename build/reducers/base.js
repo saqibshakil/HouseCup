@@ -12,7 +12,7 @@ export default (state = dataState, action) => {
         case GOTO_LOGIN:
             return Object.assign({}, state, { loading: false, navigateTo: 'PreLogin' });
         case RENAVIGATE:
-            return Object.assign({}, state, { navigateTo: action.to, params: action.params });
+            return Object.assign({}, state, { navigateTo: action.to, params: action.params, back: false, popToTop: false });
         case BACK:
             return Object.assign({}, state, { navigateTo: '', params: undefined, back: true, popToTop: false });
         case POPTOTOP:

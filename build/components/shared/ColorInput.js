@@ -31,7 +31,7 @@ export class ColorInputField extends React.Component {
         return (React.createElement(Item, { error: !!errorMsg, style: getBorder(), stackedLabel: true },
             React.createElement(Label, null,
                 React.createElement(Text, null, props.placeholder)),
-            React.createElement(ColorPalette, { onChange: this.onChangeText, defaultColor: field.value, title: '', colors: ['#C0392B', '#E74C3C', '#9B59B6', '#8E44AD', '#2980B9'], icon: React.createElement(Text, null, "O") }),
+            React.createElement(ColorPalette, { onChange: this.onChangeText, defaultColor: field.value, title: '', colors: ['#9400D3', '#4B0082', '#0000FF', '#00FF00', '#FFFF00', '#FF7F00', '#FF0000'], icon: React.createElement(Text, null, "\u2714") }),
             errorMsg ? React.createElement(Text, { style: { color: 'red' } }, errorMsg) : null));
     }
 }

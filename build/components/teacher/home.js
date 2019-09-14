@@ -30,8 +30,10 @@ class Home extends React.Component {
                     React.createElement(Button, { danger: true, onPress: this.logout, small: true },
                         React.createElement(Text, null, "Logout")))),
             React.createElement(Content, { style: { paddingHorizontal: 10, paddingTop: 10 } },
-                React.createElement(Button, { primary: true, block: true, onPress: this.gotoScan },
-                    React.createElement(Text, null, "Award Points")),
+                this.props.setupIncomplete ?
+                    React.createElement(Text, { style: { color: 'red' } }, "School setup incomplete please advise school admin to add the respective houses and reasons")
+                    : React.createElement(Button, { primary: true, block: true, onPress: this.gotoScan },
+                        React.createElement(Text, null, "Award Points")),
                 React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' } }, points.map((p) => React.createElement(View, { key: p.id, style: {
                         width: '49%', marginVertical: 5, flexDirection: 'column'
                     } },
@@ -60,7 +62,8 @@ function mapStateToProps(state) {
     return {
         message: state.schoolSignUp.message,
         points,
-        saving: state.schoolSignUp.saving
+        saving: state.schoolSignUp.saving,
+        setupIncomplete: !(state.house.houses.length > 1 && state.reason.reasons.length > 0)
     };
 }
 function mapDispatchToProps(dispatch) {

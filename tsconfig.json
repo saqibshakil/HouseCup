@@ -6,7 +6,7 @@
       "rootDir": "src",
       "outDir": "build",
       "allowSyntheticDefaultImports": true,
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "sourceMap": true,
       "experimentalDecorators": true,
       "preserveConstEnums": true,
@@ -19,10 +19,15 @@
   },
   "filesGlob": [
       "typings/index.d.ts",
+      "src/**/*.d.ts",
       "src/**/*.ts",
       "src/**/*.tsx",
       "node_modules/typescript/lib/lib.es6.d.ts"
   ],
+  "typeRoots": [
+    "../node_modules/@types",
+    "@types"
+],
   "types": [
     "react",
     "react-dom",

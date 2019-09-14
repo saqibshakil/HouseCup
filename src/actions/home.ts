@@ -2,7 +2,7 @@ import {
     getPointsPerHouses, create,
     studentExist, fetchStudent as _fetchStudent, postPoints as _postPoints
 } from '../api/home';
-import { CALL_STARTED, CALL_FAILED, CALL_DONE } from '../contants/schoolSignUp';
+import { CALL_STARTED, CALL_FAILED, CALL_DONE, SCAN_UNSUCCESSFULL } from '../contants/schoolSignUp';
 import { FETCH_HOUSE_POINTS, FETCH_STUDENT } from '../contants/home'
 import { FieldProps } from 'formik';
 import { navigateTo } from './base';
@@ -50,7 +50,41 @@ export const fetchPoints = (schoolId: any) => (dispatch: any) => {
         }))
 }
 
-export const fetchStudent = (student: any, schoolId: any) => (dispatch: any) => {
+export const selectStudent = (student: any, schoolId?: any) => (dispatch: any, getState: () => any) => {
+    if (!schoolId)
+        schoolId = getState().login.schoolId
+    dispatch({
+        type: CALL_STARTED
+    })
+    _fetchStudent(student, schoolId)
+        .then(std => {
+            dispatch({
+                type: FETCH_STUDENT,
+                student: std[0]
+            })
+            dispatch({
+                type: CALL_DONE
+            })
+            dispatch(navigateTo('SelectReason'))
+
+        }).catch(() => {
+            dispatch({
+                type: CALL_FAILED,
+                error: 'Unable to Student'
+            })
+            dispatch(scanFailed())
+        })
+
+}
+
+export const scanFailed = (register: boolean = true) => ({
+    type: SCAN_UNSUCCESSFULL,
+    register
+})
+
+export const fetchStudent = (student: any, schoolId?: any) => (dispatch: any, getState: () => any) => {
+    if (!schoolId)
+        schoolId = getState().login.schoolId
     dispatch({
         type: CALL_STARTED
     })
@@ -100,13 +134,13 @@ export const fetchStudentAndUpdate = (fieldProps: FieldProps<any>, value: string
 
 export const postPoints = (obj: { points: number, reasonId: any }) =>
     (dispatch: any, getState: any) => {
-        const { login: { teacherId, schoolId }, home: { student: { id: studentId, houseId } } } = getState()
+        const { login: { teacherId, schoolId }, home: { student: { id, houseId } } } = getState()
         dispatch({ type: CALL_STARTED })
         _postPoints({
             ...obj,
             teacherId,
             schoolId,
-            studentId,
+            studentId: id,
             houseId
 
         }).then(() => {

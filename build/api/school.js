@@ -24,7 +24,7 @@ export const sendEmail = (to, link, name) => {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: (`To=${encodeURIComponent(to)}&KeyCode=${encodeURIComponent(link)}&email=${encodeURIComponent(to)}
-            &name==${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
+            &name=${encodeURIComponent(name)}&keyCode=${encodeURIComponent(link)}`)
     });
 };
 export const createAdmin = (school, teacher, isAdmin) => {
@@ -33,11 +33,13 @@ export const createAdmin = (school, teacher, isAdmin) => {
         const method = teacher.id ? 'PUT' : 'POST';
         fetch(apiPath, {
             method,
-            body: JSON.stringify(Object.assign({}, teacher, { schoolId: school.id, isAdmin: isAdmin ? 1 : 0 }))
+            body: JSON.stringify(Object.assign({}, teacher, { schoolId: school.id, isAdmin: isAdmin ? 1 : undefined }))
         })
             .then(throwError)
             .then(p => p.text())
             .then(teacherId => {
+            if (teacher.id)
+                return resolve(teacher.id);
             if (teacherId) {
                 const keyCode = guid().toUpperCase();
                 fetch(apiUrl + '/user', {
