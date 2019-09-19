@@ -34,8 +34,7 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
     };
 
     componentDidUpdate() {
-        if(this.state.scanning === true && this.props.scanFailedStatus)
-        {
+        if (this.state.scanning === true && this.props.scanFailedStatus) {
             this.setState({ scanning: false })
             this.props.scanFailed(false)
         }
@@ -62,7 +61,6 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
             } catch (error) {
                 if (data)
                     this.props.selectStudent({ grNo: data })
-                
             }
         }
     };
@@ -77,9 +75,7 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
                     <Text>Camera permission is not granted</Text> :
                     !this.state.scanning ? <BarCodeScanner
                         onBarCodeScanned={this._handleBarCodeRead}
-                        barCodeScannerSettings={{
-                            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-                        }}
+                        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
                         style={[StyleSheet.absoluteFill, styles.container]}
 
 

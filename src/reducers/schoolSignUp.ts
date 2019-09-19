@@ -2,6 +2,7 @@ import {
     SCHOOL_ADD_ADMIN, SCHOOL_ADD_HOUSE, SCHOOL_ADD_TEACHER,
     SCHOOL_CREATE, CALL_FAILED, CALL_STARTED, CALL_DONE
 } from '../contants/schoolSignUp'
+import { BACK } from '../contants/login';
 
 let dataState = {
 }
@@ -51,6 +52,12 @@ export default (state: any = dataState, action: any) => {
         case CALL_DONE:
             return {
                 message: action.message
+            }
+        case BACK:
+            return {
+                ...state,
+                saving: false
+
             }
         default:
             return state;

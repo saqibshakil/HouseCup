@@ -6,13 +6,12 @@
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
-      "ios",
       "android"
-    ],
+        ],
     "updates": {
       "enabled": true,
       "checkAutomatically": "ON_ERROR_RECOVERY",
-      "fallbackToCacheTimeout": 300
+      "fallbackToCacheTimeout": 0
     },
     "version": "1.1.0",
     "orientation": "portrait",
@@ -20,7 +19,7 @@
     "splash": {
       "image": "./assets/splash2.png",
       "resizeMode": "cover",
-      "backgroundColor": "#EEEEEE"
+      "backgroundColor": "#484B7F"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -29,15 +28,17 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 5,
       "package": "com.housecupapp.app",
       "intentFilters": [
         {
           "action": "VIEW",
+          "autoVerify": true,
           "data": [
             {
               "scheme": "https",
-              "host": "app.readers.com.pk"
+              "host": "app.readers.com.pk",
+              "pathPrefix": "/housecup"
             }
           ],
           "category": [

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground } from 'react-native';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AppLoading, Linking } from 'expo'
+import { AppLoading } from 'expo'
 import { checkLogin } from '../actions/login'
 import { Spinner } from 'native-base';
 import * as Expo from 'expo'
@@ -20,40 +20,48 @@ interface IStateProps {
 class App extends Component<IStateProps & IDispatchProps, { message: string }> {
     render() {
         return (
-            <View style={styles.container}>
+            <ImageBackground source={require('../../assets/splash2.png')} style={styles.container}>
                 <AppLoading />
-                <Text>{this.state.message}</Text>
+                <Text style={{ paddingTop: 350 }}>{this.state.message}</Text>
                 <Spinner color='gray' />
-            </View>
+            </ImageBackground>
         );
     }
     componentWillMount() {
         try {
+            Expo.SplashScreen.hide()
             this.setState({ message: 'Checking for Updates' })
             if (!__DEV__) {
+                log('Checking for Updates')
                 Expo.Updates.checkForUpdateAsync().then((update: any) => {
                     if (update.isAvailable) {
                         this.setState({ message: 'Downloading update' })
+                        log('Downloading update')
                         Expo.Updates.fetchUpdateAsync().then((event: any) => {
-                            if (event.isNew)
+                            if (event.isNew) {
                                 this.setState({ message: 'Build downloaded' })
-                            Expo.Updates.reloadFromCache()
+                                log('Build downloaded')
+                                Expo.Updates.reloadFromCache().then(() => {
+                                    log('reloaded')
+                                    this.loadFonts();
+                                })
+                            }
                         })
                         // ... notify user of update ...
                     } else {
+                        log('No Updates')
                         this.setState({ message: 'No Updates Available' })
-                        Linking.addEventListener('url', (p: any) => { log(p.url) })
                         this.loadFonts();
                     }
                 })
             } else {
-                Linking.addEventListener('url', (p: any) => { log(p.url) })
                 this.loadFonts();
             }
         } catch (e) {
-            // handle or log error
+            log(JSON.stringify(e))
         }
     }
+
     async loadFonts() {
         await loadAsync({
             Roboto: require('../../Fonts/Roboto.ttf'),
@@ -70,6 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
+
     }
 });
 
