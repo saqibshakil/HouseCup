@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Permissions from 'expo-permissions'
+import { Audio } from 'expo-av'
 import { navigationOptions } from '../shared/NavigationOptions';
-import { Button } from 'native-base'
+import { Button, Spinner } from 'native-base'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { navigateTo } from '../../actions/base';
@@ -12,11 +13,13 @@ import studentSchema from '../../schema/student'
 
 interface IState {
     hasCameraPermission: boolean,
-    scanning: boolean
+    scanning: boolean,
+    sound: any
 }
 
 interface IStateProps {
-    scanFailedStatus: boolean
+    scanFailedStatus: boolean,
+    navigatedAway: boolean
 }
 
 interface IDispatchProps {
@@ -30,17 +33,51 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
     static navigationOptions = navigationOptions('Scan Student')
     state: IState = {
         hasCameraPermission: null,
-        scanning: false
+        scanning: false,
+        sound: undefined
     };
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: IStateProps) {
         if (this.state.scanning === true && this.props.scanFailedStatus) {
-            this.setState({ scanning: false })
+            const soundObject = new Audio.Sound();
+            try {
+                soundObject.loadAsync(require('./../../../assets/beep.mp3'));
+
+                // Your sound is playing!
+            } catch (error) {
+                // An error occurred!
+            }
+
+            this.setState({ scanning: false, sound: soundObject })
+
             this.props.scanFailed(false)
         }
+
+        if (this.props.navigatedAway && !prevProps.navigatedAway) {
+            const sound = new Audio.Sound();
+            this.setState({ scanning: false, sound })
+            try {
+                sound.loadAsync(require('./../../../assets/beep.mp3'));
+
+                // Your sound is playing!
+            } catch (error) {
+                // An error occurred!
+            }
+            
+        }
+
     }
     componentDidMount() {
         this._requestCameraPermission();
+        const soundObject = new Audio.Sound();
+        this.setState({ sound: soundObject })
+        try {
+            soundObject.loadAsync(require('./../../../assets/beep.mp3'));
+
+            // Your sound is playing!
+        } catch (error) {
+            // An error occurred!
+        }
     }
 
     _requestCameraPermission = async () => {
@@ -58,15 +95,20 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
                 if (!studentSchema.isValidSync(student))
                     throw 'Not Complete'
                 this.props.createStudent(student)
+                this.state.sound.playAsync()
             } catch (error) {
-                if (data)
+                if (data && (typeof data === 'number' || typeof data === 'string')) {
                     this.props.selectStudent({ grNo: data })
+                    this.state.sound.playAsync()
+                }
             }
         }
     };
 
-    gotoAddStudent = () => this.props.navigateTo('AddStudent')
-
+    gotoAddStudent = () => {
+        this.props.navigateTo('AddStudent')
+    }
+    simulateScan = () => this._handleBarCodeRead({ data: 'T001' })
     render() {
         return (
             this.state.hasCameraPermission === null ?
@@ -89,8 +131,13 @@ class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
                         <View style={styles.layerBottom} >
                             <Button light style={{ padding: 5, marginTop: 10 }}
                                 onPress={this.gotoAddStudent}><Text>Add Student Manually</Text></Button>
+                            {
+                                __DEV__ ? <Button light style={{ padding: 5, marginTop: 10 }}
+                                    onPress={this.simulateScan}><Text>Simulate Scan</Text></Button> : undefined
+
+                            }
                         </View>
-                    </BarCodeScanner> : <Text>Scanning Barcode</Text>
+                    </BarCodeScanner> : <Spinner color='gray' />
 
         );
     }
@@ -131,7 +178,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state): IStateProps {
     return {
-        scanFailedStatus: state.home.scanFailed
+        scanFailedStatus: state.home.scanFailed,
+        navigatedAway: state.base.navigateTo !== 'ScanStudent'
     }
 }
 

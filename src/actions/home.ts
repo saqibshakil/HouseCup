@@ -58,6 +58,8 @@ export const selectStudent = (student: any, schoolId?: any) => (dispatch: any, g
     })
     _fetchStudent(student, schoolId)
         .then(std => {
+            if(std.length === 0)
+                throw 'No student found. Please add manually'
             dispatch({
                 type: FETCH_STUDENT,
                 student: std[0]

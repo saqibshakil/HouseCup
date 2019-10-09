@@ -18,7 +18,7 @@ interface IDispatchProps {
 }
 
 class ScanStudent extends Component<IStateProps & IDispatchProps, IState> {
-    static navigationOptions = navigationOptions('Scan Student')
+    static navigationOptions = navigationOptions('Select Reason')
     state: IState = {
         hasCameraPermission: null
     };
